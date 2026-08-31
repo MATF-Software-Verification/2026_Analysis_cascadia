@@ -1,0 +1,4 @@
+[submodule "cascadia++"]
+	path = cascadia++
+	url = https://gitlab.com/matf-bg-ac-rs/course-rs/projects-2024-2025/cascadia.git
+	branch = main
