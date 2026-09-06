@@ -5,3 +5,7 @@ build/
 dist/
 *.tmp
 *.log
+build_unit_tests/
+build_coverage/
+unit_tests/reports/*
+!unit_tests/reports/.gitkeep
