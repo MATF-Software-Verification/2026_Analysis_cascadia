@@ -1,154 +1,150 @@
 #!/usr/bin/env bash
-
-# Stop on errors, unset variables, and failed pipeline commands.
+# Stop on errors, unset variables, and failed pipeline commands
 set -euo pipefail
 
-# Resolve this script's directory regardless of where it is launched.
+# Resolve this script's directory regardless of where it is launched
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# Locate the analysis repository.
 PROJECT_ROOT="$(cd "$TEST_DIR/.." && pwd)"
+CFG_FILE="$TEST_DIR/coverage.cfg"
 
-# Keep instrumented compilation outputs separate from ordinary builds.
+# Require a local configuration file
+if [[ ! -f "$CFG_FILE" ]]; then
+    echo "Copy unit_tests/coverage.cfg.example to unit_tests/coverage.cfg first." >&2
+    exit 1
+fi
+
+# Load trusted local configuration as Bash assignments.
+source "$CFG_FILE"
+
+# Apply defaults for settings omitted from the configuration.
+BUILD_TYPE="${BUILD_TYPE:-Debug}"
+CXX="${CXX:-g++}"
+GCOV_TOOL="${GCOV_TOOL:-gcov}"
+JOBS="${JOBS:-$(nproc)}"
+ENABLE_SANITIZERS="${ENABLE_SANITIZERS:-ON}"
+OPEN_REPORT="${OPEN_REPORT:-1}"
+EARLY_FILTER="${EARLY_FILTER:-1}"
+
+# Keep instrumented outputs separate from ordinary builds.
 BUILD_DIR="$PROJECT_ROOT/build_coverage"
-
-# Locate the original source file whose coverage we want to report.
-SOURCE_FILE="$PROJECT_ROOT/cascadia++/cascadia/game/entities/tileData.cpp"
-
-# Define the parent directory for generated reports.
 REPORT_ROOT="$TEST_DIR/reports"
 
-# Allow the number of parallel build jobs to be overridden.
-JOBS="${JOBS:-$(nproc)}"
+# Define the production files included in the final report.
+SOURCE_FILES=(
+    "$PROJECT_ROOT/cascadia++/cascadia/game/entities/tileData.cpp"
+    "$PROJECT_ROOT/cascadia++/cascadia/common/playerData.cpp"
+    "$PROJECT_ROOT/cascadia++/cascadia/common/turn.cpp"
+)
 
-# Check all tools used by this script.
-for tool in cmake ctest g++ gcov lcov genhtml; do
-    # Stop with a useful message if a dependency is missing.
+# Verify required tools before configuring the project
+for tool in cmake ctest "$CXX" "$GCOV_TOOL" lcov genhtml; do
     if ! command -v "$tool" >/dev/null 2>&1; then
-        # Identify the missing tool.
         echo "Required tool not found: $tool" >&2
-
-        # Return a failure status.
         exit 1
-    # Finish checking this tool.
     fi
-# Finish checking dependencies.
 done
 
-# Verify that the analyzed project's submodule is available.
-if [[ ! -f "$SOURCE_FILE" ]]; then
-    # Explain how to retrieve the missing source.
-    echo "TileData source not found. Run git submodule update --init --recursive." >&2
+# Verify source availability and optionally exclude dependencies during capture
+CAPTURE_FILTERS=()
+for source_file in "${SOURCE_FILES[@]}"; do
+    if [[ ! -f "$source_file" ]]; then
+        echo "Missing source: $source_file; initialize the submodule." >&2
+        exit 1
+    fi
 
-    # Stop before configuring an incomplete project.
-    exit 1
-# Finish validating the source file.
-fi
+    if [[ "$EARLY_FILTER" == "1" ]]; then
+        CAPTURE_FILTERS+=(--include "$source_file")
+    fi
+done
 
-# Configure the tests with GCC and coverage instrumentation.
+# Configure coverage and the optional sanitizer instrumentation
 cmake -S "$TEST_DIR" -B "$BUILD_DIR" \
-    -DCMAKE_BUILD_TYPE=Debug \
-    -DCMAKE_CXX_COMPILER=g++ \
-    -DENABLE_COVERAGE=ON
+    -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
+    -DCMAKE_CXX_COMPILER="$CXX" \
+    -DENABLE_COVERAGE=ON \
+    -DENABLE_SANITIZERS="$ENABLE_SANITIZERS"
 
-# Compile the tests, reusing unchanged build outputs.
+# Build all registered test executables
 cmake --build "$BUILD_DIR" --parallel "$JOBS"
 
-# Locate coverage metadata recursively inside CMake's directory structure.
-GCNO_FILE="$(find "$BUILD_DIR" -type f -name '*.gcno' -print -quit)"
-
-# Confirm that compilation generated coverage metadata.
-if [[ -z "$GCNO_FILE" ]]; then
-    # Explain the missing prerequisite.
-    echo "No .gcno files found. Check coverage compilation options." >&2
-
-    # Stop because a coverage report cannot be generated.
-    exit 1
-# Finish validating coverage metadata.
-fi
-
-# Create the parent directory for reports.
-mkdir -p "$REPORT_ROOT"
-
-# Keep each run separate so old HTML cannot be mistaken for new results.
-REPORT_DIR="$(mktemp -d "$REPORT_ROOT/run_XXXXXXXX")"
-
-# Display the destination before running the analysis.
-echo "Coverage output: $REPORT_DIR"
-
-# Enable branch coverage without using the deprecated configuration name.
-LCOV_OPTIONS=(--branch-coverage)
-
-# Reset previous runtime counters without deleting compiled files.
+# Reset previous execution counters without deleting the build
 lcov --zerocounters --directory "$BUILD_DIR"
 
-# Create a zero-count baseline from compilation metadata.
-lcov "${LCOV_OPTIONS[@]}" \
-    --capture \
-    --initial \
-    --include "$SOURCE_FILE" \
-    --directory "$BUILD_DIR" \
-    --output-file "$REPORT_DIR/initial.info"
+# Preserve each run in its own local directory
+mkdir -p "$REPORT_ROOT"
+REPORT_DIR="$(mktemp -d "$REPORT_ROOT/run_XXXXXXXX")"
+echo "Coverage output: $REPORT_DIR"
 
-# Allow test failures temporarily so coverage can still be collected.
+# Allow failing tests so their coverage can still be collected
 set +e
 
-# Run the complete test suite and save its detailed output.
+# Save complete test output while displaying it in the terminal
 ctest --test-dir "$BUILD_DIR" --verbose \
     2>&1 | tee "$REPORT_DIR/tests.log"
 
-# Save both exit statuses immediately before another command overwrites them.
+# Preserve both pipeline statuses immediately
 RUN_STATUS=("${PIPESTATUS[@]}")
 
-# Restore automatic termination on errors.
+# Restore automatic error handling
 set -e
 
-# Stop if the test output could not be saved.
+# Stop if saving the log failed
 if (( RUN_STATUS[1] != 0 )); then
-    # Report a logging failure separately from a test failure.
-    echo "Failed to write the test log." >&2
-
-    # Return the logging failure status.
+    echo "Failed to save the test log." >&2
     exit "${RUN_STATUS[1]}"
-# Finish checking the log operation.
 fi
 
-# Collect the counters generated by this execution of the tests.
-lcov "${LCOV_OPTIONS[@]}" \
+# Record the test outcome before running coverage tools
+printf '%s\n' "${RUN_STATUS[0]}" > "$REPORT_DIR/test_exit_code.txt"
+
+# Collect execution data only; no initial zero-count baseline is generated
+lcov --branch-coverage \
+    --gcov-tool "$GCOV_TOOL" \
     --capture \
-    --include "$SOURCE_FILE" \
+    "${CAPTURE_FILTERS[@]}" \
     --directory "$BUILD_DIR" \
     --output-file "$REPORT_DIR/executed.info"
 
-# Include both unexecuted instrumented code and recorded execution counts.
-lcov "${LCOV_OPTIONS[@]}" \
-    --add-tracefile "$REPORT_DIR/initial.info" \
-    --add-tracefile "$REPORT_DIR/executed.info" \
-    --output-file "$REPORT_DIR/combined.info"
-
-# Keep only the original TileData implementation, excluding test and Qt code.
-lcov "${LCOV_OPTIONS[@]}" \
-    --extract "$REPORT_DIR/combined.info" \
-    "$SOURCE_FILE" \
+# Restrict the final report to the three analyzed implementations
+lcov --branch-coverage \
+    --extract "$REPORT_DIR/executed.info" \
+    "${SOURCE_FILES[@]}" \
     --output-file "$REPORT_DIR/coverage.info"
 
-# Generate an HTML report with line, function, and branch coverage.
-genhtml \
-    --branch-coverage \
+# Generate HTML with line, function, and branch coverage
+genhtml --branch-coverage \
     --legend \
-    --title "Cascadia++ — TileData coverage" \
+    --title "Cascadia++ - Unit test coverage" \
     --output-directory "$REPORT_DIR/html" \
     "$REPORT_DIR/coverage.info"
 
-# Display the exact report location without requiring a particular browser.
-echo "HTML report: $REPORT_DIR/html/index.html"
-
-# Make failing tests visible even if report generation succeeded.
-if (( RUN_STATUS[0] != 0 )); then
-    # Explain that coverage generation does not imply test success.
-    echo "Tests failed. See tests.log; coverage may be incomplete after a crash." >&2
-# Finish reporting test status.
+# Preserve the previous published HTML before replacing it
+if [[ -d "$REPORT_ROOT/html" ]]; then
+    mv "$REPORT_ROOT/html" "$REPORT_DIR/previous_published_html"
 fi
 
-# Preserve the test runner's exit status.
+# Publish only the latest HTML and test log for Git
+cp -a "$REPORT_DIR/html" "$REPORT_ROOT/html"
+cp "$REPORT_DIR/tests.log" "$REPORT_ROOT/tests.log"
+
+# Print both published and archived locations
+echo "Latest HTML report: $REPORT_ROOT/html/index.html"
+echo "Archived run: $REPORT_DIR"
+
+# Optionally open the report without changing the test exit status
+if [[ "$OPEN_REPORT" == "1" ]]; then
+    if command -v xdg-open >/dev/null 2>&1; then
+        xdg-open "$REPORT_ROOT/html/index.html" \
+            >"$REPORT_DIR/browser.log" 2>&1 &
+    else
+        echo "xdg-open not found; open the HTML report manually."
+    fi
+fi
+
+# Explain a failing test outcome even when coverage generation succeeded
+if (( RUN_STATUS[0] != 0 )); then
+    echo "Tests failed; see tests.log. Coverage may be incomplete after a crash." >&2
+fi
+
+# Return the original CTest status
 exit "${RUN_STATUS[0]}"

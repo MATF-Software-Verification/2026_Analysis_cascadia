@@ -1,0 +1,10 @@
+# Select the build configuration
+BUILD_TYPE=Debug
+# Use GCC with the matching gcov tool
+CXX=g++
+# Limit parallel compilation
+JOBS=4
+# Enable AddressSanitizer and UndefinedBehaviorSanitizer
+ENABLE_SANITIZERS=ON
+# Open the latest HTML report after generation
+OPEN_REPORT=1

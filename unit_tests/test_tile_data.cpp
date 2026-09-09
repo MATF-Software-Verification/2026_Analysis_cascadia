@@ -1,6 +1,7 @@
 #include <QtTest>
 
 #include "tileData.h"
+#include "test_fixtures.h"
 
 class TestTileData : public QObject
 {
@@ -11,6 +12,11 @@ class TestTileData : public QObject
     void settersAndGettersPreserveValues();
     void toVariantContainsObjectState();
     void serializationRoundTripPreservesState();
+    void fromVariantReadsExplicitMap();
+    void serializationPreservesLists_data(); // helper
+    void serializationPreservesLists();
+    void fromVariantReplacesPreviousLists();
+    void toVariantContainsRequiredKeys();
 };
 
 void TestTileData::parameterizedConstructorInitializesState()
@@ -98,6 +104,65 @@ void TestTileData::serializationRoundTripPreservesState()
     QCOMPARE(restored.getAnimals(), original.getAnimals());
     QCOMPARE(restored.getHabitats(), original.getHabitats());
     QCOMPARE(restored.getRotation(), original.getRotation());
+}
+
+void TestTileData::fromVariantReadsExplicitMap()
+{
+    TileData tile;
+    tile.fromVariant(tileMap());
+    compareTile(tile, tileMap());
+}
+
+// Prepare data for next test: serializationPreservesLists
+void TestTileData::serializationPreservesLists_data()
+{
+    QTest::addColumn<QStringList>("animals");
+    QTest::addColumn<QStringList>("habitats");
+    QTest::newRow("empty") << QStringList{} << QStringList{};
+    QTest::newRow("single") << QStringList{"bear"} << QStringList{"forest"};
+    QTest::newRow("multiple") << QStringList{"bear", "elk", "fox"}
+                             << QStringList{"forest", "mountain"};
+}
+
+void TestTileData::serializationPreservesLists()
+{
+    QFETCH(QStringList, animals);
+    QFETCH(QStringList, habitats);
+    TileData original = makeTile();
+    original.setAnimals(animals);
+    original.setHabitats(habitats);
+    const QVariantMap encoded = original.toVariant().toMap();
+    QCOMPARE(encoded.value("animals").toStringList(), animals); 
+    QCOMPARE(encoded.value("habitats").toStringList(), habitats);
+    TileData restored;
+    restored.fromVariant(encoded); 
+    QCOMPARE(restored.getAnimals(), animals);
+    QCOMPARE(restored.getHabitats(), habitats);
+}
+
+void TestTileData::fromVariantReplacesPreviousLists()
+{
+    TileData tile = makeTile();
+    QVariantMap input = tileMap(90);
+    input["animals"] = QVariantList{QString("hawk")};
+    input["habitats"] = QVariantList{QString("lake")};
+    tile.fromVariant(input);
+    compareTile(tile, input);
+    input["animals"] = QVariantList{};
+    input["habitats"] = QVariantList{};
+    tile.fromVariant(input);
+    QVERIFY(tile.getAnimals().isEmpty());
+    QVERIFY(tile.getHabitats().isEmpty());
+}
+
+void TestTileData::toVariantContainsRequiredKeys()
+{ 
+    const TileData tile = makeTile();
+    const QVariantMap encoded = tile.toVariant().toMap();
+    const QStringList keys{"id", "row", "col", "placedTile", "isValid",
+                           "placedToken", "rotation", "animals", "habitats"};
+    for (const QString &key : keys)
+        QVERIFY2(encoded.contains(key), qPrintable("Missing key: " + key));
 }
 
 QTEST_APPLESS_MAIN(TestTileData)
