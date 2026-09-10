@@ -122,18 +122,16 @@ add_data_test(tile_storage_tests
     "${CASCADIA_SOURCE_DIR}/game/entities/tileStorage.cpp"
 )
 
-add_data_test(hexagon_grid_tests
-    test_hexagon_grid.cpp
-    "${CASCADIA_SOURCE_DIR}/game/entities/tileData.cpp"
-    "${CASCADIA_SOURCE_DIR}/game/board/hexagon.cpp"
-    "${CASCADIA_SOURCE_DIR}/game/board/hexagon.h"
-    "${CASCADIA_SOURCE_DIR}/game/board/hexagonGrid.cpp"
-)
-
 set(HEXAGON_TEST_SOURCES
     "${CASCADIA_SOURCE_DIR}/game/entities/tileData.cpp"
     "${CASCADIA_SOURCE_DIR}/game/board/hexagon.cpp"
     "${CASCADIA_SOURCE_DIR}/game/board/hexagon.h"
+)
+
+add_data_test(hexagon_grid_tests
+    test_hexagon_grid.cpp
+    ${HEXAGON_TEST_SOURCES}
+    "${CASCADIA_SOURCE_DIR}/game/board/hexagonGrid.cpp"
 )
 
 set(PLAYER_TEST_SOURCES
@@ -160,14 +158,68 @@ add_data_test(scoring_tests test_scoring.cpp
     ${PLAYER_TEST_SOURCES}
 )
 
-foreach(target IN ITEMS hexagon_tests hexagon_grid_tests token_tests player_tests scoring_tests)
+add_data_test(hexagon_branch_tests test_hexagon_branches.cpp
+    ${HEXAGON_TEST_SOURCES}
+)
+
+add_data_test(scoring_branch_tests test_scoring_branches.cpp
+    ${PLAYER_TEST_SOURCES}
+)
+
+set(SETUP_STORAGE_SOURCES
+    "${CASCADIA_SOURCE_DIR}/game/entities/tile.cpp"
+    "${CASCADIA_SOURCE_DIR}/game/entities/tileStorage.cpp"
+)
+
+add_data_test(setup_game_tests
+    test_setup_game.cpp
+    "${CASCADIA_SOURCE_DIR}/controller/setupGame.cpp"
+    ${SETUP_STORAGE_SOURCES}
+)
+
+add_data_test(setup_players_tests
+    test_setup_players.cpp
+    "${CASCADIA_SOURCE_DIR}/controller/setupPlayers.cpp"
+    "${CASCADIA_SOURCE_DIR}/controller/setupPlayers.h"
+    ${PLAYER_TEST_SOURCES}
+    ${SETUP_STORAGE_SOURCES}
+)
+
+foreach(target IN ITEMS setup_game_tests setup_players_tests)
+    target_include_directories(${target} PRIVATE
+        "${CASCADIA_SOURCE_DIR}/controller"
+    )
+endforeach()
+
+# SetupGame needs the data resource but has no QWidget dependencies
+target_sources(setup_game_tests PRIVATE
+    "${CASCADIA_SOURCE_DIR}/resource.qrc"
+)
+set_target_properties(setup_game_tests PROPERTIES AUTORCC ON)
+
+# Bound the run, including any unexpected retry loop in randomized setup
+set_tests_properties(setup_game_tests setup_players_tests PROPERTIES TIMEOUT 30)
+
+foreach(target IN ITEMS
+    hexagon_tests
+    hexagon_grid_tests
+    token_tests
+    player_tests
+    scoring_tests
+    hexagon_branch_tests
+    scoring_branch_tests
+    setup_players_tests
+)
     target_include_directories(${target} PRIVATE
         "${CASCADIA_SOURCE_DIR}/game/board"
         "${CASCADIA_SOURCE_DIR}/game/engine"
     )
+
     target_link_libraries(${target} PRIVATE Qt6::Widgets)
+
     target_sources(${target} PRIVATE
         "${CASCADIA_SOURCE_DIR}/resource.qrc"
     )
+
     set_target_properties(${target} PROPERTIES AUTORCC ON)
 endforeach()

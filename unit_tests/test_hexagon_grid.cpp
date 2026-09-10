@@ -1,13 +1,22 @@
 #include <QtTest>
 #include <QApplication>
 #include <QPoint>
+
+#include <memory>
 #include <set>
+
 #include "hexagonGrid.h"
 
 class TestHexagonGrid : public QObject
 {
     Q_OBJECT
+
+private:
+    std::unique_ptr<HexagonGrid> fixtureGrid;
+
 private slots:
+    void init();
+    void cleanup();
     void defaultGridIsEmpty();
     void dimensions_data();
     void dimensions();
@@ -19,6 +28,16 @@ private slots:
     void selectableNeighbours();
     void selectableCellsSurroundAllPlacedTiles();
 };
+
+void TestHexagonGrid::init()
+{
+    fixtureGrid = std::make_unique<HexagonGrid>(4, 5, 20.0f);
+}
+
+void TestHexagonGrid::cleanup()
+{
+    fixtureGrid.reset();
+}
 
 void TestHexagonGrid::defaultGridIsEmpty()
 {
@@ -83,7 +102,7 @@ void TestHexagonGrid::exactNeighbours()
     QFETCH(int, row);
     QFETCH(int, col);
     QFETCH(QList<QPoint>, expected);
-    HexagonGrid grid(4, 5, 20.0f);
+    HexagonGrid &grid = *fixtureGrid;
     const auto actual = grid.getNeighbours(row, col);
     QCOMPARE(actual.size(), expected.size());
     for (const QPoint &point : expected)
@@ -134,7 +153,7 @@ void TestHexagonGrid::selectableNeighbours_data()
 void TestHexagonGrid::selectableNeighbours()
 {
     QFETCH(int, row);
-    HexagonGrid grid(4, 5, 20.0f);
+    HexagonGrid &grid = *fixtureGrid;
     grid.getTiles()[row][2]->getTileData()->setPlacedTile(true);
     grid.getTiles()[row][1]->getTileData()->setPlacedTile(true);
     const auto expected = grid.getNeighbours(row, 2);
@@ -155,7 +174,7 @@ void TestHexagonGrid::selectableNeighbours()
 
 void TestHexagonGrid::selectableCellsSurroundAllPlacedTiles()
 {
-    HexagonGrid grid(4, 5, 20.0f);
+    HexagonGrid &grid = *fixtureGrid;
     grid.drawSelectableTiles();
     for (const auto &row : grid.getTiles())
         for (const Hexagon *hexagon : row)
@@ -175,7 +194,8 @@ int main(int argc, char **argv)
 {
     qputenv("QT_QPA_PLATFORM", QByteArray("offscreen"));
     QApplication application(argc, argv);
-    TestHexagonGrid tests;
-    return QTest::qExec(&tests, argc, argv);
+    TestHexagonGrid test;
+    return QTest::qExec(&test, argc, argv);
 }
+
 #include "test_hexagon_grid.moc"

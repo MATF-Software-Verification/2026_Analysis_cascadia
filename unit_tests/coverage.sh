@@ -34,11 +34,15 @@ SOURCE_FILES=(
     "$PROJECT_ROOT/cascadia++/cascadia/game/entities/tileData.cpp"
     "$PROJECT_ROOT/cascadia++/cascadia/game/entities/tile.cpp"
     "$PROJECT_ROOT/cascadia++/cascadia/game/entities/tileStorage.cpp"
+    "$PROJECT_ROOT/cascadia++/cascadia/game/entities/player.cpp"
+    "$PROJECT_ROOT/cascadia++/cascadia/game/entities/token.cpp"
     "$PROJECT_ROOT/cascadia++/cascadia/game/engine/scoring.cpp"
     "$PROJECT_ROOT/cascadia++/cascadia/game/board/hexagon.cpp"
     "$PROJECT_ROOT/cascadia++/cascadia/game/board/hexagonGrid.cpp"
     "$PROJECT_ROOT/cascadia++/cascadia/common/playerData.cpp"
     "$PROJECT_ROOT/cascadia++/cascadia/common/turn.cpp"
+    "$PROJECT_ROOT/cascadia++/cascadia/controller/setupGame.cpp"
+    "$PROJECT_ROOT/cascadia++/cascadia/controller/setupPlayers.cpp"
 )
 
 # Verify required tools before configuring the project
@@ -118,6 +122,7 @@ lcov --branch-coverage \
 
 # Generate HTML with line, function, and branch coverage
 genhtml --branch-coverage \
+    --flat \
     --legend \
     --title "Cascadia++ - Unit test coverage" \
     --output-directory "$REPORT_DIR/html" \

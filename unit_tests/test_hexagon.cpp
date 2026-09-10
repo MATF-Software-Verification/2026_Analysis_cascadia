@@ -3,7 +3,10 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QSignalSpy>
+
+#include <memory>
 #include <cmath>
+
 #include "hexagon.h"
 
 class ClickableHexagon : public Hexagon
@@ -16,7 +19,13 @@ public:
 class TestHexagon : public QObject
 {
     Q_OBJECT
+
+private:
+    std::unique_ptr<ClickableHexagon> fixtureHexagon;
+
 private slots:
+    void init();
+    void cleanup();
     void constructorCreatesSixVertices();
     void polygonCenterFollowsTranslation();
     void settingDataPreservesCoordinates();
@@ -28,6 +37,16 @@ private slots:
     void drawingPlacesCellInScene();
     void mousePressEmitsCellIdentity();
 };
+
+void TestHexagon::init()
+{
+    fixtureHexagon = std::make_unique<ClickableHexagon>(true, 20.0f, 0, 0);
+}
+
+void TestHexagon::cleanup()
+{
+    fixtureHexagon.reset();
+}
 
 void TestHexagon::constructorCreatesSixVertices()
 {
@@ -44,7 +63,7 @@ void TestHexagon::constructorCreatesSixVertices()
 
 void TestHexagon::polygonCenterFollowsTranslation()
 {
-    Hexagon hexagon(true, 20.0f, 0, 0);
+    Hexagon &hexagon = *fixtureHexagon;
     QVERIFY(std::abs(hexagon.getPolygonCenter().x()) < 0.001);
     QVERIFY(std::abs(hexagon.getPolygonCenter().y()) < 0.001);
     hexagon.setPolygon(hexagon.polygon().translated(40, 70));
@@ -70,6 +89,7 @@ void TestHexagon::settingDataPreservesCoordinates()
 
 void TestHexagon::settingDataMakesIndependentCopy()
 {
+    // Initialize all fields, including index, before production copies TileData.
     TileData original(4, 5);
     original.setId(18);
     original.setIndex(2);
@@ -79,7 +99,7 @@ void TestHexagon::settingDataMakesIndependentCopy()
     original.setAnimals({"fox"});
     original.setHabitats({"forest"});
     original.setRotation(60);
-    Hexagon hexagon(true, 20.0f, 0, 0);
+    Hexagon &hexagon = *fixtureHexagon;
     hexagon.setTileData(original);
     QVERIFY(hexagon.getTileData() != &original);
     QCOMPARE(hexagon.getTileData()->toVariant().toMap(), original.toVariant().toMap());
@@ -113,7 +133,7 @@ void TestHexagon::emptyTileBrush()
 {
     QFETCH(bool, valid);
     QFETCH(QColor, expected);
-    Hexagon hexagon(true, 20.0f, 0, 0);
+    Hexagon &hexagon = *fixtureHexagon;
     hexagon.setTileData(0, false, valid, "", {}, {}, 0);
     QCOMPARE(hexagon.brush().color(), expected);
     QCOMPARE(hexagon.getTileData()->getIsValid(), valid);
@@ -144,7 +164,7 @@ void TestHexagon::drawingPlacesCellInScene()
 
 void TestHexagon::mousePressEmitsCellIdentity()
 {
-    ClickableHexagon hexagon(true, 20.0f, 0, 0);
+    ClickableHexagon &hexagon = *fixtureHexagon;
     QSignalSpy spy(&hexagon, &Hexagon::hexagonClicked);
     QVERIFY(spy.isValid());
     QGraphicsSceneMouseEvent event(QEvent::GraphicsSceneMousePress);
@@ -159,7 +179,8 @@ int main(int argc, char **argv)
 {
     qputenv("QT_QPA_PLATFORM", QByteArray("offscreen"));
     QApplication application(argc, argv);
-    TestHexagon tests;
-    return QTest::qExec(&tests, argc, argv);
+    TestHexagon test;
+    return QTest::qExec(&test, argc, argv);
 }
+
 #include "test_hexagon.moc"

@@ -1,17 +1,37 @@
 #include <QtTest>
+
+#include <memory>
+
 #include "playerData.h"
 #include "test_fixtures.h"
 
 class TestPlayerData : public QObject
 {
     Q_OBJECT
+
+private:
+    std::unique_ptr<PlayerData> fixturePlayer;
+
 private slots:
+    void init();
+    void cleanup();
     void constructorPreservesPlayerData();
     void serializationPreservesTiles_data();
     void serializationPreservesTiles();
     void fromVariantReadsExplicitMap();
     void fromVariantReplacesExistingTiles();
 };
+
+void TestPlayerData::init()
+{
+    fixturePlayer = std::make_unique<PlayerData>(1, "Old",
+        QVector<TileData>{makeTile(1), makeTile(2)});
+}
+
+void TestPlayerData::cleanup()
+{
+    fixturePlayer.reset();
+}
 
 void TestPlayerData::constructorPreservesPlayerData()
 {
@@ -69,12 +89,12 @@ void TestPlayerData::fromVariantReadsExplicitMap()
 
 void TestPlayerData::fromVariantReplacesExistingTiles()
 {
-    PlayerData player(1, "Old", {makeTile(1), makeTile(2)});
-    QVariantMap input{{"playerId", 2}, {"playerName", "Jelena"},
+    PlayerData &player = *fixturePlayer;
+    QVariantMap input{{"playerId", 2}, {"playerName", "New"},
                       {"centralTiles", QVariantList{tileMap(99)}}};
     player.fromVariant(input);
     QCOMPARE(player.getPlayerId(), 2);
-    QCOMPARE(player.getPlayerName(), QString("Jelena"));
+    QCOMPARE(player.getPlayerName(), QString("New"));
     QCOMPARE(player.getCentralTiles().size(), 1);
     compareTile(player.getCentralTiles().at(0), tileMap(99));
     input["centralTiles"] = QVariantList{};
@@ -82,6 +102,10 @@ void TestPlayerData::fromVariantReplacesExistingTiles()
     QVERIFY(player.getCentralTiles().isEmpty());
 }
 
-QTEST_APPLESS_MAIN(TestPlayerData)
+int main(int argc, char **argv)
+{
+    TestPlayerData test;
+    return QTest::qExec(&test, argc, argv);
+}
 
 #include "test_player_data.moc"

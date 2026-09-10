@@ -1,5 +1,7 @@
 #include <QtTest>
+
 #include <memory>
+
 #include "turn.h"
 
 static QVariantMap tileInput(int id)
@@ -21,6 +23,7 @@ static QVariantMap turnInput()
 class TestTurn : public QObject
 {
     Q_OBJECT
+
 private:
     TileData placedTile;
     TileData tokenTile;
@@ -70,16 +73,9 @@ void TestTurn::cleanup()
 
 void TestTurn::constructorPreservesPlacedToken()
 {
-    TileData placedTile(0, 0);
-    TileData tokenTile(0, 1);
-    TileData newTile(0, 2);
-
-    const Turn turn(
-        &placedTile, &tokenTile, "bear",
-        7, &newTile, "fox", 1, 2, 3
-    );
-
-    QCOMPARE(turn.getPlacedToken(), QString("bear"));
+    const Turn constructed(&placedTile, &tokenTile, "bear", 7,
+                           &replacementTile, "fox", 1, 2, 3);
+    QCOMPARE(constructed.getPlacedToken(), QString("bear"));
 }
 
 void TestTurn::scalarValues_data()
@@ -192,6 +188,10 @@ void TestTurn::destructionKeepsBorrowedTilesAlive()
     QCOMPARE(replacementTile.getId(), 3);
 }
 
-QTEST_APPLESS_MAIN(TestTurn)
+int main(int argc, char **argv)
+{
+    TestTurn test;
+    return QTest::qExec(&test, argc, argv);
+}
 
 #include "test_turn.moc"

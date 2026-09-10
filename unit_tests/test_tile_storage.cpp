@@ -1,14 +1,23 @@
 #include <QtTest>
 #include <QTemporaryDir>
 #include <QTemporaryFile>
+
+#include <memory>
 #include <stdexcept>
+
 #include "tileStorage.h"
 
 class TestTileStorage : public QObject
 {
     Q_OBJECT
 
+private:
+    std::unique_ptr<QTemporaryDir> directory;
+    std::unique_ptr<QTemporaryFile> temporaryFile;
+
 private slots:
+    void init();
+    void cleanup();
     void loadsAllTiles();
     void loadsStartingTiles();
     void emptyCollections_data();
@@ -19,6 +28,20 @@ private slots:
     void invalidJson();
 };
 
+void TestTileStorage::init()
+{
+    directory = std::make_unique<QTemporaryDir>();
+    QVERIFY(directory->isValid());
+    temporaryFile = std::make_unique<QTemporaryFile>(directory->filePath("tiles-XXXXXX.json"));
+    QVERIFY(temporaryFile->open());
+}
+
+void TestTileStorage::cleanup()
+{
+    temporaryFile.reset();
+    directory.reset();
+}
+
 void TestTileStorage::loadsAllTiles()
 {
     const QByteArray json = R"json({"allTiles":[
@@ -26,8 +49,7 @@ void TestTileStorage::loadsAllTiles()
         {"tileNum":"3","habitats":["mountain"],"wildlife":["elk"],"rotation":300},
         {"tileNum":"8","habitats":[],"wildlife":[],"rotation":0}
     ]})json";
-    QTemporaryFile file;
-    QVERIFY(file.open());
+    QTemporaryFile &file = *temporaryFile;
     QCOMPARE(file.write(json), qint64(json.size()));
     QVERIFY(file.flush());
     file.close();
@@ -60,8 +82,7 @@ void TestTileStorage::loadsStartingTiles()
         [{"tileNum":"20","habitats":[],"wildlife":[],"rotation":300}],
         []
     ]})json";
-    QTemporaryFile file;
-    QVERIFY(file.open());
+    QTemporaryFile &file = *temporaryFile;
     QCOMPARE(file.write(json), qint64(json.size()));
     QVERIFY(file.flush());
     file.close();
@@ -98,8 +119,7 @@ void TestTileStorage::emptyCollections()
 {
     QFETCH(QString, parseType);
     const QByteArray json = R"json({"allTiles":[],"startingTiles":[]})json";
-    QTemporaryFile file;
-    QVERIFY(file.open());
+    QTemporaryFile &file = *temporaryFile;
     QCOMPARE(file.write(json), qint64(json.size()));
     QVERIFY(file.flush());
     file.close();
@@ -118,9 +138,7 @@ void TestTileStorage::missingFile_data()
 void TestTileStorage::missingFile()
 {
     QFETCH(QString, parseType);
-    QTemporaryDir directory;
-    QVERIFY(directory.isValid());
-    const QString path = directory.filePath("missing.json");
+    const QString path = directory->filePath("missing.json");
     QVERIFY_EXCEPTION_THROWN(TileStorage(path, parseType), std::runtime_error);
 }
 
@@ -140,14 +158,17 @@ void TestTileStorage::invalidJson()
 {
     QFETCH(QString, parseType);
     QFETCH(QByteArray, json);
-    QTemporaryFile file;
-    QVERIFY(file.open());
+    QTemporaryFile &file = *temporaryFile;
     QCOMPARE(file.write(json), qint64(json.size()));
     QVERIFY(file.flush());
     file.close();
     QVERIFY_EXCEPTION_THROWN(TileStorage(file.fileName(), parseType), std::runtime_error);
 }
 
-QTEST_APPLESS_MAIN(TestTileStorage)
+int main(int argc, char **argv)
+{
+    TestTileStorage test;
+    return QTest::qExec(&test, argc, argv);
+}
 
 #include "test_tile_storage.moc"

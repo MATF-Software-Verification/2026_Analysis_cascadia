@@ -4,6 +4,9 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPointer>
 #include <QSignalSpy>
+
+#include <memory>
+
 #include "token.h"
 
 class ClickableToken : public Token
@@ -16,7 +19,13 @@ public:
 class TestToken : public QObject
 {
     Q_OBJECT
+
+private:
+    std::unique_ptr<ClickableToken> fixtureToken;
+
 private slots:
+    void init();
+    void cleanup();
     void constructorSetsIndexAndShape();
     void animalCanBeReplaced_data();
     void animalCanBeReplaced();
@@ -27,6 +36,16 @@ private slots:
     void sceneOwnsDrawnToken();
     void mousePressEmitsTokenIdentity();
 };
+
+void TestToken::init()
+{
+    fixtureToken = std::make_unique<ClickableToken>(0);
+}
+
+void TestToken::cleanup()
+{
+    fixtureToken.reset();
+}
 
 void TestToken::constructorSetsIndexAndShape()
 {
@@ -47,7 +66,7 @@ void TestToken::animalCanBeReplaced_data()
 void TestToken::animalCanBeReplaced()
 {
     QFETCH(QString, animal);
-    Token token(0);
+    Token &token = *fixtureToken;
     token.setAnimal("fox");
     token.setAnimal(animal);
     QCOMPARE(token.animal(), animal);
@@ -65,7 +84,7 @@ void TestToken::serializationContainsIndexAndRadius()
 
 void TestToken::deserializationReadsExplicitMap()
 {
-    Token token(0);
+    Token &token = *fixtureToken;
     const QVariantMap input{{"index", 4}, {"radius", 40.0}};
     token.fromVariant(input);
     QCOMPARE(token.getIndex(), 4);
@@ -75,7 +94,7 @@ void TestToken::deserializationReadsExplicitMap()
 void TestToken::serializedFieldsRoundTrip()
 {
     const Token original(3);
-    Token restored(0);
+    Token &restored = *fixtureToken;
     restored.fromVariant(original.toVariant());
     QCOMPARE(restored.getIndex(), 3);
     QCOMPARE(restored.toVariant().toMap(), original.toVariant().toMap());
@@ -112,7 +131,7 @@ void TestToken::sceneOwnsDrawnToken()
 
 void TestToken::mousePressEmitsTokenIdentity()
 {
-    ClickableToken token(0);
+    ClickableToken &token = *fixtureToken;
     QSignalSpy spy(&token, &Token::tokenClicked);
     QVERIFY(spy.isValid());
     QGraphicsSceneMouseEvent event(QEvent::GraphicsSceneMousePress);
@@ -127,7 +146,8 @@ int main(int argc, char **argv)
 {
     qputenv("QT_QPA_PLATFORM", QByteArray("offscreen"));
     QApplication application(argc, argv);
-    TestToken tests;
-    return QTest::qExec(&tests, argc, argv);
+    TestToken test;
+    return QTest::qExec(&test, argc, argv);
 }
+
 #include "test_token.moc"

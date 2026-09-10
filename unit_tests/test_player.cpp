@@ -1,6 +1,8 @@
 #include <QtTest>
 #include <QApplication>
+
 #include <memory>
+
 #include "player.h"
 
 static void initializeBoard(Player &player)
@@ -44,7 +46,13 @@ static QVector<TileData> startingTiles(int firstId)
 class TestPlayer : public QObject
 {
     Q_OBJECT
+
+private:
+    std::unique_ptr<Player> fixturePlayer;
+
 private slots:
+    void init();
+    void cleanup();
     void namedConstructorSetsInitialState();
     void constructorPlacesThreeStartingTiles();
     void replacingStartingTilesReplacesValues();
@@ -52,6 +60,18 @@ private slots:
     void copyingMakesIndependentGrid();
     void calculateScorePublishesResults();
 };
+
+void TestPlayer::init()
+{
+    fixturePlayer = std::make_unique<Player>(QString("Player"));
+    fixturePlayer->setPlayerId(0);
+    initializeBoard(*fixturePlayer);
+}
+
+void TestPlayer::cleanup()
+{
+    fixturePlayer.reset();
+}
 
 void TestPlayer::namedConstructorSetsInitialState()
 {
@@ -101,7 +121,7 @@ void TestPlayer::replacingStartingTilesReplacesValues()
 
 void TestPlayer::turnAndPineconeStateCanBeChanged()
 {
-    Player player("Player");
+    Player &player = *fixturePlayer;
     player.setPlayerId(4);
     QCOMPARE(player.playerId(), 4);
     QCOMPARE(player.getPlayerId(), 4);
@@ -146,9 +166,7 @@ void TestPlayer::copyingMakesIndependentGrid()
 
 void TestPlayer::calculateScorePublishesResults()
 {
-    Player player("Player");
-    player.setPlayerId(0);
-    initializeBoard(player);
+    Player &player = *fixturePlayer;
     for (int col : {2, 3})
     {
         TileData *tile = player.hexagonGrid()->getTiles()[2][col]->getTileData();
@@ -175,7 +193,8 @@ int main(int argc, char **argv)
 {
     qputenv("QT_QPA_PLATFORM", QByteArray("offscreen"));
     QApplication application(argc, argv);
-    TestPlayer tests;
-    return QTest::qExec(&tests, argc, argv);
+    TestPlayer test;
+    return QTest::qExec(&test, argc, argv);
 }
+
 #include "test_player.moc"

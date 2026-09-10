@@ -1,11 +1,19 @@
 #include <QtTest>
+
+#include <memory>
+
 #include "tile.h"
 
 class TestTile : public QObject
 {
     Q_OBJECT
 
+private:
+    std::unique_ptr<Tile> fixtureTile;
+
 private slots:
+    void init();
+    void cleanup();
     void constructorsPreserveState();
     void rotations_data();
     void rotations();
@@ -18,6 +26,17 @@ private slots:
     void fromVariantReadsRotation();
     void typeDescribesTile();
 };
+
+void TestTile::init()
+{
+    fixtureTile = std::make_unique<Tile>(1, QVector<QString>{"forest"},
+                                         QVector<QString>{"bear"}, 0);
+}
+
+void TestTile::cleanup()
+{
+    fixtureTile.reset();
+}
 
 void TestTile::constructorsPreserveState()
 {
@@ -38,7 +57,6 @@ void TestTile::constructorsPreserveState()
     QCOMPARE(tile.rotation(), 240);
 }
 
-// Prepare data for next test: rotations
 void TestTile::rotations_data()
 {
     QTest::addColumn<int>("initial");
@@ -57,7 +75,8 @@ void TestTile::rotations()
     QFETCH(int, initial);
     QFETCH(int, clockwise);
     QFETCH(int, counterClockwise);
-    Tile tile(1, {}, {}, initial);
+    Tile &tile = *fixtureTile;
+    tile.setRotation(initial);
     tile.rotateClockwise();
     QCOMPARE(tile.rotation(), clockwise);
     tile.setRotation(initial);
@@ -65,7 +84,6 @@ void TestTile::rotations()
     QCOMPARE(tile.rotation(), counterClockwise);
 }
 
-// Prepare data for next test: rotationCycles
 void TestTile::rotationCycles_data()
 {
     QTest::addColumn<int>("initial");
@@ -80,7 +98,8 @@ void TestTile::rotationCycles_data()
 void TestTile::rotationCycles()
 {
     QFETCH(int, initial);
-    Tile tile(1, {"forest"}, {"bear"}, initial);
+    Tile &tile = *fixtureTile;
+    tile.setRotation(initial);
     for (int i = 0; i < 6; ++i)
         tile.rotateClockwise();
     QCOMPARE(tile.rotation(), initial);
@@ -176,6 +195,10 @@ void TestTile::typeDescribesTile()
     QCOMPARE(tile.type(), QString("Tile 17: Habitats [forest, river], Animals [bear, salmon], Rotation: 120"));
 }
 
-QTEST_APPLESS_MAIN(TestTile)
+int main(int argc, char **argv)
+{
+    TestTile test;
+    return QTest::qExec(&test, argc, argv);
+}
 
 #include "test_tile.moc"

@@ -1,5 +1,5 @@
 #pragma once
-#include <QtTest> 
+#include <QtTest>
 #include "tileData.h"
 
 inline QVariantMap tileMap(int id = 17)
@@ -10,7 +10,6 @@ inline QVariantMap tileMap(int id = 17)
             {"habitats", QVariantList{QString("forest"), QString("mountain")}}};
 }
 
-
 inline TileData makeTile(int id = 17)
 {
     TileData tile;
@@ -18,6 +17,7 @@ inline TileData makeTile(int id = 17)
     tile.setIndex(0);
     return tile;
 }
+
 
 inline void compareTile(const TileData &tile, const QVariantMap &expected)
 {

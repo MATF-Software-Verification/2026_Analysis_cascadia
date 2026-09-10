@@ -26,9 +26,9 @@ test 1
 1: PASS   : TestTileData::fromVariantReplacesPreviousLists()
 1: PASS   : TestTileData::toVariantContainsRequiredKeys()
 1: PASS   : TestTileData::cleanupTestCase()
-1: Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 8ms
+1: Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 9ms
 1: ********* Finished testing of TestTileData *********
- 1/10 Test  #1: cascadia_unit_tests ..............   Passed    0.03 sec
+ 1/14 Test  #1: cascadia_unit_tests ..............   Passed    0.04 sec
 test 2
       Start  2: player_data_tests
 
@@ -45,9 +45,9 @@ test 2
 2: PASS   : TestPlayerData::fromVariantReadsExplicitMap()
 2: PASS   : TestPlayerData::fromVariantReplacesExistingTiles()
 2: PASS   : TestPlayerData::cleanupTestCase()
-2: Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 13ms
+2: Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 11ms
 2: ********* Finished testing of TestPlayerData *********
- 2/10 Test  #2: player_data_tests ................   Passed    0.04 sec
+ 2/14 Test  #2: player_data_tests ................   Passed    0.06 sec
 test 3
       Start  3: turn_tests
 
@@ -58,9 +58,9 @@ test 3
 3: Config: Using QtTest library 6.10.2, Qt 6.10.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 15.2.0), ubuntu 26.04
 3: PASS   : TestTurn::initTestCase()
 3: FAIL!  : TestTurn::constructorPreservesPlacedToken() Compared values are not the same
-3:    Actual   (turn.getPlacedToken()): ""
-3:    Expected (QString("bear"))      : "bear"
-3:    Loc: [/home/julijana/Desktop/2026_Analysis_cascadia/unit_tests/test_turn.cpp(82)]
+3:    Actual   (constructed.getPlacedToken()): ""
+3:    Expected (QString("bear"))             : "bear"
+3:    Loc: [/home/julijana/Desktop/2026_Analysis_cascadia/unit_tests/test_turn.cpp(78)]
 3: PASS   : TestTurn::scalarValues(zero-empty)
 3: PASS   : TestTurn::scalarValues(nonzero)
 3: PASS   : TestTurn::pointerSettersReplaceBorrowedTiles()
@@ -71,9 +71,9 @@ test 3
 3: PASS   : TestTurn::copyPreservesStateAndSharesBorrowedTiles()
 3: PASS   : TestTurn::destructionKeepsBorrowedTilesAlive()
 3: PASS   : TestTurn::cleanupTestCase()
-3: Totals: 11 passed, 1 failed, 0 skipped, 0 blacklisted, 21ms
+3: Totals: 11 passed, 1 failed, 0 skipped, 0 blacklisted, 30ms
 3: ********* Finished testing of TestTurn *********
- 3/10 Test  #3: turn_tests .......................***Failed    0.05 sec
+ 3/14 Test  #3: turn_tests .......................***Failed    0.10 sec
 test 4
       Start  4: tile_tests
 
@@ -103,16 +103,16 @@ test 4
 4: FAIL!  : TestTile::serializationPreservesRotation() Compared values are not the same
 4:    Actual   (restored.rotation()): 0
 4:    Expected (120)                : 120
-4:    Loc: [/home/julijana/Desktop/2026_Analysis_cascadia/unit_tests/test_tile.cpp(158)]
+4:    Loc: [/home/julijana/Desktop/2026_Analysis_cascadia/unit_tests/test_tile.cpp(177)]
 4: FAIL!  : TestTile::fromVariantReadsRotation() Compared values are not the same
 4:    Actual   (tile.rotation()): 240
 4:    Expected (60)             : 60
-4:    Loc: [/home/julijana/Desktop/2026_Analysis_cascadia/unit_tests/test_tile.cpp(169)]
+4:    Loc: [/home/julijana/Desktop/2026_Analysis_cascadia/unit_tests/test_tile.cpp(188)]
 4: PASS   : TestTile::typeDescribesTile()
 4: PASS   : TestTile::cleanupTestCase()
-4: Totals: 20 passed, 2 failed, 0 skipped, 0 blacklisted, 5ms
+4: Totals: 20 passed, 2 failed, 0 skipped, 0 blacklisted, 8ms
 4: ********* Finished testing of TestTile *********
- 4/10 Test  #4: tile_tests .......................***Failed    0.03 sec
+ 4/14 Test  #4: tile_tests .......................***Failed    0.05 sec
 test 5
       Start  5: tile_storage_tests
 
@@ -135,9 +135,9 @@ test 5
 5: PASS   : TestTileStorage::invalidJson(all-empty-file)
 5: PASS   : TestTileStorage::invalidJson(starting-empty-file)
 5: PASS   : TestTileStorage::cleanupTestCase()
-5: Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 7ms
+5: Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 11ms
 5: ********* Finished testing of TestTileStorage *********
- 5/10 Test  #5: tile_storage_tests ...............   Passed    0.03 sec
+ 5/14 Test  #5: tile_storage_tests ...............   Passed    0.05 sec
 test 6
       Start  6: hexagon_grid_tests
 
@@ -165,9 +165,9 @@ test 6
 6: PASS   : TestHexagonGrid::selectableNeighbours(odd)
 6: PASS   : TestHexagonGrid::selectableCellsSurroundAllPlacedTiles()
 6: PASS   : TestHexagonGrid::cleanupTestCase()
-6: Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 11ms
+6: Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 16ms
 6: ********* Finished testing of TestHexagonGrid *********
- 6/10 Test  #6: hexagon_grid_tests ...............   Passed    0.09 sec
+ 6/14 Test  #6: hexagon_grid_tests ...............   Passed    0.10 sec
 test 7
       Start  7: hexagon_tests
 
@@ -188,9 +188,9 @@ test 7
 7: PASS   : TestHexagon::drawingPlacesCellInScene(odd-row)
 7: PASS   : TestHexagon::mousePressEmitsCellIdentity()
 7: PASS   : TestHexagon::cleanupTestCase()
-7: Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 8ms
+7: Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 14ms
 7: ********* Finished testing of TestHexagon *********
- 7/10 Test  #7: hexagon_tests ....................   Passed    0.08 sec
+ 7/14 Test  #7: hexagon_tests ....................   Passed    0.10 sec
 test 8
       Start  8: token_tests
 
@@ -211,9 +211,9 @@ test 8
 8: PASS   : TestToken::sceneOwnsDrawnToken()
 8: PASS   : TestToken::mousePressEmitsTokenIdentity()
 8: PASS   : TestToken::cleanupTestCase()
-8: Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 4ms
+8: Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 5ms
 8: ********* Finished testing of TestToken *********
- 8/10 Test  #8: token_tests ......................   Passed    0.08 sec
+ 8/14 Test  #8: token_tests ......................   Passed    0.09 sec
 test 9
       Start  9: player_tests
 
@@ -230,9 +230,9 @@ test 9
 9: PASS   : TestPlayer::copyingMakesIndependentGrid()
 9: PASS   : TestPlayer::calculateScorePublishesResults()
 9: PASS   : TestPlayer::cleanupTestCase()
-9: Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 97ms
+9: Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 141ms
 9: ********* Finished testing of TestPlayer *********
- 9/10 Test  #9: player_tests .....................   Passed    0.20 sec
+ 9/14 Test  #9: player_tests .....................   Passed    0.24 sec
 test 10
       Start 10: scoring_tests
 
@@ -262,7 +262,7 @@ test 10
 10: FAIL!  : TestScoring::bentElkGroupIsNotOneStraightLine() Compared values are not the same
 10:    Actual   (scoring->calculateElkScore(grid)): 9
 10:    Expected (7)                               : 7
-10:    Loc: [/home/julijana/Desktop/2026_Analysis_cascadia/unit_tests/test_scoring.cpp(183)]
+10:    Loc: [/home/julijana/Desktop/2026_Analysis_cascadia/unit_tests/test_scoring.cpp(187)]
 10: PASS   : TestScoring::salmonRuns(one)
 10: PASS   : TestScoring::salmonRuns(two)
 10: PASS   : TestScoring::salmonRuns(three)
@@ -276,18 +276,148 @@ test 10
 10: FAIL!  : TestScoring::branchingSalmonGroupDoesNotScore() Compared values are not the same
 10:    Actual   (scoring->calculateSalmonScore(grid)): 11
 10:    Expected (0)                                  : 0
-10:    Loc: [/home/julijana/Desktop/2026_Analysis_cascadia/unit_tests/test_scoring.cpp(233)]
+10:    Loc: [/home/julijana/Desktop/2026_Analysis_cascadia/unit_tests/test_scoring.cpp(237)]
 10: PASS   : TestScoring::largestHabitatRegionWins()
 10: PASS   : TestScoring::habitatConnectionDependsOnFacingSides(mismatched-edge)
 10: PASS   : TestScoring::habitatConnectionDependsOnFacingSides(matching-after-half-turn)
 10: PASS   : TestScoring::cleanupTestCase()
-10: Totals: 32 passed, 2 failed, 0 skipped, 0 blacklisted, 917ms
+10: Totals: 32 passed, 2 failed, 0 skipped, 0 blacklisted, 874ms
 10: ********* Finished testing of TestScoring *********
-10/10 Test #10: scoring_tests ....................***Failed    1.09 sec
+10/14 Test #10: scoring_tests ....................***Failed    1.01 sec
+test 11
+      Start 11: hexagon_branch_tests
 
-70% tests passed, 3 tests failed out of 10
+11: Test command: /home/julijana/Desktop/2026_Analysis_cascadia/build_coverage/hexagon_branch_tests
+11: Working Directory: /home/julijana/Desktop/2026_Analysis_cascadia/build_coverage
+11: Test timeout computed to be: 10000000
+11: ********* Start testing of TestHexagonBranches *********
+11: Config: Using QtTest library 6.10.2, Qt 6.10.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 15.2.0), ubuntu 26.04
+11: PASS   : TestHexagonBranches::initTestCase()
+11: PASS   : TestHexagonBranches::defaultCellCanBeCopied()
+11: PASS   : TestHexagonBranches::emptyPolygonHasZeroCenter()
+11: PASS   : TestHexagonBranches::defaultCellAcceptsInitializedData()
+11: PASS   : TestHexagonBranches::imageLayouts(one-option)
+11: PASS   : TestHexagonBranches::imageLayouts(two-options)
+11: PASS   : TestHexagonBranches::imageLayouts(three-options-split-habitat)
+11: PASS   : TestHexagonBranches::placedTokenReplacesAnimalOptions()
+11: PASS   : TestHexagonBranches::missingHabitatProducesTransparentImage()
+11: PASS   : TestHexagonBranches::missingAnimalKeepsHabitatBackground()
+11: PASS   : TestHexagonBranches::drawingStopsWhenPositionsRunOut()
+11: PASS   : TestHexagonBranches::paintUsesBackgroundOrPixmap(background-only)
+11: PASS   : TestHexagonBranches::paintUsesBackgroundOrPixmap(with-pixmap)
+11: PASS   : TestHexagonBranches::mousePressStates(not-selectable)
+11: PASS   : TestHexagonBranches::mousePressStates(selectable-empty)
+11: PASS   : TestHexagonBranches::mousePressStates(selectable-image)
+11: PASS   : TestHexagonBranches::marketViewMarksCellSelectable()
+11: PASS   : TestHexagonBranches::cleanupTestCase()
+11: Totals: 18 passed, 0 failed, 0 skipped, 0 blacklisted, 19ms
+11: ********* Finished testing of TestHexagonBranches *********
+11/14 Test #11: hexagon_branch_tests .............   Passed    0.10 sec
+test 12
+      Start 12: scoring_branch_tests
 
-Total Test time (real) =   1.74 sec
+12: Test command: /home/julijana/Desktop/2026_Analysis_cascadia/build_coverage/scoring_branch_tests
+12: Working Directory: /home/julijana/Desktop/2026_Analysis_cascadia/build_coverage
+12: Test timeout computed to be: 10000000
+12: ********* Start testing of TestScoringBranches *********
+12: Config: Using QtTest library 6.10.2, Qt 6.10.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 15.2.0), ubuntu 26.04
+12: PASS   : TestScoringBranches::initTestCase()
+12: PASS   : TestScoringBranches::oppositeSides(top-left)
+12: PASS   : TestScoringBranches::oppositeSides(top-right)
+12: PASS   : TestScoringBranches::oppositeSides(right)
+12: PASS   : TestScoringBranches::oppositeSides(bottom-right)
+12: PASS   : TestScoringBranches::oppositeSides(bottom-left)
+12: PASS   : TestScoringBranches::oppositeSides(left)
+12: PASS   : TestScoringBranches::oppositeSides(unrecognized)
+12: PASS   : TestScoringBranches::habitatRotations(0)
+12: PASS   : TestScoringBranches::habitatRotations(60)
+12: PASS   : TestScoringBranches::habitatRotations(120)
+12: PASS   : TestScoringBranches::habitatRotations(180)
+12: PASS   : TestScoringBranches::habitatRotations(240)
+12: PASS   : TestScoringBranches::habitatRotations(300)
+12: PASS   : TestScoringBranches::singleHabitatCoversEverySide()
+12: PASS   : TestScoringBranches::neighboursWithDirections(even-interior)
+12: PASS   : TestScoringBranches::neighboursWithDirections(odd-interior)
+12: PASS   : TestScoringBranches::neighboursWithDirections(top-left)
+12: PASS   : TestScoringBranches::neighboursWithDirections(bottom-right)
+12: PASS   : TestScoringBranches::tokenNeighbourFiltering()
+12: PASS   : TestScoringBranches::standaloneElkLineSplitting(one)
+12: PASS   : TestScoringBranches::standaloneElkLineSplitting(four-boundary)
+12: PASS   : TestScoringBranches::standaloneElkLineSplitting(five-remainder)
+12: PASS   : TestScoringBranches::standaloneElkLineSplitting(eight-exact)
+12: PASS   : TestScoringBranches::standaloneElkLineSplitting(nine-remainder)
+12: PASS   : TestScoringBranches::salmonTriangleContainsEachCellOnce()
+12: PASS   : TestScoringBranches::connectedHabitatCycleCountsEachTileOnce()
+12: PASS   : TestScoringBranches::cleanupTestCase()
+12: Totals: 28 passed, 0 failed, 0 skipped, 0 blacklisted, 704ms
+12: ********* Finished testing of TestScoringBranches *********
+12/14 Test #12: scoring_branch_tests .............   Passed    0.83 sec
+test 13
+      Start 13: setup_game_tests
+
+13: Test command: /home/julijana/Desktop/2026_Analysis_cascadia/build_coverage/setup_game_tests
+13: Working Directory: /home/julijana/Desktop/2026_Analysis_cascadia/build_coverage
+13: Test timeout computed to be: 30
+13: ********* Start testing of TestSetupGame *********
+13: Config: Using QtTest library 6.10.2, Qt 6.10.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 15.2.0), ubuntu 26.04
+13: PASS   : TestSetupGame::initTestCase()
+13: PASS   : TestSetupGame::constructorPreservesNamesAndSeparatesMarket()
+13: PASS   : TestSetupGame::tileCounts(solo)
+13: PASS   : TestSetupGame::tileCounts(two)
+13: PASS   : TestSetupGame::tileCounts(three)
+13: PASS   : TestSetupGame::tileCounts(four)
+13: PASS   : TestSetupGame::invalidPlayerCounts(negative)
+13: PASS   : TestSetupGame::invalidPlayerCounts(zero)
+13: PASS   : TestSetupGame::invalidPlayerCounts(above-maximum)
+13: PASS   : TestSetupGame::tokenSupplyContainsTwentyOfEachAnimal()
+13: PASS   : TestSetupGame::drawingTilesRemovesExactlyFour(exactly-four)
+13: PASS   : TestSetupGame::drawingTilesRemovesExactlyFour(with-remainder)
+13: PASS   : TestSetupGame::drawingMixedTokensRemovesExactlyFour(exactly-four)
+13: PASS   : TestSetupGame::drawingMixedTokensRemovesExactlyFour(with-remainder)
+13: PASS   : TestSetupGame::identicalTokenDetection(empty)
+13: PASS   : TestSetupGame::identicalTokenDetection(single)
+13: PASS   : TestSetupGame::identicalTokenDetection(all-equal)
+13: PASS   : TestSetupGame::identicalTokenDetection(early-difference)
+13: PASS   : TestSetupGame::identicalTokenDetection(late-difference)
+13: PASS   : TestSetupGame::shufflingPreservesTokens(empty)
+13: PASS   : TestSetupGame::shufflingPreservesTokens(single)
+13: PASS   : TestSetupGame::shufflingPreservesTokens(duplicates)
+13: PASS   : TestSetupGame::shufflingPreservesCompleteTiles(empty)
+13: PASS   : TestSetupGame::shufflingPreservesCompleteTiles(single)
+13: PASS   : TestSetupGame::shufflingPreservesCompleteTiles(multiple)
+13: PASS   : TestSetupGame::cleanupTestCase()
+13: Totals: 26 passed, 0 failed, 0 skipped, 0 blacklisted, 120ms
+13: ********* Finished testing of TestSetupGame *********
+13/14 Test #13: setup_game_tests .................   Passed    0.15 sec
+test 14
+      Start 14: setup_players_tests
+
+14: Test command: /home/julijana/Desktop/2026_Analysis_cascadia/build_coverage/setup_players_tests
+14: Working Directory: /home/julijana/Desktop/2026_Analysis_cascadia/build_coverage
+14: Test timeout computed to be: 30
+14: ********* Start testing of TestSetupPlayers *********
+14: Config: Using QtTest library 6.10.2, Qt 6.10.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 15.2.0), ubuntu 26.04
+14: PASS   : TestSetupPlayers::initTestCase()
+14: PASS   : TestSetupPlayers::playerOrderPreservesPlayersAndAssignsIds(solo)
+14: PASS   : TestSetupPlayers::playerOrderPreservesPlayersAndAssignsIds(two)
+14: PASS   : TestSetupPlayers::playerOrderPreservesPlayersAndAssignsIds(three)
+14: PASS   : TestSetupPlayers::playerOrderPreservesPlayersAndAssignsIds(four)
+14: PASS   : TestSetupPlayers::startingSetsAreDistinctAndComeFromStorage(solo)
+14: PASS   : TestSetupPlayers::startingSetsAreDistinctAndComeFromStorage(two)
+14: PASS   : TestSetupPlayers::startingSetsAreDistinctAndComeFromStorage(three)
+14: PASS   : TestSetupPlayers::startingSetsAreDistinctAndComeFromStorage(four)
+14: PASS   : TestSetupPlayers::constructorPlacesThreeTilesPerPlayer()
+14: PASS   : TestSetupPlayers::generateTileDataPreservesFieldsAndCoordinates()
+14: PASS   : TestSetupPlayers::generatingAgainReplacesStartingTiles()
+14: PASS   : TestSetupPlayers::destructionKeepsBorrowedPlayersAlive()
+14: PASS   : TestSetupPlayers::cleanupTestCase()
+14: Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 769ms
+14: ********* Finished testing of TestSetupPlayers *********
+14/14 Test #14: setup_players_tests ..............   Passed    0.88 sec
+
+79% tests passed, 3 tests failed out of 14
+
+Total Test time (real) =   3.79 sec
 
 The following tests FAILED:
 	  3 - turn_tests (Failed)

@@ -1,17 +1,21 @@
 #include <QtTest>
 #include <QApplication>
+
 #include <memory>
+
 #include "scoring.h"
 
 class TestScoring : public QObject
 {
     Q_OBJECT
+
 private:
     std::unique_ptr<Player> player;
     std::unique_ptr<Scoring> scoring;
     HexagonGrid *grid = nullptr;
     void place(int row, int col, const QString &animal,
                const QVector<QString> &habitats = {"forest"}, int rotation = 0);
+
 private slots:
     void init();
     void cleanup();
@@ -270,7 +274,8 @@ int main(int argc, char **argv)
 {
     qputenv("QT_QPA_PLATFORM", QByteArray("offscreen"));
     QApplication application(argc, argv);
-    TestScoring tests;
-    return QTest::qExec(&tests, argc, argv);
+    TestScoring test;
+    return QTest::qExec(&test, argc, argv);
 }
+
 #include "test_scoring.moc"

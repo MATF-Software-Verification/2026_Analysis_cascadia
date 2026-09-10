@@ -1,5 +1,7 @@
 #include <QtTest>
 
+#include <memory>
+
 #include "tileData.h"
 #include "test_fixtures.h"
 
@@ -7,7 +9,12 @@ class TestTileData : public QObject
 {
     Q_OBJECT
 
-  private slots:
+private:
+    std::unique_ptr<TileData> fixtureTile;
+
+private slots:
+    void init();
+    void cleanup();
     void parameterizedConstructorInitializesState();
     void settersAndGettersPreserveValues();
     void toVariantContainsObjectState();
@@ -18,6 +25,16 @@ class TestTileData : public QObject
     void fromVariantReplacesPreviousLists();
     void toVariantContainsRequiredKeys();
 };
+
+void TestTileData::init()
+{
+    fixtureTile = std::make_unique<TileData>(makeTile());
+}
+
+void TestTileData::cleanup()
+{
+    fixtureTile.reset();
+}
 
 void TestTileData::parameterizedConstructorInitializesState()
 {
@@ -113,7 +130,6 @@ void TestTileData::fromVariantReadsExplicitMap()
     compareTile(tile, tileMap());
 }
 
-// Prepare data for next test: serializationPreservesLists
 void TestTileData::serializationPreservesLists_data()
 {
     QTest::addColumn<QStringList>("animals");
@@ -128,21 +144,21 @@ void TestTileData::serializationPreservesLists()
 {
     QFETCH(QStringList, animals);
     QFETCH(QStringList, habitats);
-    TileData original = makeTile();
+    TileData &original = *fixtureTile;
     original.setAnimals(animals);
     original.setHabitats(habitats);
     const QVariantMap encoded = original.toVariant().toMap();
-    QCOMPARE(encoded.value("animals").toStringList(), animals); 
+    QCOMPARE(encoded.value("animals").toStringList(), animals);
     QCOMPARE(encoded.value("habitats").toStringList(), habitats);
     TileData restored;
-    restored.fromVariant(encoded); 
+    restored.fromVariant(encoded);
     QCOMPARE(restored.getAnimals(), animals);
     QCOMPARE(restored.getHabitats(), habitats);
 }
 
 void TestTileData::fromVariantReplacesPreviousLists()
 {
-    TileData tile = makeTile();
+    TileData &tile = *fixtureTile;
     QVariantMap input = tileMap(90);
     input["animals"] = QVariantList{QString("hawk")};
     input["habitats"] = QVariantList{QString("lake")};
@@ -156,8 +172,8 @@ void TestTileData::fromVariantReplacesPreviousLists()
 }
 
 void TestTileData::toVariantContainsRequiredKeys()
-{ 
-    const TileData tile = makeTile();
+{
+    const TileData &tile = *fixtureTile;
     const QVariantMap encoded = tile.toVariant().toMap();
     const QStringList keys{"id", "row", "col", "placedTile", "isValid",
                            "placedToken", "rotation", "animals", "habitats"};
@@ -165,6 +181,10 @@ void TestTileData::toVariantContainsRequiredKeys()
         QVERIFY2(encoded.contains(key), qPrintable("Missing key: " + key));
 }
 
-QTEST_APPLESS_MAIN(TestTileData)
+int main(int argc, char **argv)
+{
+    TestTileData test;
+    return QTest::qExec(&test, argc, argv);
+}
 
 #include "test_tile_data.moc"
