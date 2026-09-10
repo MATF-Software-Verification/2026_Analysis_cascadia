@@ -30,7 +30,9 @@ Analyzed upstream revision: `c32895403185b6ae4a968d4517d8a634adfe80ee`.
 
 `Turn::Turn(...)` receives a placedToken argument but does not assign it to its
 QString member. The test passes "bear" and compares the getter with "bear".
-Static inspection predicts a failure: actual empty QString, expected "bear".
+
+One Tile assertion check rotation restoration and fail
+because Tile::fromVariant() does not restore m_rotation. 
 
 ## Coverage
 

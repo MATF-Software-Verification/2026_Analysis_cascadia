@@ -7,7 +7,7 @@ class TestPlayerData : public QObject
     Q_OBJECT
 private slots:
     void constructorPreservesPlayerData();
-    void serializationPreservesTiles_data(); // helper
+    void serializationPreservesTiles_data();
     void serializationPreservesTiles();
     void fromVariantReadsExplicitMap();
     void fromVariantReplacesExistingTiles();
@@ -23,7 +23,6 @@ void TestPlayerData::constructorPreservesPlayerData()
     compareTile(player.getCentralTiles().at(1), tileMap(20));
 }
 
-// Prepare data for next test: serializationPreservesTiles
 void TestPlayerData::serializationPreservesTiles_data()
 {
     QTest::addColumn<int>("count");

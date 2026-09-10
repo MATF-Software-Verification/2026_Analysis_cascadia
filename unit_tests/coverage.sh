@@ -32,6 +32,11 @@ REPORT_ROOT="$TEST_DIR/reports"
 # Define the production files included in the final report.
 SOURCE_FILES=(
     "$PROJECT_ROOT/cascadia++/cascadia/game/entities/tileData.cpp"
+    "$PROJECT_ROOT/cascadia++/cascadia/game/entities/tile.cpp"
+    "$PROJECT_ROOT/cascadia++/cascadia/game/entities/tileStorage.cpp"
+    "$PROJECT_ROOT/cascadia++/cascadia/game/engine/scoring.cpp"
+    "$PROJECT_ROOT/cascadia++/cascadia/game/board/hexagon.cpp"
+    "$PROJECT_ROOT/cascadia++/cascadia/game/board/hexagonGrid.cpp"
     "$PROJECT_ROOT/cascadia++/cascadia/common/playerData.cpp"
     "$PROJECT_ROOT/cascadia++/cascadia/common/turn.cpp"
 )
