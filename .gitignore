@@ -1,7 +1,7 @@
 .DS_Store
 *.pyc
 __pycache__/
-build/
+build*
 dist/
 *.tmp
 *.log
@@ -12,3 +12,6 @@ build_coverage/
 unit_tests/reports/*
 !unit_tests/reports/html/
 !unit_tests/reports/tests.log
+valgrind/memcheck/reports/run*
+valgrind/memcheck/reports/game*
+!valgrind/memcheck/reports/unit_tests/*

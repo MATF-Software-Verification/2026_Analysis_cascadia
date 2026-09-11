@@ -17,22 +17,7 @@ Course: *Verifikacija softvera*, Matematički fakultet, Univerzitet u Beogradu
 
 ## 3. Project structure
 
-```text
-2026_Analysis_cascadia/
-├── README.md
-├── ProjectAnalysisReport.md
-├── ProjectAnalysisReport.pdf
-├── .github/
-│   └── workflows/
-│       ├── gate.yml
-│       └── tickets.yml
-├── .gitmodules
-├── cascadia++/                      # pinned upstream project under analysis
-│   └── ...
-└── .gitignore
-```
-
-Project contains ne directory per technique, a pinned submodule, reproducible scripts, and a dedicated report that explains the methodology and findings.
+Project contains a directory per technique, a pinned submodule, reproducible scripts, and a dedicated report that explains the methodology and findings.
 
 ## 4. Tools used
 
@@ -41,7 +26,6 @@ This analysis is organized around the following techniques:
 | # | Tool / technique | Category | Directory |
 |---|---|---|---|
 | 1 | Unit tests + coverage | Testing | [`unit_tests/`](unit_tests/) |
-
-### 4.1 Unit tests
+| 2 | Valgrind Memcheck | Memory analysis | [`valgrind/memcheck/`](valgrind/memcheck/) |
 
 ## Conclusion

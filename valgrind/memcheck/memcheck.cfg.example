@@ -1,0 +1,22 @@
+# Copy this file to memcheck.cfg
+
+BUILD_TYPE=Debug
+CXX=g++
+JOBS=4
+QT_QPA_PLATFORM=offscreen
+
+# Select existing executable targets from unit_tests/CMakeLists.txt
+TESTS=(
+    cascadia_unit_tests
+    player_data_tests
+    turn_tests
+    tile_tests
+    tile_storage_tests
+    hexagon_grid_tests
+    hexagon_tests
+    token_tests
+    player_tests
+    scoring_tests
+    hexagon_branch_tests
+    scoring_branch_tests
+)
