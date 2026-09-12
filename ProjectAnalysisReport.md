@@ -30,7 +30,7 @@ Glavna ideja nije samo pronalaženje jedne greške, već pokazivanje kako nekoli
 
 - Operativni sistem: Ubuntu 26.04, 64-bitno Linux okruženje
 - Sistem za izgradnju: CMake 4.2.3
-- Kompajler: GNU g++ 15.2.0, uz standard C++17
+- Kompajler: GNU g++ 15.2.0; C++17 za testove i C++20 za izgradnju igre korišćenu uz Memcheck
 - Biblioteka i testni okvir: Qt 6.10.2 i Qt Test
 - Alati za analizu i merenje: Valgrind 3.26.0, gcov i LCOV 2.0-1
 - Pokretanje testova: CTest
@@ -154,4 +154,125 @@ Dozvoljen niz ima najviše dva susedna lososa po tokenu i ne sme dodirivati drug
 
 Analiza ne obuhvata kompletnu mrežnu komunikaciju, sve tokove partije, sve interakcije korisničkog interfejsa niti sve varijante kartica bodovanja. Grafički testovi sa platformom `offscreen` proveravaju određene objekte, signale i prikaz, ali ne zamenjuju proveru celog korisničkog toka. Kod pripreme igre nisu iscrpno ispitane sve nevažeće kombinacije ulaza i svi mogući ishodi slučajnog mešanja.
 
+## 4. Valgrind Memcheck
+
+Za dinamičku analizu upravljanja memorijom korišćen je **Valgrind Memcheck**. Alat proverava memorijske operacije tokom izvršavanja programa: neispravna čitanja i upise, upotrebu neinicijalizovanih vrednosti, neispravno oslobađanje i curenje memorije. Analiza je obuhvatila **12 testnih izvršivih programa** i **dve interaktivne sesije igre**. Time su provereni i izdvojeni objekti i deo toka njihove zajedničke upotrebe u aplikaciji.
+
+### 4.1. Konfiguracija i pokretanje
+
+Korišćen je Valgrind 3.26.0. Izgradnje za Memcheck odvojene su od izgradnje za pokrivenost: testovi se izgrađuju u `build_memcheck`, a igra u `build_memcheck_game`. Koristi se konfiguracija `Debug`, sa opcijama `-O0 -g`, bez instrumentacije sanitajzerima i za pokrivenost. Testovi koriste C++17, a analiziran build igre C++20.
+
+Testni programi koji zahtevaju grafičke komponente izvršavaju se sa `QT_QPA_PLATFORM=offscreen`. Interaktivne sesije koriste grafičko okruženje računara; u njihovim metapodacima izbor Qt platforme je automatski.
+
+Za testove se koristi skripta [run_tests_memcheck.sh](valgrind/memcheck/run_tests_memcheck.sh). Pre prvog pokretanja kopira se primer konfiguracije, a u nizu `TESTS` biraju se izvršivi programi:
+
+```bash
+cp valgrind/memcheck/memcheck.cfg.example valgrind/memcheck/memcheck.cfg
+bash valgrind/memcheck/run_tests_memcheck.sh
+```
+
+Postojeću lokalnu konfiguraciju nije potrebno ponovo kopirati. Igra se pokreće skriptom [run_game_memcheck.sh](valgrind/memcheck/run_game_memcheck.sh), uz naziv scenarija:
+
+```bash
+bash valgrind/memcheck/run_game_memcheck.sh startup_exit
+bash valgrind/memcheck/run_game_memcheck.sh partial_game
+```
+
+Pri ponavljanju analize treba sačuvati prethodne rezultate i izabrati novi naziv sesije, na primer `partial_game_repeat`.
+
+Memcheck se pokreće direktno nad izvršivim programima, sa opcijama `--leak-check=full`, `--show-leak-kinds=all`, `--track-origins=yes` i `--num-callers=30`. Opcije `--errors-for-leak-kinds=definite,possible` i `--error-exitcode=99` omogućavaju da prijavljene memorijske greške, uključujući ove kategorije curenja, utiču na izlazni status.
+
+Za svaki test čuvaju se `memcheck_<test>.log` i `<test>_output.log`, dok `summary.tsv` beleži izlazne kodove. Za svaku sesiju igre čuvaju se `memcheck.log`, `game_output.log` i `session.md`. 
+
+### 4.2. Rezultati nad jediničnim testovima
+
+U svih **12 analiziranih pokretanja** kategorije `definitely lost`, `indirectly lost` i `possibly lost` imaju po **0 bajtova**. U devet pokretanja Memcheck prijavljuje nula grešaka, a u tri po jednu grešku pri inicijalizaciji Qt-a.
+
+| Testni program | Memcheck greške | Izgubljena memorija, bajtovi | `Still reachable`, bajtovi |
+| --- | ---: | ---: | ---: |
+| `cascadia_unit_tests` | 0 | 0 | 17.400 |
+| `player_data_tests` | 0 | 0 | 17.400 |
+| `turn_tests` | 0 | 0 | 17.400 |
+| `tile_tests` | 0 | 0 | 17.400 |
+| `tile_storage_tests` | 0 | 0 | 17.400 |
+| `token_tests` | 0 | 0 | 24.547 |
+| `scoring_tests` | 1 | 0 | 24.610 |
+| `hexagon_branch_tests` | 1 | 0 | 24.914 |
+| `hexagon_grid_tests` | 1 | 0 | 24.914 |
+| `hexagon_tests` | 0 | 0 | 24.914 |
+| `player_tests` | 0 | 0 | 24.914 |
+| `scoring_branch_tests` | 0 | 0 | 24.914 |
+
+
+Tri prijave Memcheck greške imaju isti obrazac `Invalid read of size 16` i putanju inicijalizacije Qt/IBus komponenti. U prikazanom primeru čitanje počinje na pomeraju 27 u bloku od 42 bajta: preostaje 15 bajtova, a pokušava se čitanje 16. To je prijava neispravnog čitanja, odvojena od klasifikacije curenja memorije.
+
+Ovi tragovi ukazuju na mogući zajednički problem tokom inicijalizacije biblioteka. Tačan uzrok nije utvrđen, pa prijave nisu označene kao bezopasne niti kao tri nezavisna defekta igre. Tragovi preostale dostupne memorije uključuju GLib, libgomp, DBus i Fontconfig. Kategorija `still reachable` znači da je memorija i dalje dostupna preko pokazivača; sama po sebi ne dokazuje grešku.
+
+
+### 4.3. Interaktivne sesije igre
+
+| Sesija | Izvršene aktivnosti | Početak–kraj | Način završetka |
+| --- | --- | --- | --- |
+| `startup_exit` | Pokretanje aplikacije i prikaz glavnog menija | 22:49:07–22:50:00 | Klik na `Exit` |
+| `partial_game` | Pokretanje partije za jednog igrača, unos imena, više postavljanja pločice i tokena sa završetkom poteza, otvaranje dijaloga preko dugmeta `Back` | 23:25:50–23:28:54 | Klik na `Exit` |
+
+Obe sesije imaju izlazni kod **99**. Uz korišćenu opciju `--error-exitcode=99`, ovaj status označava da je Memcheck prijavio greške. Evidencija sesija navodi zatvaranje dugmetom `Exit`; kod 99 sam po sebi ne označava pad aplikacije.
+
+#### 4.3.1. Pokretanje i zatvaranje aplikacije — startup_exit
+
+Izdvojeno je 75 zapisa povezanih sa izvornim fajlovima igre. Zapis 45 prijavljuje **110 bajtova** izgubljene memorije: 56 direktno i 54 indirektno. Alokacije potiču iz `drmGetVersion`, pozvane preko FFmpeg-a i Qt Multimedia tokom stvaranja objekta `Settings`. 
+
+Zapis 57 prijavljuje **720 bajtova `possibly lost`** pri učitavanju biblioteka i upravljanju podacima lokalnim za nit. Preostalih 70 zapisa pripada kategoriji `still reachable`.
+
+
+
+#### 4.3.2. Deo partije za jednog igrača — partial_game
+
+Ova sesija obuhvata i stvaranje objekata partije i njihovu upotrebu tokom poteza. U izdvojenim zapisima prijavljeni su sledeći nalazi:
+
+| Nalaz | Zapis | Tumačenje |
+| --- | ---: | --- |
+| 159.451 bajt izgubljene memorije: 24 direktno i 159.427 indirektno | 1165 | Alokacija u `xkb_compose_state_new`, preko Qt Wayland-a, tokom unosa imena; tačan uzrok gubitka nije utvrđen |
+| 110 bajtova izgubljene memorije: 56 direktno i 54 indirektno | 636 | Isti obrazac alokacija u putanji libdrm/FFmpeg/Qt Multimedia kao u sesiji `startup_exit` |
+| Tri prijave `Invalid read of size 16` | 1–3 | Tragovi alokacije uključuju Qt i Wayland dodatak `libadwaita`; mesta samih čitanja prikazana su kao `???` |
+| 720 bajtova `possibly lost` | 1026 | Učitavanje biblioteka i upravljanje podacima lokalnim za nit; curenje nije potvrđeno |
+
+Prisustvo Cascadia++ funkcije u tragu poziva pokazuje iz kog toka aplikacije se došlo do biblioteke. Ono samo po sebi ne određuje ko je odgovoran za gubitak memorije ili neispravno čitanje. 
+
+### 4.4. Propust u oslobađanju objekata partije
+
+U logu sesije `partial_game` sledeći objekti ostali su alocirani i klasifikovani su kao `still reachable`:
+
+| Objekat | Zapis | Veličina samog objekta | Mesto stvaranja |
+| --- | ---: | ---: | --- |
+| `Player` | 736 | 152 bajta | `controller.cpp:115` |
+| `Game` | 940 | 328 bajtova | `controller.cpp:128` |
+| `Board` | 958 | 368 bajtova | `controller.cpp:118` |
+
+
+
+Pregled [controller.cpp](cascadia++/cascadia/controller/controller.cpp) pokazuje konkretan propust: u `Controller::startSinglePlayerGame()` deklarisane su **lokalne promenljive `board` i `game`**, odvojene od istoimenih članova klase. U ovom toku članski pokazivači ostaju `nullptr`, dok `Controller::~Controller()` proverava i briše upravo njih. Tako predviđeno oslobađanje ne obuhvata objekte napravljene za partiju.
+
+Objekti nemaju ni Qt roditelja koji bi ih automatski obrisao. Konstruktor `Board` u [board.cpp](cascadia++/cascadia/game/board/board.cpp) prosleđeni prozor čuva kao `parentWidget`, ali ne inicijalizuje bazni `QObject` tim roditeljem. `GameGui` čuva pokazivač na `Game`, ali ga njegov destruktor ne briše.
+
+Igrač napravljen u istoj funkciji nije dodat u člansku kolekciju `Controller::m_playerOrder`, koju destruktor oslobađa. Kopije kolekcija pokazivača u `SetupPlayers` i `Game` ne brišu automatski objekte tipa `Player`.
+
+**Posledica:** u pregledanom toku ne postoji predviđeno oslobađanje ovih objekata partije. Njihovi pokazivači mogu ostati dostupni, pa Memcheck kategorija `still reachable` ne isključuje propust u upravljanju životnim vekom. Zaključak o ovom propustu zasniva se na kombinaciji loga i pregleda koda.
+
+**Predlog ispravke:** jasno odrediti vlasnike objekata `Game`, `Board` i `Player`, sačuvati ih u odgovarajućim članovima kontrolera. Pri tome treba uskladiti redosled uništavanja i izbeći višestruko brisanje.
+
+### 4.5. Ograničenja i evidencija
+
+Osnovu rezultata čine dokument **Memcheck na unit testovima** i popunjene datoteke `session.md` za `startup_exit` i `partial_game`. Uz njih se čuvaju izvorni Memcheck logovi i izlaz testnih programa odnosno igre. Brojevi zapisa u odeljku o igri odnose se na izdvojene izveštaje `cascadia_findings.md`, a ne na redove u izvornom logu.
+
+Skripta za izdvajanje zadržava cele zapise koji pominju prepoznate izvorne fajlove igre. Takav pregled olakšava analizu, ali nije potpuna klasifikacija odgovornosti. Navedene veličine iz pojedinačnih zapisa nisu ukupna `LEAK SUMMARY` za ceo proces, a broj izdvojenih zapisa nije broj potvrđenih defekata. Zapisi sa bibliotečkim alokacijama čuvaju se i kada njihov uzrok nije razjašnjen.
+
+Memcheck posmatra samo izvršene putanje. Ove dve sesije ne obuhvataju završetak cele partije, više uzastopnih partija, sve korisničke akcije niti mrežnu igru. Rezultati jediničnih testova zato ne zamenjuju proveru celog toka stvaranja, upotrebe i oslobađanja objekata u aplikaciji.
+
 ## Zaključak
+
+Dosadašnja analiza pokazuje da jedinični testovi, merenje pokrivenosti i Memcheck daju različite informacije o kvalitetu aplikacije. Jedinični testovi su izdvojili četiri funkcionalna problema: gubitak podatka u konstruktoru poteza, neobnavljanje rotacije pri deserializaciji i dva nepravilna obračuna poena. Visoka pokrivenost izvršenih linija ne poništava ove neuspešne provere niti dokazuje ispravnost svih ishoda grananja.
+
+U 12 testnih programa analiziranih Memcheck-om nije prijavljena izgubljena memorija u kategorijama definitely, indirectly i possibly lost, ali su zabeležene tri prijave neispravnog čitanja tokom inicijalizacije Qt/IBus komponenti. Interaktivna sesija sa delom partije omogućila je proveru dodatnih putanja i, uz pregled koda, otkrila propust u oslobađanju objekata Game, Board i Player. Time se pokazuje značaj provere celog toka upotrebe objekata, pored njihovog izdvojenog testiranja.
+
+Prijavljena curenja u putanjama multimedije i obrade tastature dokumentovana su, ali njihov tačan uzrok nije pripisan kodu igre bez dodatnih dokaza. Predložene ispravke potrebno je proveriti ponovnim izvršavanjem istih testova i sesija. Zaključci ne predstavljaju dokaz ispravnosti cele aplikacije.

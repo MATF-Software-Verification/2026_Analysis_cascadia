@@ -78,19 +78,19 @@ cat >> "$REPORT_DIR/session.md" <<EOF
 - Finished at: $(date -Iseconds)
 - Valgrind/game exit code: $status
 
-## Actions performed
+## Akcije
 
 1. ...
 
-## Observations
+## Zaključci
 
 ...
 
-## How the session ended
+## Kako se sesija završila
 
 Exit button / window close / crash / forced termination: ...
 
-## Memory findings
+## Pronađeni problemi
 
 ...
 EOF
