@@ -1,0 +1,5 @@
+# Copy this file to cppcheck.cfg and adjust the local settings.
+# Use OPEN_REPORT=0 to skip opening the browser.
+CXX=g++
+JOBS=4
+OPEN_REPORT=1

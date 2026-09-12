@@ -1,0 +1,1243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="2.19.0"/>
+    <errors>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Turn::placedTileData&apos; is not initialized in the constructor." verbose="Member variable &apos;Turn::placedTileData&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="10" column="5"/>
+            <symbol>Turn::placedTileData</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Turn::placedTokenTileData&apos; is not initialized in the constructor." verbose="Member variable &apos;Turn::placedTokenTileData&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="10" column="5"/>
+            <symbol>Turn::placedTokenTileData</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Turn::selectedTileIndex&apos; is not initialized in the constructor." verbose="Member variable &apos;Turn::selectedTileIndex&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="10" column="5"/>
+            <symbol>Turn::selectedTileIndex</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Turn::newTile&apos; is not initialized in the constructor." verbose="Member variable &apos;Turn::newTile&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="10" column="5"/>
+            <symbol>Turn::newTile</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Turn::playerId&apos; is not initialized in the constructor." verbose="Member variable &apos;Turn::playerId&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="10" column="5"/>
+            <symbol>Turn::playerId</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Turn::selectedTokenIndex&apos; is not initialized in the constructor." verbose="Member variable &apos;Turn::selectedTokenIndex&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="10" column="5"/>
+            <symbol>Turn::selectedTokenIndex</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Turn::pinecone&apos; is not initialized in the constructor." verbose="Member variable &apos;Turn::pinecone&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="10" column="5"/>
+            <symbol>Turn::pinecone</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Turn::newTile&apos; is not initialized in the constructor." verbose="Member variable &apos;Turn::newTile&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp" line="8" column="7"/>
+            <symbol>Turn::newTile</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Turn::playerId&apos; is not initialized in the constructor." verbose="Member variable &apos;Turn::playerId&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp" line="8" column="7"/>
+            <symbol>Turn::playerId</symbol>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &apos;Turn::ownsData&apos; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &apos;Turn::ownsData&apos; is not assigned in the copy constructor. Should it be copied?" cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp" line="17" column="7"/>
+            <symbol>Turn::ownsData</symbol>
+        </error>
+        <error id="initializerList" severity="style" msg="Member variable &apos;Turn::selectedTileIndex&apos; is in the wrong place in the initializer list." verbose="Member variable &apos;Turn::selectedTileIndex&apos; is in the wrong place in the initializer list. Members are initialized in the order they are declared, not in the order they are in the initializer list. Keeping the initializer list in the same order that the members were declared prevents order dependent initialization errors." cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="44" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp" line="12" column="38"/>
+            <symbol>Turn::selectedTileIndex</symbol>
+        </error>
+        <error id="initializerList" severity="style" msg="Member variable &apos;Turn::playerId&apos; is in the wrong place in the initializer list." verbose="Member variable &apos;Turn::playerId&apos; is in the wrong place in the initializer list. Members are initialized in the order they are declared, not in the order they are in the initializer list. Keeping the initializer list in the same order that the members were declared prevents order dependent initialization errors." cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="46" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp" line="19" column="39"/>
+            <symbol>Turn::playerId</symbol>
+        </error>
+        <error id="initializerList" severity="style" msg="Member variable &apos;Turn::newTile&apos; is in the wrong place in the initializer list." verbose="Member variable &apos;Turn::newTile&apos; is in the wrong place in the initializer list. Members are initialized in the order they are declared, not in the order they are in the initializer list. Keeping the initializer list in the same order that the members were declared prevents order dependent initialization errors." cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="45" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp" line="19" column="65"/>
+            <symbol>Turn::newTile</symbol>
+        </error>
+        <error id="initializerList" severity="style" msg="Member variable &apos;Turn::selectedTileIndex&apos; is in the wrong place in the initializer list." verbose="Member variable &apos;Turn::selectedTileIndex&apos; is in the wrong place in the initializer list. Members are initialized in the order they are declared, not in the order they are in the initializer list. Keeping the initializer list in the same order that the members were declared prevents order dependent initialization errors." cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="44" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp" line="20" column="33"/>
+            <symbol>Turn::selectedTileIndex</symbol>
+        </error>
+        <error id="noOperatorEq" severity="warning" msg="Class &apos;Turn&apos; does not have a operator= which is recommended since it has dynamic memory/resource management." verbose="Class &apos;Turn&apos; does not have a operator= which is recommended since it has dynamic memory/resource management." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp" line="31" column="20"/>
+            <symbol>Turn</symbol>
+        </error>
+        <error id="missingOverride" severity="style" msg="The destructor &apos;~TileData&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier." verbose="The destructor &apos;~TileData&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h" line="14" column="6" info="Destructor in derived class"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/serializable.h" line="9" column="14" info="Virtual destructor in base class"/>
+            <symbol>~TileData</symbol>
+        </error>
+        <error id="missingOverride" severity="style" msg="The destructor &apos;~Turn&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier." verbose="The destructor &apos;~Turn&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="15" column="6" info="Destructor in derived class"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/serializable.h" line="9" column="14" info="Virtual destructor in base class"/>
+            <symbol>~Turn</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getPlacedToken()&apos; should return member &apos;placedToken&apos; by const reference." verbose="Function &apos;getPlacedToken()&apos; should return member &apos;placedToken&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="34" column="15"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getNewToken()&apos; should return member &apos;newToken&apos; by const reference." verbose="Function &apos;getNewToken()&apos; should return member &apos;newToken&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h" line="35" column="15"/>
+        </error>
+        <error id="passedByValue" severity="performance" msg="Function parameter &apos;newPlacedToken&apos; should be passed by const reference." verbose="Parameter &apos;newPlacedToken&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp" line="127" column="35" info="Function parameter &apos;newPlacedToken&apos; should be passed by const reference."/>
+            <symbol>newPlacedToken</symbol>
+        </error>
+        <error id="passedByValue" severity="performance" msg="Function parameter &apos;newNewToken&apos; should be passed by const reference." verbose="Parameter &apos;newNewToken&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp" line="132" column="32" info="Function parameter &apos;newNewToken&apos; should be passed by const reference."/>
+            <symbol>newNewToken</symbol>
+        </error>
+        <error id="constParameterPointer" severity="style" msg="Parameter &apos;newTile&apos; can be declared as pointer to const" verbose="Parameter &apos;newTile&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp" line="9" column="36" info="Parameter &apos;newTile&apos; can be declared as pointer to const"/>
+            <symbol>newTile</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;PlayerData::playerId&apos; is not initialized in the constructor." verbose="Member variable &apos;PlayerData::playerId&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/playerData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/playerData.h" line="14" column="5"/>
+            <symbol>PlayerData::playerId</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;Player&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;Player&apos; has a constructor with 1 argument that is not explicit. Such, so called &quot;Converting constructors&quot;, should in general be explicit for type safety reasons as that prevents unintended implicit conversions." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/main.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h" line="15" column="5"/>
+            <symbol>Player</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;Token&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;Token&apos; has a constructor with 1 argument that is not explicit. Such, so called &quot;Converting constructors&quot;, should in general be explicit for type safety reasons as that prevents unintended implicit conversions." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/main.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.h" line="17" column="5"/>
+            <symbol>Token</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;ClientService&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;ClientService&apos; has a constructor with 1 argument that is not explicit. Such, so called &quot;Converting constructors&quot;, should in general be explicit for type safety reasons as that prevents unintended implicit conversions." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/main.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/clientService.h" line="20" column="5"/>
+            <symbol>ClientService</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;LobbyView&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;LobbyView&apos; has a constructor with 1 argument that is not explicit. Such, so called &quot;Converting constructors&quot;, should in general be explicit for type safety reasons as that prevents unintended implicit conversions." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/main.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.h" line="22" column="5"/>
+            <symbol>LobbyView</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;ServerService&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;ServerService&apos; has a constructor with 1 argument that is not explicit. Such, so called &quot;Converting constructors&quot;, should in general be explicit for type safety reasons as that prevents unintended implicit conversions." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/main.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.h" line="21" column="5"/>
+            <symbol>ServerService</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;MainWindow&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;MainWindow&apos; has a constructor with 1 argument that is not explicit. Such, so called &quot;Converting constructors&quot;, should in general be explicit for type safety reasons as that prevents unintended implicit conversions." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/main.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.h" line="37" column="5"/>
+            <symbol>MainWindow</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;SetupPlayers&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;SetupPlayers&apos; has a constructor with 1 argument that is not explicit. Such, so called &quot;Converting constructors&quot;, should in general be explicit for type safety reasons as that prevents unintended implicit conversions." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/main.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupPlayers.h" line="17" column="5"/>
+            <symbol>SetupPlayers</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;Controller&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;Controller&apos; has a constructor with 1 argument that is not explicit. Such, so called &quot;Converting constructors&quot;, should in general be explicit for type safety reasons as that prevents unintended implicit conversions." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/main.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.h" line="21" column="5"/>
+            <symbol>Controller</symbol>
+        </error>
+        <error id="missingOverride" severity="style" msg="The destructor &apos;~Token&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier." verbose="The destructor &apos;~Token&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/main.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.h" line="18" column="6" info="Destructor in derived class"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/serializable.h" line="9" column="14" info="Virtual destructor in base class"/>
+            <symbol>~Token</symbol>
+        </error>
+        <error id="missingOverride" severity="style" msg="The destructor &apos;~Tile&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier." verbose="The destructor &apos;~Tile&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/main.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.h" line="15" column="6" info="Destructor in derived class"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/serializable.h" line="9" column="14" info="Virtual destructor in base class"/>
+            <symbol>~Tile</symbol>
+        </error>
+        <error id="normalCheckLevelMaxBranches" severity="information" msg="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." verbose="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/clientService.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/clientService.cpp" line="0" column="0"/>
+        </error>
+        <error id="functionConst" severity="style" msg="Either there is a missing &apos;override&apos;, or the member function &apos;ClientService::getUsername&apos; can be const." verbose="Unless it overrides a base class member, the member function &apos;ClientService::getUsername&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/clientService.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/clientService.cpp" line="42" column="21"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/clientService.h" line="24" column="13"/>
+            <symbol>ClientService::getUsername</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;ServerService::hostSocket&apos; is not initialized in the constructor." verbose="Member variable &apos;ServerService::hostSocket&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp" line="6" column="16"/>
+            <symbol>ServerService::hostSocket</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Either there is a missing &apos;override&apos;, or the member function &apos;ServerService::getUsernames&apos; can be const." verbose="Unless it overrides a base class member, the member function &apos;ServerService::getUsernames&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp" line="31" column="21"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.h" line="24" column="23"/>
+            <symbol>ServerService::getUsernames</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Either there is a missing &apos;override&apos;, or the member function &apos;ServerService::getIpAddress&apos; can be const." verbose="Unless it overrides a base class member, the member function &apos;ServerService::getIpAddress&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp" line="204" column="21"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.h" line="38" column="13"/>
+            <symbol>ServerService::getIpAddress</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;sendAllTokens&apos; argument 1 names different: declaration &apos;newTokens&apos; definition &apos;tokenBag&apos;." verbose="Function &apos;sendAllTokens&apos; argument 1 names different: declaration &apos;newTokens&apos; definition &apos;tokenBag&apos;." cwe="628" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/clientService.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/clientService.cpp" line="112" column="59"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/clientService.h" line="46" column="48"/>
+            <symbol>sendAllTokens</symbol>
+        </error>
+        <error id="constParameterReference" severity="style" msg="Parameter &apos;playerDataList&apos; can be declared as reference to const" verbose="Parameter &apos;playerDataList&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp" line="50" column="58" info="Parameter &apos;playerDataList&apos; can be declared as reference to const"/>
+            <symbol>playerDataList</symbol>
+        </error>
+        <error id="constParameterReference" severity="style" msg="Parameter &apos;allTiles&apos; can be declared as reference to const" verbose="Parameter &apos;allTiles&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp" line="68" column="61" info="Parameter &apos;allTiles&apos; can be declared as reference to const"/>
+            <symbol>allTiles</symbol>
+        </error>
+        <error id="constParameterReference" severity="style" msg="Parameter &apos;currentTiles&apos; can be declared as reference to const" verbose="Parameter &apos;currentTiles&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp" line="69" column="64" info="Parameter &apos;currentTiles&apos; can be declared as reference to const"/>
+            <symbol>currentTiles</symbol>
+        </error>
+        <error id="constParameterReference" severity="style" msg="Parameter &apos;currentTokens&apos; can be declared as reference to const" verbose="Parameter &apos;currentTokens&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp" line="71" column="64" info="Parameter &apos;currentTokens&apos; can be declared as reference to const"/>
+            <symbol>currentTokens</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;token&apos; can be declared as pointer to const" verbose="Variable &apos;token&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp" line="94" column="17" info="Variable &apos;token&apos; can be declared as pointer to const"/>
+            <symbol>token</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;playerOrder()&apos; should return member &apos;m_playerOrder&apos; by const reference." verbose="Function &apos;playerOrder()&apos; should return member &apos;m_playerOrder&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupPlayers.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupPlayers.h" line="25" column="23"/>
+        </error>
+        <error id="constParameterReference" severity="style" msg="Parameter &apos;startingTiles&apos; can be declared as reference to const" verbose="Parameter &apos;startingTiles&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupPlayers.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupPlayers.cpp" line="59" column="68" info="Parameter &apos;startingTiles&apos; can be declared as reference to const"/>
+            <symbol>startingTiles</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;SetupGame::numOfPlayers&apos; can be const." verbose="The member function &apos;SetupGame::numOfPlayers&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="21" column="17"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="14" column="28"/>
+            <symbol>SetupGame::numOfPlayers</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;SetupGame::playerNames&apos; can be const." verbose="The member function &apos;SetupGame::playerNames&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="26" column="17"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="15" column="28"/>
+            <symbol>SetupGame::playerNames</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;SetupGame::tokenNumbers&apos; can be static." verbose="The member function &apos;SetupGame::tokenNumbers&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="31" column="17"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="16" column="28"/>
+            <symbol>SetupGame::tokenNumbers</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;SetupGame::shuffleTiles&apos; can be static." verbose="The member function &apos;SetupGame::shuffleTiles&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="123" column="17"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="25" column="17"/>
+            <symbol>SetupGame::shuffleTiles</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;SetupGame::setupCurrentTiles&apos; can be static." verbose="The member function &apos;SetupGame::setupCurrentTiles&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="148" column="17"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="28" column="22"/>
+            <symbol>SetupGame::setupCurrentTiles</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;SetupGame::setupCurrentTokens&apos; can be const." verbose="The member function &apos;SetupGame::setupCurrentTokens&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="156" column="17"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="29" column="22"/>
+            <symbol>SetupGame::setupCurrentTokens</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;SetupGame::checkIfAllTokensAreSame&apos; can be static." verbose="The member function &apos;SetupGame::checkIfAllTokensAreSame&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="170" column="17"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="31" column="10"/>
+            <symbol>SetupGame::checkIfAllTokensAreSame</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;playerNames()&apos; should return member &apos;m_playerNames&apos; by const reference." verbose="Function &apos;playerNames()&apos; should return member &apos;m_playerNames&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="15" column="28"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;allTiles()&apos; should return member &apos;m_allTiles&apos; by const reference." verbose="Function &apos;allTiles()&apos; should return member &apos;m_allTiles&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="17" column="28"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;allTokens()&apos; should return member &apos;m_allTokens&apos; by const reference." verbose="Function &apos;allTokens()&apos; should return member &apos;m_allTokens&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="18" column="28"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;currentTiles()&apos; should return member &apos;m_currentTiles&apos; by const reference." verbose="Function &apos;currentTiles()&apos; should return member &apos;m_currentTiles&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="19" column="28"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;currentTokens()&apos; should return member &apos;m_currentTokens&apos; by const reference." verbose="Function &apos;currentTokens()&apos; should return member &apos;m_currentTokens&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="20" column="28"/>
+        </error>
+        <error id="shadowFunction" severity="style" msg="Local variable &apos;allTokens&apos; shadows outer function" verbose="Local variable &apos;allTokens&apos; shadows outer function" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="105" column="28" info="Shadow variable"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h" line="18" column="28" info="Shadowed declaration"/>
+            <symbol>allTokens</symbol>
+        </error>
+        <error id="constParameterReference" severity="style" msg="Parameter &apos;tokens&apos; can be declared as reference to const" verbose="Parameter &apos;tokens&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="170" column="59" info="Parameter &apos;tokens&apos; can be declared as reference to const"/>
+            <symbol>tokens</symbol>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::all_of or std::none_of algorithm instead of a raw loop." verbose="Consider using std::all_of or std::none_of algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="179" column="5"/>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;HexagonGrid&apos; argument 3 names different: declaration &apos;hexagonSize&apos; definition &apos;hexSize&apos;." verbose="Function &apos;HexagonGrid&apos; argument 3 names different: declaration &apos;hexagonSize&apos; definition &apos;hexSize&apos;." cwe="628" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagonGrid.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagonGrid.cpp" line="5" column="52"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagonGrid.h" line="16" column="43"/>
+            <symbol>HexagonGrid</symbol>
+        </error>
+        <error id="normalCheckLevelMaxBranches" severity="information" msg="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." verbose="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="0" column="0"/>
+        </error>
+        <error id="initializerList" severity="style" msg="Member variable &apos;Hexagon::hexagonSize&apos; is in the wrong place in the initializer list." verbose="Member variable &apos;Hexagon::hexagonSize&apos; is in the wrong place in the initializer list. Members are initialized in the order they are declared, not in the order they are in the initializer list. Keeping the initializer list in the same order that the members were declared prevents order dependent initialization errors." cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.h" line="50" column="22"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="33" column="41"/>
+            <symbol>Hexagon::hexagonSize</symbol>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;fileName&apos; can be reduced." verbose="The scope of the variable &apos;fileName&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="107" column="17"/>
+            <symbol>fileName</symbol>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;yCoord&apos; can be reduced." verbose="The scope of the variable &apos;yCoord&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="143" column="9"/>
+            <symbol>yCoord</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;setTileData&apos; argument 1 names different: declaration &apos;tileData&apos; definition &apos;oTileData&apos;." verbose="Function &apos;setTileData&apos; argument 1 names different: declaration &apos;tileData&apos; definition &apos;oTileData&apos;." cwe="628" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="124" column="43"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.h" line="29" column="43"/>
+            <symbol>setTileData</symbol>
+        </error>
+        <error id="passedByValue" severity="performance" msg="Function parameter &apos;placedToken&apos; should be passed by const reference." verbose="Parameter &apos;placedToken&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="94" column="74" info="Function parameter &apos;placedToken&apos; should be passed by const reference."/>
+            <symbol>placedToken</symbol>
+        </error>
+        <error id="passedByValue" severity="performance" msg="Function parameter &apos;animals&apos; should be passed by const reference." verbose="Parameter &apos;animals&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="95" column="44" info="Function parameter &apos;animals&apos; should be passed by const reference."/>
+            <symbol>animals</symbol>
+        </error>
+        <error id="passedByValue" severity="performance" msg="Function parameter &apos;habitats&apos; should be passed by const reference." verbose="Parameter &apos;habitats&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="95" column="70" info="Function parameter &apos;habitats&apos; should be passed by const reference."/>
+            <symbol>habitats</symbol>
+        </error>
+        <error id="passedByValue" severity="performance" msg="Function parameter &apos;animals&apos; should be passed by const reference." verbose="Parameter &apos;animals&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="136" column="46" info="Function parameter &apos;animals&apos; should be passed by const reference."/>
+            <symbol>animals</symbol>
+        </error>
+        <error id="passedByValue" severity="performance" msg="Function parameter &apos;habitats&apos; should be passed by const reference." verbose="Parameter &apos;habitats&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="136" column="72" info="Function parameter &apos;habitats&apos; should be passed by const reference."/>
+            <symbol>habitats</symbol>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &apos;fileName&apos; is assigned a value that is never used." verbose="Variable &apos;fileName&apos; is assigned a value that is never used." cwe="563" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="107" column="26"/>
+            <symbol>fileName</symbol>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &apos;fileName&apos; is assigned a value that is never used." verbose="Variable &apos;fileName&apos; is assigned a value that is never used." cwe="563" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="109" column="22"/>
+            <symbol>fileName</symbol>
+        </error>
+        <error id="normalCheckLevelMaxBranches" severity="information" msg="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." verbose="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="0" column="0"/>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;onTokenBagReceived&apos; argument 1 names different: declaration &apos;newTokens&apos; definition &apos;tokenBag&apos;." verbose="Function &apos;onTokenBagReceived&apos; argument 1 names different: declaration &apos;newTokens&apos; definition &apos;tokenBag&apos;." cwe="628" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="324" column="61"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.h" line="53" column="53"/>
+            <symbol>onTokenBagReceived</symbol>
+        </error>
+        <error id="shadowArgument" severity="style" msg="Local variable &apos;variant&apos; shadows outer argument" verbose="Local variable &apos;variant&apos; shadows outer argument" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp" line="107" column="26" info="Shadow variable"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp" line="99" column="40" info="Shadowed declaration"/>
+            <symbol>variant</symbol>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &apos;board&apos; shadows outer variable" verbose="Local variable &apos;board&apos; shadows outer variable" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="118" column="11" info="Shadow variable"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.h" line="65" column="20" info="Shadowed declaration"/>
+            <symbol>board</symbol>
+        </error>
+        <error id="shadowArgument" severity="style" msg="Local variable &apos;variant&apos; shadows outer argument" verbose="Local variable &apos;variant&apos; shadows outer argument" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp" line="112" column="26" info="Shadow variable"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp" line="99" column="40" info="Shadowed declaration"/>
+            <symbol>variant</symbol>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &apos;game&apos; shadows outer variable" verbose="Local variable &apos;game&apos; shadows outer variable" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="127" column="11" info="Shadow variable"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.h" line="64" column="20" info="Shadowed declaration"/>
+            <symbol>game</symbol>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;str&apos; can be declared as reference to const" verbose="Variable &apos;str&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp" line="23" column="16" info="Variable &apos;str&apos; can be declared as reference to const"/>
+            <symbol>str</symbol>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;playerName&apos; can be declared as reference to const" verbose="Variable &apos;playerName&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="159" column="16" info="Variable &apos;playerName&apos; can be declared as reference to const"/>
+            <symbol>playerName</symbol>
+        </error>
+        <error id="normalCheckLevelMaxBranches" severity="information" msg="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." verbose="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="0" column="0"/>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::transform algorithm instead of a raw loop." verbose="Consider using std::transform algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp" line="108" column="20"/>
+        </error>
+        <error id="constParameterCallback" severity="style" msg="Parameter &apos;playerDataList&apos; can be declared as reference to const. However it seems that &apos;onPlayersReceived&apos; is a callback function, if &apos;playerDataList&apos; is declared with const you might also need to cast function pointer(s)." verbose="Parameter &apos;playerDataList&apos; can be declared as reference to const. However it seems that &apos;onPlayersReceived&apos; is a callback function, if &apos;playerDataList&apos; is declared with const you might also need to cast function pointer(s)." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="252" column="57" info="Parameter &apos;playerDataList&apos; can be declared as reference to const"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="136" column="80" info="You might need to cast the function pointer here"/>
+            <symbol>playerDataList</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;Scoring::getNeighbours&apos; can be static." verbose="The member function &apos;Scoring::getNeighbours&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="461" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="28" column="44"/>
+            <symbol>Scoring::getNeighbours</symbol>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::transform algorithm instead of a raw loop." verbose="Consider using std::transform algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp" line="113" column="19"/>
+        </error>
+        <error id="constParameterCallback" severity="style" msg="Parameter &apos;allTiles&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;allTiles&apos; is declared with const you might also need to cast function pointer(s)." verbose="Parameter &apos;allTiles&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;allTiles&apos; is declared with const you might also need to cast function pointer(s)." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="271" column="51" info="Parameter &apos;allTiles&apos; can be declared as reference to const"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="137" column="80" info="You might need to cast the function pointer here"/>
+            <symbol>allTiles</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;Scoring::getAdjacentSide&apos; can be static." verbose="The member function &apos;Scoring::getAdjacentSide&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="513" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="30" column="44"/>
+            <symbol>Scoring::getAdjacentSide</symbol>
+        </error>
+        <error id="constParameterCallback" severity="style" msg="Parameter &apos;allTokens&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;allTokens&apos; is declared with const you might also need to cast function pointer(s)." verbose="Parameter &apos;allTokens&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;allTokens&apos; is declared with const you might also need to cast function pointer(s)." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="271" column="79" info="Parameter &apos;allTokens&apos; can be declared as reference to const"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="137" column="80" info="You might need to cast the function pointer here"/>
+            <symbol>allTokens</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;Scoring::habitatSides&apos; can be static." verbose="The member function &apos;Scoring::habitatSides&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="489" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="31" column="32"/>
+            <symbol>Scoring::habitatSides</symbol>
+        </error>
+        <error id="constParameterCallback" severity="style" msg="Parameter &apos;currentTiles&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;currentTiles&apos; is declared with const you might also need to cast function pointer(s)." verbose="Parameter &apos;currentTiles&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;currentTiles&apos; is declared with const you might also need to cast function pointer(s)." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="272" column="55" info="Parameter &apos;currentTiles&apos; can be declared as reference to const"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="137" column="80" info="You might need to cast the function pointer here"/>
+            <symbol>currentTiles</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;Scoring::findNeighborsWithToken&apos; can be static." verbose="The member function &apos;Scoring::findNeighborsWithToken&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="37" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="33" column="34"/>
+            <symbol>Scoring::findNeighborsWithToken</symbol>
+        </error>
+        <error id="constParameterCallback" severity="style" msg="Parameter &apos;currentTokensNames&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;currentTokensNames&apos; is declared with const you might also need to cast function pointer(s)." verbose="Parameter &apos;currentTokensNames&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;currentTokensNames&apos; is declared with const you might also need to cast function pointer(s)." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="273" column="55" info="Parameter &apos;currentTokensNames&apos; can be declared as reference to const"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="137" column="80" info="You might need to cast the function pointer here"/>
+            <symbol>currentTokensNames</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;Scoring::calculateBearScore&apos; can be static." verbose="The member function &apos;Scoring::calculateBearScore&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="171" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="38" column="9"/>
+            <symbol>Scoring::calculateBearScore</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;Scoring::calculateHawkScore&apos; can be static." verbose="The member function &apos;Scoring::calculateHawkScore&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="244" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="39" column="9"/>
+            <symbol>Scoring::calculateHawkScore</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;Scoring::calculateFoxScore&apos; can be static." verbose="The member function &apos;Scoring::calculateFoxScore&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="286" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="40" column="9"/>
+            <symbol>Scoring::calculateFoxScore</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;Scoring::findSalmonRun&apos; can be static." verbose="The member function &apos;Scoring::findSalmonRun&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="361" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="43" column="38"/>
+            <symbol>Scoring::findSalmonRun</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;Scoring::processStandaloneElkLine&apos; can be static." verbose="The member function &apos;Scoring::processStandaloneElkLine&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="119" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="51" column="5"/>
+            <symbol>Scoring::processStandaloneElkLine</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;Scoring::findElkLine&apos; can be static." verbose="The member function &apos;Scoring::findElkLine&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="141" column="15"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="55" column="10"/>
+            <symbol>Scoring::findElkLine</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;Scoring&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;Scoring&apos; has a constructor with 1 argument that is not explicit. Such, so called &quot;Converting constructors&quot;, should in general be explicit for type safety reasons as that prevents unintended implicit conversions." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="21" column="5"/>
+            <symbol>Scoring</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;TileData::id&apos; is not initialized in the constructor." verbose="Member variable &apos;TileData::id&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h" line="12" column="5"/>
+            <symbol>TileData::id</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;TileData::row&apos; is not initialized in the constructor." verbose="Member variable &apos;TileData::row&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h" line="12" column="5"/>
+            <symbol>TileData::row</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;playerAnimalScore()&apos; should return member &apos;m_playerAnimalScores&apos; by const reference." verbose="Function &apos;playerAnimalScore()&apos; should return member &apos;m_playerAnimalScores&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="59" column="28"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;TileData::col&apos; is not initialized in the constructor." verbose="Member variable &apos;TileData::col&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h" line="12" column="5"/>
+            <symbol>TileData::col</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;playerHabitatScores()&apos; should return member &apos;m_playerHabitatScores&apos; by const reference." verbose="Function &apos;playerHabitatScores()&apos; should return member &apos;m_playerHabitatScores&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h" line="60" column="28"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;TileData::placedTile&apos; is not initialized in the constructor." verbose="Member variable &apos;TileData::placedTile&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h" line="12" column="5"/>
+            <symbol>TileData::placedTile</symbol>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;usedElkTokenIDs&apos; can be reduced." verbose="The scope of the variable &apos;usedElkTokenIDs&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="59" column="55"/>
+            <symbol>usedElkTokenIDs</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;TileData::isValid&apos; is not initialized in the constructor." verbose="Member variable &apos;TileData::isValid&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h" line="12" column="5"/>
+            <symbol>TileData::isValid</symbol>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &apos;tile&apos; shadows outer variable" verbose="Local variable &apos;tile&apos; shadows outer variable" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="347" column="34" info="Shadow variable"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="340" column="23" info="Shadowed declaration"/>
+            <symbol>tile</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;TileData::rotation&apos; is not initialized in the constructor." verbose="Member variable &apos;TileData::rotation&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h" line="12" column="5"/>
+            <symbol>TileData::rotation</symbol>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &apos;row&apos; shadows outer variable" verbose="Local variable &apos;row&apos; shadows outer variable" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="428" column="32" info="Shadow variable"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="417" column="14" info="Shadowed declaration"/>
+            <symbol>row</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;TileData::index&apos; is not initialized in the constructor." verbose="Member variable &apos;TileData::index&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h" line="12" column="5"/>
+            <symbol>TileData::index</symbol>
+        </error>
+        <error id="passedByValue" severity="performance" msg="Function parameter &apos;habitat&apos; should be passed by const reference." verbose="Parameter &apos;habitat&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="440" column="40" info="Function parameter &apos;habitat&apos; should be passed by const reference."/>
+            <symbol>habitat</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;TileData::id&apos; is not initialized in the constructor." verbose="Member variable &apos;TileData::id&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp" line="5" column="11"/>
+            <symbol>TileData::id</symbol>
+        </error>
+        <error id="passedByValue" severity="performance" msg="Function parameter &apos;side&apos; should be passed by const reference." verbose="Parameter &apos;side&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="513" column="39" info="Function parameter &apos;side&apos; should be passed by const reference."/>
+            <symbol>side</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;TileData::isValid&apos; is not initialized in the constructor." verbose="Member variable &apos;TileData::isValid&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp" line="5" column="11"/>
+            <symbol>TileData::isValid</symbol>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;vecHex&apos; can be declared as reference to const" verbose="Variable &apos;vecHex&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="65" column="16" info="Variable &apos;vecHex&apos; can be declared as reference to const"/>
+            <symbol>vecHex</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;TileData::index&apos; is not initialized in the constructor." verbose="Member variable &apos;TileData::index&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp" line="5" column="11"/>
+            <symbol>TileData::index</symbol>
+        </error>
+        <error id="constParameterReference" severity="style" msg="Parameter &apos;allElkTokens&apos; can be declared as reference to const" verbose="Parameter &apos;allElkTokens&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="101" column="58" info="Parameter &apos;allElkTokens&apos; can be declared as reference to const"/>
+            <symbol>allElkTokens</symbol>
+        </error>
+        <error id="useInitializationList" severity="performance" msg="Variable &apos;placedToken&apos; is assigned in constructor body. Consider performing initialization in initialization list." verbose="When an object of a class is created, the constructors of all member variables are called consecutively in the order the variables are declared, even if you don&apos;t explicitly write them to the initialization list. You could avoid assigning &apos;placedToken&apos; a value by passing the value to the constructor in the initialization list." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp" line="8" column="5"/>
+            <symbol>placedToken</symbol>
+        </error>
+        <error id="initializerList" severity="style" msg="Member variable &apos;Game::m_board&apos; is in the wrong place in the initializer list." verbose="Member variable &apos;Game::m_board&apos; is in the wrong place in the initializer list. Members are initialized in the order they are declared, not in the order they are in the initializer list. Keeping the initializer list in the same order that the members were declared prevents order dependent initialization errors." cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.h" line="69" column="24"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="15" column="85"/>
+            <symbol>Game::m_board</symbol>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;vecHex&apos; can be declared as reference to const" verbose="Variable &apos;vecHex&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="180" column="16" info="Variable &apos;vecHex&apos; can be declared as reference to const"/>
+            <symbol>vecHex</symbol>
+        </error>
+        <error id="useInitializationList" severity="performance" msg="Variable &apos;m_playerOrder&apos; is assigned in constructor body. Consider performing initialization in initialization list." verbose="When an object of a class is created, the constructors of all member variables are called consecutively in the order the variables are declared, even if you don&apos;t explicitly write them to the initialization list. You could avoid assigning &apos;m_playerOrder&apos; a value by passing the value to the constructor in the initialization list." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="17" column="5"/>
+            <symbol>m_playerOrder</symbol>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;vecHex&apos; can be declared as reference to const" verbose="Variable &apos;vecHex&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="252" column="16" info="Variable &apos;vecHex&apos; can be declared as reference to const"/>
+            <symbol>vecHex</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getPlacedToken()&apos; should return member &apos;placedToken&apos; by const reference." verbose="Function &apos;getPlacedToken()&apos; should return member &apos;placedToken&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h" line="26" column="13"/>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;vecHex&apos; can be declared as reference to const" verbose="Variable &apos;vecHex&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="294" column="16" info="Variable &apos;vecHex&apos; can be declared as reference to const"/>
+            <symbol>vecHex</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getAnimals()&apos; should return member &apos;animals&apos; by const reference." verbose="Function &apos;getAnimals()&apos; should return member &apos;animals&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h" line="29" column="22"/>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;vecHex&apos; can be declared as reference to const" verbose="Variable &apos;vecHex&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="336" column="16" info="Variable &apos;vecHex&apos; can be declared as reference to const"/>
+            <symbol>vecHex</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getHabitats()&apos; should return member &apos;habitats&apos; by const reference." verbose="Function &apos;getHabitats()&apos; should return member &apos;habitats&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h" line="31" column="22"/>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::copy algorithm instead of a raw loop." verbose="Consider using std::copy algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileStorage.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileStorage.cpp" line="54" column="22"/>
+        </error>
+        <error id="constParameterReference" severity="style" msg="Parameter &apos;tiles&apos; can be declared as reference to const" verbose="Parameter &apos;tiles&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="461" column="58" info="Parameter &apos;tiles&apos; can be declared as reference to const"/>
+            <symbol>tiles</symbol>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::transform algorithm instead of a raw loop." verbose="Consider using std::transform algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp" line="140" column="17"/>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::copy algorithm instead of a raw loop." verbose="Consider using std::copy algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileStorage.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileStorage.cpp" line="61" column="22"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Token::index&apos; is not initialized in the constructor." verbose="Member variable &apos;Token::index&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.h" line="16" column="5"/>
+            <symbol>Token::index</symbol>
+        </error>
+        <error id="constParameterReference" severity="style" msg="Parameter &apos;tiles&apos; can be declared as reference to const" verbose="Parameter &apos;tiles&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="489" column="57" info="Parameter &apos;tiles&apos; can be declared as reference to const"/>
+            <symbol>tiles</symbol>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::transform algorithm instead of a raw loop." verbose="Consider using std::transform algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp" line="150" column="18"/>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::copy algorithm instead of a raw loop." verbose="Consider using std::copy algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileStorage.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileStorage.cpp" line="104" column="26"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Token::radius&apos; is not initialized in the constructor." verbose="Member variable &apos;Token::radius&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.h" line="16" column="5"/>
+            <symbol>Token::radius</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;neighbourTile&apos; can be declared as pointer to const" verbose="Variable &apos;neighbourTile&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="46" column="19" info="Variable &apos;neighbourTile&apos; can be declared as pointer to const"/>
+            <symbol>neighbourTile</symbol>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::copy algorithm instead of a raw loop." verbose="Consider using std::copy algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileStorage.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileStorage.cpp" line="111" column="26"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Token::pixmapItem&apos; is not initialized in the constructor." verbose="Member variable &apos;Token::pixmapItem&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.h" line="16" column="5"/>
+            <symbol>Token::pixmapItem</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;hex&apos; can be declared as pointer to const" verbose="Variable &apos;hex&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="67" column="20" info="Variable &apos;hex&apos; can be declared as pointer to const"/>
+            <symbol>hex</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;tile&apos; can be declared as pointer to const" verbose="Variable &apos;tile&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="69" column="23" info="Variable &apos;tile&apos; can be declared as pointer to const"/>
+            <symbol>tile</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;currentTiles()&apos; should return member &apos;m_currentTiles&apos; by const reference." verbose="Function &apos;currentTiles()&apos; should return member &apos;m_currentTiles&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.h" line="35" column="23"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;hex&apos; can be declared as pointer to const" verbose="Variable &apos;hex&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="182" column="20" info="Variable &apos;hex&apos; can be declared as pointer to const"/>
+            <symbol>hex</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;animal()&apos; should return member &apos;m_animal&apos; by const reference." verbose="Function &apos;animal()&apos; should return member &apos;m_animal&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.h" line="28" column="13"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getUsername()&apos; should return member &apos;m_username&apos; by const reference." verbose="Function &apos;getUsername()&apos; should return member &apos;m_username&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/client.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/client.h" line="18" column="17"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;currentTokens()&apos; should return member &apos;m_currentTokens&apos; by const reference." verbose="Function &apos;currentTokens()&apos; should return member &apos;m_currentTokens&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.h" line="37" column="23"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;tile&apos; can be declared as pointer to const" verbose="Variable &apos;tile&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="184" column="23" info="Variable &apos;tile&apos; can be declared as pointer to const"/>
+            <symbol>tile</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;sendMessage&apos; argument 1 names different: declaration &apos;message&apos; definition &apos;jsonString&apos;." verbose="Function &apos;sendMessage&apos; argument 1 names different: declaration &apos;message&apos; definition &apos;jsonString&apos;." cwe="628" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/client.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/client.cpp" line="28" column="41"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/client.h" line="15" column="44"/>
+            <symbol>sendMessage</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;playerOrder()&apos; should return member &apos;m_playerOrder&apos; by const reference." verbose="Function &apos;playerOrder()&apos; should return member &apos;m_playerOrder&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.h" line="38" column="23"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;neighbourTile&apos; can be declared as pointer to const" verbose="Variable &apos;neighbourTile&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="199" column="26" info="Variable &apos;neighbourTile&apos; can be declared as pointer to const"/>
+            <symbol>neighbourTile</symbol>
+        </error>
+        <error id="passedByValue" severity="performance" msg="Function parameter &apos;allPlayers&apos; should be passed by const reference." verbose="Parameter &apos;allPlayers&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="13" column="72" info="Function parameter &apos;allPlayers&apos; should be passed by const reference."/>
+            <symbol>allPlayers</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;neighbourTile&apos; can be declared as pointer to const" verbose="Variable &apos;neighbourTile&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="215" column="30" info="Variable &apos;neighbourTile&apos; can be declared as pointer to const"/>
+            <symbol>neighbourTile</symbol>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;t&apos; can be declared as reference to const" verbose="Variable &apos;t&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="107" column="16" info="Variable &apos;t&apos; can be declared as reference to const"/>
+            <symbol>t</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;hex&apos; can be declared as pointer to const" verbose="Variable &apos;hex&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="254" column="20" info="Variable &apos;hex&apos; can be declared as pointer to const"/>
+            <symbol>hex</symbol>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;t&apos; can be declared as reference to const" verbose="Variable &apos;t&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="363" column="16" info="Variable &apos;t&apos; can be declared as reference to const"/>
+            <symbol>t</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;tile&apos; can be declared as pointer to const" verbose="Variable &apos;tile&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="256" column="23" info="Variable &apos;tile&apos; can be declared as pointer to const"/>
+            <symbol>tile</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;lastPlacedHexagon&apos; can be declared as pointer to const" verbose="Variable &apos;lastPlacedHexagon&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="184" column="14" info="Variable &apos;lastPlacedHexagon&apos; can be declared as pointer to const"/>
+            <symbol>lastPlacedHexagon</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;neighbourTile&apos; can be declared as pointer to const" verbose="Variable &apos;neighbourTile&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="264" column="31" info="Variable &apos;neighbourTile&apos; can be declared as pointer to const"/>
+            <symbol>neighbourTile</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;tileData&apos; can be declared as pointer to const" verbose="Variable &apos;tileData&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="392" column="15" info="Variable &apos;tileData&apos; can be declared as pointer to const"/>
+            <symbol>tileData</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;hex&apos; can be declared as pointer to const" verbose="Variable &apos;hex&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="296" column="20" info="Variable &apos;hex&apos; can be declared as pointer to const"/>
+            <symbol>hex</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;info&apos; can be declared as pointer to const" verbose="Variable &apos;info&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="436" column="19" info="Variable &apos;info&apos; can be declared as pointer to const"/>
+            <symbol>info</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;tile&apos; can be declared as pointer to const" verbose="Variable &apos;tile&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="298" column="23" info="Variable &apos;tile&apos; can be declared as pointer to const"/>
+            <symbol>tile</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Player::m_playerId&apos; is not initialized in the constructor." verbose="Member variable &apos;Player::m_playerId&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h" line="13" column="5"/>
+            <symbol>Player::m_playerId</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;info&apos; can be declared as pointer to const" verbose="Variable &apos;info&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="455" column="19" info="Variable &apos;info&apos; can be declared as pointer to const"/>
+            <symbol>info</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;neighbourTile&apos; can be declared as pointer to const" verbose="Variable &apos;neighbourTile&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="306" column="31" info="Variable &apos;neighbourTile&apos; can be declared as pointer to const"/>
+            <symbol>neighbourTile</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Player::m_hexagonGrid&apos; is not initialized in the constructor." verbose="Member variable &apos;Player::m_hexagonGrid&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h" line="13" column="5"/>
+            <symbol>Player::m_hexagonGrid</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;tileData&apos; can be declared as pointer to const" verbose="Variable &apos;tileData&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="482" column="15" info="Variable &apos;tileData&apos; can be declared as pointer to const"/>
+            <symbol>tileData</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;hex&apos; can be declared as pointer to const" verbose="Variable &apos;hex&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="338" column="20" info="Variable &apos;hex&apos; can be declared as pointer to const"/>
+            <symbol>hex</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Player::m_pineconeNumber&apos; is not initialized in the constructor." verbose="Member variable &apos;Player::m_pineconeNumber&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h" line="13" column="5"/>
+            <symbol>Player::m_pineconeNumber</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;tileData&apos; can be declared as pointer to const" verbose="Variable &apos;tileData&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="563" column="15" info="Variable &apos;tileData&apos; can be declared as pointer to const"/>
+            <symbol>tileData</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;tile&apos; can be declared as pointer to const" verbose="Variable &apos;tile&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="340" column="23" info="Variable &apos;tile&apos; can be declared as pointer to const"/>
+            <symbol>tile</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Player::m_pineconeButtonActivated&apos; is not initialized in the constructor." verbose="Member variable &apos;Player::m_pineconeButtonActivated&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h" line="13" column="5"/>
+            <symbol>Player::m_pineconeButtonActivated</symbol>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;m_currentBoardToken&apos; can be declared as pointer to const" verbose="Variable &apos;m_currentBoardToken&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="683" column="20" info="Variable &apos;m_currentBoardToken&apos; can be declared as pointer to const"/>
+            <symbol>m_currentBoardToken</symbol>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::copy_if algorithm instead of a raw loop." verbose="Consider using std::copy_if algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="165" column="22"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Player::m_myTurn&apos; is not initialized in the constructor." verbose="Member variable &apos;Player::m_myTurn&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h" line="13" column="5"/>
+            <symbol>Player::m_myTurn</symbol>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::copy algorithm instead of a raw loop." verbose="Consider using std::copy algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="109" column="21"/>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::copy_if algorithm instead of a raw loop." verbose="Consider using std::copy_if algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="386" column="22"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Player::m_playerId&apos; is not initialized in the copy constructor." verbose="Member variable &apos;Player::m_playerId&apos; is not initialized in the copy constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="29" column="9"/>
+            <symbol>Player::m_playerId</symbol>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::transform algorithm instead of a raw loop." verbose="Consider using std::transform algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="264" column="26"/>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &apos;Player::m_animalPoints&apos; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &apos;Player::m_animalPoints&apos; is not assigned in the copy constructor. Should it be copied?" cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="29" column="9"/>
+            <symbol>Player::m_animalPoints</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getUsernames()&apos; should return member &apos;usernames&apos; by const reference." verbose="Function &apos;getUsernames()&apos; should return member &apos;usernames&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.h" line="26" column="23"/>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::transform algorithm instead of a raw loop." verbose="Consider using std::transform algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="268" column="26"/>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &apos;Player::m_habitatScores&apos; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &apos;Player::m_habitatScores&apos; is not assigned in the copy constructor. Should it be copied?" cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="29" column="9"/>
+            <symbol>Player::m_habitatScores</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getPlayers()&apos; should return member &apos;players&apos; by const reference." verbose="Function &apos;getPlayers()&apos; should return member &apos;players&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.h" line="27" column="23"/>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::copy algorithm instead of a raw loop." verbose="Consider using std::copy algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp" line="365" column="21"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Player::m_playerId&apos; is not initialized in the constructor." verbose="Member variable &apos;Player::m_playerId&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="10" column="9"/>
+            <symbol>Player::m_playerId</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getHostAddress()&apos; should return member &apos;hostAddress&apos; by const reference." verbose="Function &apos;getHostAddress()&apos; should return member &apos;hostAddress&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.h" line="29" column="23"/>
+        </error>
+        <error id="initializerList" severity="style" msg="Member variable &apos;Player::m_hexagonGrid&apos; is in the wrong place in the initializer list." verbose="Member variable &apos;Player::m_hexagonGrid&apos; is in the wrong place in the initializer list. Members are initialized in the order they are declared, not in the order they are in the initializer list. Keeping the initializer list in the same order that the members were declared prevents order dependent initialization errors." cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h" line="42" column="28"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="30" column="41"/>
+            <symbol>Player::m_hexagonGrid</symbol>
+        </error>
+        <error id="unsignedLessThanZero" severity="style" msg="Checking if unsigned expression &apos;startPort&apos; is less than zero." verbose="The unsigned expression &apos;startPort&apos; will never be negative so it is either pointless or an error to check if it is." cwe="570" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.cpp" line="8" column="19" info="Unsigned less than zero"/>
+            <symbol>startPort</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Player::getPlayerId&apos; can be const." verbose="The member function &apos;Player::getPlayerId&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="147" column="14"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h" line="38" column="10"/>
+            <symbol>Player::getPlayerId</symbol>
+        </error>
+        <error id="unsignedLessThanZero" severity="style" msg="Checking if unsigned expression &apos;endPort&apos; is less than zero." verbose="The unsigned expression &apos;endPort&apos; will never be negative so it is either pointless or an error to check if it is." cwe="570" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.cpp" line="13" column="17" info="Unsigned less than zero"/>
+            <symbol>endPort</symbol>
+        </error>
+        <error id="noOperatorEq" severity="warning" msg="Class &apos;Player&apos; does not have a operator= which is recommended since it has dynamic memory/resource management." verbose="Class &apos;Player&apos; does not have a operator= which is recommended since it has dynamic memory/resource management." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="21" column="5"/>
+            <symbol>Player</symbol>
+        </error>
+        <error id="useStlAlgorithm" severity="style" msg="Consider using std::find_if algorithm instead of a raw loop." verbose="Consider using std::find_if algorithm instead of a raw loop." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.cpp" line="131" column="9"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;playerName()&apos; should return member &apos;m_playerName&apos; by const reference." verbose="Function &apos;playerName()&apos; should return member &apos;m_playerName&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h" line="21" column="28"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;animalPoints()&apos; should return member &apos;m_animalPoints&apos; by const reference." verbose="Function &apos;animalPoints()&apos; should return member &apos;m_animalPoints&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h" line="26" column="28"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;habitatScores()&apos; should return member &apos;m_habitatScores&apos; by const reference." verbose="Function &apos;habitatScores()&apos; should return member &apos;m_habitatScores&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h" line="27" column="28"/>
+        </error>
+        <error id="constParameterReference" severity="style" msg="Parameter &apos;centralTilesList&apos; can be declared as reference to const" verbose="Parameter &apos;centralTilesList&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="118" column="49" info="Parameter &apos;centralTilesList&apos; can be declared as reference to const"/>
+            <symbol>centralTilesList</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::replaceDuplicateButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::replaceDuplicateButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::replaceDuplicateButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::usePineconeButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::usePineconeButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::usePineconeButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::scoreButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::scoreButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::scoreButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::chatBox&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::chatBox&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::chatBox</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::messageInput&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::messageInput&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::messageInput</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::centralScene&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::centralScene&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::centralScene</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::pineconeText&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::pineconeText&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::pineconeText</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::cancelButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::cancelButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::cancelButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::confirmButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::confirmButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::confirmButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::rotateCounterClockwiseButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::rotateCounterClockwiseButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::rotateCounterClockwiseButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::rotateClockwiseButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::rotateClockwiseButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::rotateClockwiseButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::turnsLeftLabel&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::turnsLeftLabel&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::turnsLeftLabel</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::currentPlayerLabel&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::currentPlayerLabel&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::currentPlayerLabel</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::leftArrowButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::leftArrowButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::leftArrowButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::undoButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::undoButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::undoButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::rulesButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::rulesButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::rulesButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::rightArrowButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::rightArrowButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::rightArrowButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::forceEndTurn&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::forceEndTurn&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::forceEndTurn</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::freeChoiceButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::freeChoiceButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::freeChoiceButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::replaceTokensButton&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::replaceTokensButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::replaceTokensButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::pineconeDialog&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::pineconeDialog&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::pineconeDialog</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;Board::m_locked&apos; is not initialized in the constructor." verbose="Member variable &apos;Board::m_locked&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="8"/>
+            <symbol>Board::m_locked</symbol>
+        </error>
+        <error id="initializerList" severity="style" msg="Member variable &apos;Board::currentPlayer&apos; is in the wrong place in the initializer list." verbose="Member variable &apos;Board::currentPlayer&apos; is in the wrong place in the initializer list. Members are initialized in the order they are declared, not in the order they are in the initializer list. Keeping the initializer list in the same order that the members were declared prevents order dependent initialization errors." cwe="398" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.h" line="123" column="34"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="13" column="29"/>
+            <symbol>Board::currentPlayer</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getCentralPositions()&apos; should return member &apos;centralPositions&apos; by const reference." verbose="Function &apos;getCentralPositions()&apos; should return member &apos;centralPositions&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.h" line="41" column="34"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getCurrentHexagons()&apos; should return member &apos;currentHexagons&apos; by const reference." verbose="Function &apos;getCurrentHexagons()&apos; should return member &apos;currentHexagons&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.h" line="42" column="34"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getCurrentTokens()&apos; should return member &apos;currentTokens&apos; by const reference." verbose="Function &apos;getCurrentTokens()&apos; should return member &apos;currentTokens&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.h" line="57" column="34"/>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;Board&apos; argument 2 names different: declaration &apos;backgroundColor&apos; definition &apos;col&apos;." verbose="Function &apos;Board&apos; argument 2 names different: declaration &apos;backgroundColor&apos; definition &apos;col&apos;." cwe="628" inconclusive="true" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="11" column="39"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.h" line="30" column="36"/>
+            <symbol>Board</symbol>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &apos;container&apos; shadows outer variable" verbose="Local variable &apos;container&apos; shadows outer variable" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="314" column="11" info="Shadow variable"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.h" line="143" column="25" info="Shadowed declaration"/>
+            <symbol>container</symbol>
+        </error>
+        <error id="functionStatic" severity="style" msg="The member function &apos;Ui_CascadiaGame::retranslateUi&apos; can be static." verbose="The member function &apos;Ui_CascadiaGame::retranslateUi&apos; can be static." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/build_cppcheck/cascadia_autogen/include/ui_mainwindow.h" line="103" column="10"/>
+            <symbol>Ui_CascadiaGame::retranslateUi</symbol>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getBackgroundColor()&apos; should return member &apos;backgroundColor&apos; by const reference." verbose="Function &apos;getBackgroundColor()&apos; should return member &apos;backgroundColor&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.h" line="39" column="23"/>
+        </error>
+        <error id="returnByReference" severity="performance" msg="Function &apos;getButtonStyle()&apos; should return member &apos;buttonStyle&apos; by const reference." verbose="Function &apos;getButtonStyle()&apos; should return member &apos;buttonStyle&apos; by const reference." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.h" line="40" column="23"/>
+        </error>
+        <error id="unusedVariable" severity="style" msg="Unused variable: ok" verbose="Unused variable: ok" cwe="563" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.cpp" line="230" column="10"/>
+            <symbol>ok</symbol>
+        </error>
+        <error id="normalCheckLevelMaxBranches" severity="information" msg="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." verbose="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp" line="0" column="0"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;LobbyView::clientListWidget&apos; is not initialized in the constructor." verbose="Member variable &apos;LobbyView::clientListWidget&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp" line="7" column="12"/>
+            <symbol>LobbyView::clientListWidget</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;LobbyView::port&apos; is not initialized in the constructor." verbose="Member variable &apos;LobbyView::port&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp" line="7" column="12"/>
+            <symbol>LobbyView::port</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;LobbyView::chatBox&apos; is not initialized in the constructor." verbose="Member variable &apos;LobbyView::chatBox&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp" line="7" column="12"/>
+            <symbol>LobbyView::chatBox</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;LobbyView::messageInput&apos; is not initialized in the constructor." verbose="Member variable &apos;LobbyView::messageInput&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp" line="7" column="12"/>
+            <symbol>LobbyView::messageInput</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;LobbyView::sendButton&apos; is not initialized in the constructor." verbose="Member variable &apos;LobbyView::sendButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp" line="7" column="12"/>
+            <symbol>LobbyView::sendButton</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;LobbyView::backButton&apos; is not initialized in the constructor." verbose="Member variable &apos;LobbyView::backButton&apos; is not initialized in the constructor. Member variables of native types, pointers, or references are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp" line="7" column="12"/>
+            <symbol>LobbyView::backButton</symbol>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &apos;backButton&apos; shadows outer variable" verbose="Local variable &apos;backButton&apos; shadows outer variable" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp" line="377" column="11" info="Shadow variable"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.h" line="56" column="18" info="Shadowed declaration"/>
+            <symbol>backButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;mainWindow&apos; can be declared as pointer to const" verbose="Variable &apos;mainWindow&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp" line="81" column="11" info="Variable &apos;mainWindow&apos; can be declared as pointer to const"/>
+            <symbol>mainWindow</symbol>
+        </error>
+        <error id="normalCheckLevelMaxBranches" severity="information" msg="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." verbose="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="0" column="0"/>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="18" column="43" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="19" column="35" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="23" column="33" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="24" column="25" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="27" column="34" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="28" column="26" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="32" column="49" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="33" column="41" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="37" column="42" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="38" column="34" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="42" column="32" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="43" column="24" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="46" column="36" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="47" column="28" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="51" column="31" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="52" column="23" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="55" column="32" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="56" column="24" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="59" column="37" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="60" column="29" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="64" column="33" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="65" column="25" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="69" column="37" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="70" column="29" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="74" column="40" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="75" column="32" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." verbose="Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game." cwe="476" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="79" column="37" info="Null pointer dereference"/>
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="75" column="32" info="Assuming that condition &apos;m_game&apos; is not redundant"/>
+            <symbol>m_game</symbol>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;vecHex&apos; can be declared as reference to const" verbose="Variable &apos;vecHex&apos; can be declared as reference to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="83" column="20" info="Variable &apos;vecHex&apos; can be declared as reference to const"/>
+            <symbol>vecHex</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;replaceDuplicateButton&apos; can be declared as pointer to const" verbose="Variable &apos;replaceDuplicateButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="18" column="18" info="Variable &apos;replaceDuplicateButton&apos; can be declared as pointer to const"/>
+            <symbol>replaceDuplicateButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;cancelButton&apos; can be declared as pointer to const" verbose="Variable &apos;cancelButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="23" column="18" info="Variable &apos;cancelButton&apos; can be declared as pointer to const"/>
+            <symbol>cancelButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;confirmButton&apos; can be declared as pointer to const" verbose="Variable &apos;confirmButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="27" column="18" info="Variable &apos;confirmButton&apos; can be declared as pointer to const"/>
+            <symbol>confirmButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;rotateCounterClockwiseButton&apos; can be declared as pointer to const" verbose="Variable &apos;rotateCounterClockwiseButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="32" column="18" info="Variable &apos;rotateCounterClockwiseButton&apos; can be declared as pointer to const"/>
+            <symbol>rotateCounterClockwiseButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;rotateClockwiseButton&apos; can be declared as pointer to const" verbose="Variable &apos;rotateClockwiseButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="37" column="18" info="Variable &apos;rotateClockwiseButton&apos; can be declared as pointer to const"/>
+            <symbol>rotateClockwiseButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;scoreButton&apos; can be declared as pointer to const" verbose="Variable &apos;scoreButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="42" column="18" info="Variable &apos;scoreButton&apos; can be declared as pointer to const"/>
+            <symbol>scoreButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;leftArrowButton&apos; can be declared as pointer to const" verbose="Variable &apos;leftArrowButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="46" column="18" info="Variable &apos;leftArrowButton&apos; can be declared as pointer to const"/>
+            <symbol>leftArrowButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;undoButton&apos; can be declared as pointer to const" verbose="Variable &apos;undoButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="51" column="18" info="Variable &apos;undoButton&apos; can be declared as pointer to const"/>
+            <symbol>undoButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;rulesButton&apos; can be declared as pointer to const" verbose="Variable &apos;rulesButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="55" column="18" info="Variable &apos;rulesButton&apos; can be declared as pointer to const"/>
+            <symbol>rulesButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;rightArrowButton&apos; can be declared as pointer to const" verbose="Variable &apos;rightArrowButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="59" column="18" info="Variable &apos;rightArrowButton&apos; can be declared as pointer to const"/>
+            <symbol>rightArrowButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;forceEndTurn&apos; can be declared as pointer to const" verbose="Variable &apos;forceEndTurn&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="64" column="18" info="Variable &apos;forceEndTurn&apos; can be declared as pointer to const"/>
+            <symbol>forceEndTurn</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;freeChoiceButton&apos; can be declared as pointer to const" verbose="Variable &apos;freeChoiceButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="69" column="18" info="Variable &apos;freeChoiceButton&apos; can be declared as pointer to const"/>
+            <symbol>freeChoiceButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;replaceTokensButton&apos; can be declared as pointer to const" verbose="Variable &apos;replaceTokensButton&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="74" column="18" info="Variable &apos;replaceTokensButton&apos; can be declared as pointer to const"/>
+            <symbol>replaceTokensButton</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;hex&apos; can be declared as pointer to const" verbose="Variable &apos;hex&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="84" column="24" info="Variable &apos;hex&apos; can be declared as pointer to const"/>
+            <symbol>hex</symbol>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;currentHexagon&apos; can be declared as pointer to const" verbose="Variable &apos;currentHexagon&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="89" column="16" info="Variable &apos;currentHexagon&apos; can be declared as pointer to const"/>
+            <symbol>currentHexagon</symbol>
+        </error>
+        <error id="constVariableReference" severity="style" msg="Variable &apos;currentToken&apos; can be declared as pointer to const" verbose="Variable &apos;currentToken&apos; can be declared as pointer to const" cwe="398" file0="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp" line="94" column="16" info="Variable &apos;currentToken&apos; can be declared as pointer to const"/>
+            <symbol>currentToken</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;animalPoints&apos; is never used." verbose="The function &apos;animalPoints&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="77" column="14"/>
+            <symbol>animalPoints</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;calculateScore&apos; is never used." verbose="The function &apos;calculateScore&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="135" column="14"/>
+            <symbol>calculateScore</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;disableReplaceTokensButton&apos; is never used." verbose="The function &apos;disableReplaceTokensButton&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="235" column="13"/>
+            <symbol>disableReplaceTokensButton</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;drawToken&apos; is never used." verbose="The function &apos;drawToken&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.cpp" line="51" column="13"/>
+            <symbol>drawToken</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;findNeighborsWithToken&apos; is never used." verbose="The function &apos;findNeighborsWithToken&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="37" column="15"/>
+            <symbol>findNeighborsWithToken</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;getBoard&apos; is never used." verbose="The function &apos;getBoard&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.cpp" line="207" column="18"/>
+            <symbol>getBoard</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;getCentralPositions&apos; is never used." verbose="The function &apos;getCentralPositions&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="104" column="13"/>
+            <symbol>getCentralPositions</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;getCentralScene&apos; is never used." verbose="The function &apos;getCentralScene&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="276" column="13"/>
+            <symbol>getCentralScene</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;getClientService&apos; is never used." verbose="The function &apos;getClientService&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="237" column="18"/>
+            <symbol>getClientService</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;getCurrentPlayerLabel&apos; is never used." verbose="The function &apos;getCurrentPlayerLabel&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="256" column="13"/>
+            <symbol>getCurrentPlayerLabel</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;getHostSocket&apos; is never used." verbose="The function &apos;getHostSocket&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp" line="209" column="21"/>
+            <symbol>getHostSocket</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;getParentWidget&apos; is never used." verbose="The function &apos;getParentWidget&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="812" column="13"/>
+            <symbol>getParentWidget</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;getServerService&apos; is never used." verbose="The function &apos;getServerService&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="242" column="18"/>
+            <symbol>getServerService</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;getSettings&apos; is never used." verbose="The function &apos;getSettings&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.cpp" line="151" column="18"/>
+            <symbol>getSettings</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;getUi&apos; is never used." verbose="The function &apos;getUi&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.cpp" line="56" column="18"/>
+            <symbol>getUi</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;habitatScores&apos; is never used." verbose="The function &apos;habitatScores&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="82" column="14"/>
+            <symbol>habitatScores</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;isConnected&apos; is never used." verbose="The function &apos;isConnected&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/client.cpp" line="120" column="14"/>
+            <symbol>isConnected</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;isStarted&apos; is never used." verbose="The function &apos;isStarted&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.cpp" line="164" column="14"/>
+            <symbol>isStarted</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;numOfPlayers&apos; is never used." verbose="The function &apos;numOfPlayers&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="21" column="17"/>
+            <symbol>numOfPlayers</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;pineconeButtonActivated&apos; is never used." verbose="The function &apos;pineconeButtonActivated&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="67" column="14"/>
+            <symbol>pineconeButtonActivated</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;playerNames&apos; is never used." verbose="The function &apos;playerNames&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp" line="26" column="17"/>
+            <symbol>playerNames</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;processStandaloneElkLine&apos; is never used." verbose="The function &apos;processStandaloneElkLine&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp" line="119" column="15"/>
+            <symbol>processStandaloneElkLine</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;rotateClockwise&apos; is never used." verbose="The function &apos;rotateClockwise&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp" line="50" column="12"/>
+            <symbol>rotateClockwise</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;rotateCounterClockwise&apos; is never used." verbose="The function &apos;rotateCounterClockwise&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp" line="55" column="12"/>
+            <symbol>rotateCounterClockwise</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;setClientService&apos; is never used." verbose="The function &apos;setClientService&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="227" column="18"/>
+            <symbol>setClientService</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;setCurrentHexagons&apos; is never used." verbose="The function &apos;setCurrentHexagons&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp" line="825" column="13"/>
+            <symbol>setCurrentHexagons</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;setCurrentPixmap&apos; is never used." verbose="The function &apos;setCurrentPixmap&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp" line="322" column="15"/>
+            <symbol>setCurrentPixmap</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;setHexagonGrid&apos; is never used." verbose="The function &apos;setHexagonGrid&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="130" column="14"/>
+            <symbol>setHexagonGrid</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;setPineconeButtonActivated&apos; is never used." verbose="The function &apos;setPineconeButtonActivated&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp" line="72" column="14"/>
+            <symbol>setPineconeButtonActivated</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;setServerService&apos; is never used." verbose="The function &apos;setServerService&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp" line="232" column="18"/>
+            <symbol>setServerService</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;setUsername&apos; is never used." verbose="The function &apos;setUsername&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/client.cpp" line="42" column="14"/>
+            <symbol>setUsername</symbol>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;type&apos; is never used." verbose="The function &apos;type&apos; is never used." cwe="561">
+            <location file="/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp" line="60" column="12"/>
+            <symbol>type</symbol>
+        </error>
+        <error id="checkersReport" severity="information" msg="Active checkers: 182/975 (use --checkers-report=&lt;filename&gt; to see details)" verbose="Active checkers: 182/975 (use --checkers-report=&lt;filename&gt; to see details)"/>
+    </errors>
+</results>

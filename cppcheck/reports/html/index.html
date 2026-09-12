@@ -1,0 +1,663 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cppcheck - HTML report - [project name]</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+    </style>
+    <script>
+      function getStyle(el, styleProp) {
+        var y;
+
+        if (el.currentStyle) {
+          y = el.currentStyle[styleProp];
+        } else if (window.getComputedStyle) {
+          y = document.defaultView.getComputedStyle(el, null).getPropertyValue(styleProp);
+        }
+
+        return y;
+      }
+
+      function toggle() {
+        var el = this.expandable_content;
+        var mark = this.expandable_marker;
+
+        if (el.style.display === "block") {
+          el.style.display = "none";
+          mark.textContent = "[+]";
+        } else {
+          el.style.display = "block";
+          mark.textContent = "[-]";
+        }
+      }
+
+      function initExpandables() {
+        var elements = document.querySelectorAll(".expandable");
+
+        for (var i = 0, len = elements.length; i < len; i++) {
+          var el = elements[i];
+          var clickable = el.querySelector("span");
+          var marker = clickable.querySelector(".marker");
+          var content = el.querySelector(".content");
+          var width = clickable.clientWidth - parseInt(getStyle(content, "padding-left")) - parseInt(getStyle(content, "padding-right"));
+          content.style.width = width + "px";
+          clickable.expandable_content = content;
+          clickable.expandable_marker = marker;
+          clickable.addEventListener("click", toggle);
+        }
+      }
+
+      function toggleDisplay(cb) {
+        var elements = document.querySelectorAll("." + cb.id);
+
+        for (var i = 0, len = elements.length; i < len; i++) {
+          elements[i].classList.toggle("id-filtered", !cb.checked);
+        }
+
+        updateFileRows();
+      }
+
+      function toggleSeverity(cb) {
+        cb.parentElement.classList.toggle("unchecked", !cb.checked);
+        var elements = document.querySelectorAll(".sev_" + cb.id);
+
+        for (var i = 0, len = elements.length; i < len; i++) {
+          elements[i].classList.toggle("severity-filtered", !cb.checked);
+        }
+
+        updateFileRows();
+      }
+      
+      function toggleClassification(cb) {
+        cb.parentElement.classList.toggle("unchecked", !cb.checked);
+        var elements = document.querySelectorAll(".class_" + cb.id);
+
+        for (var i = 0, len = elements.length; i < len; i++) {
+          elements[i].classList.toggle("classification-filtered", !cb.checked);
+        }
+
+        updateFileRows();
+      }
+    
+      function toggleTool(cb) {
+        cb.parentElement.classList.toggle("unchecked", !cb.checked);
+
+        var elements;
+        if (cb.id == "clang-tidy")
+            elements = document.querySelectorAll("[class^=clang-tidy-]");
+        else
+            elements = document.querySelectorAll(".issue:not([class^=clang-tidy-])");
+
+        for (var i = 0, len = elements.length; i < len; i++) {
+          elements[i].classList.toggle("tool-filtered", !cb.checked);
+        }
+
+        updateFileRows();
+      }
+
+      function toggleAll() {
+        var elements = document.querySelectorAll(".idToggle");
+
+        // starting from 1 since 0 is the "toggle all" input
+        for (var i = 1, len = elements.length; i < len; i++) {
+          var changed = elements[i].checked != elements[0].checked;
+          if (changed) {
+            elements[i].checked = elements[0].checked;
+            toggleDisplay(elements[i]);
+          }
+        }
+      }
+
+      function filterFile(filter) {
+        var elements = document.querySelectorAll(".fileEntry");
+
+        for (var i = 0, len = elements.length; i < len; i++) {
+          var visible = elements[i].querySelector("tr").querySelector("td").textContent.toLowerCase().includes(filter.toLowerCase());
+          elements[i].classList.toggle("text-filtered", !visible);
+        }
+      }
+
+      function filterText(text) {
+        filter = text.toLowerCase();
+        var elements = document.querySelectorAll(".issue");
+
+        for (var i = 0, len = elements.length; i < len; i++) {
+          var visible = false;
+          var fields = elements[i].querySelectorAll("td");
+          for (var n = 0, num = fields.length; n < num; n++) {
+            if (fields[n].textContent.toLowerCase().includes(filter)) {
+              visible = true;
+              break;
+            }
+          }
+          elements[i].classList.toggle("text-filtered", !visible);
+        }
+
+        updateFileRows();
+      }
+
+      function updateFileRows(element) {
+        var elements = document.querySelectorAll(".fileEntry");
+
+        for (var i = 0, len = elements.length; i < len; i++) {
+          var visible = elements[i].querySelector(".issue:not(.id-filtered):not(.severity-filtered):not(.classification-filtered):not(.tool-filtered):not(.text-filtered)");
+          elements[i].classList.toggle("file-filtered", !visible);
+        }
+      }
+
+      function reapplyFilters() {
+        // Reapply ID filters
+        var idToggles = document.querySelectorAll(".idToggle");
+        for (var i = 1; i < idToggles.length; i++) {
+          var cb = idToggles[i];
+          var elements = document.querySelectorAll("." + cb.id);
+          for (var j = 0; j < elements.length; j++) {
+            elements[j].classList.toggle("id-filtered", !cb.checked);
+          }
+        }
+
+        // Reapply severity filters
+        var sevToggles = document.querySelectorAll(".sev_toggle");
+        for (var i = 0; i < sevToggles.length; i++) {
+          var cb = sevToggles[i];
+            var elements = document.querySelectorAll(".sev_" + cb.id);
+          for (var j = 0; j < elements.length; j++) {
+            elements[j].classList.toggle("severity-filtered", !cb.checked);
+          }
+        }
+
+        // Reapply classification filters
+        var classToggles = document.querySelectorAll(".class_toggle");
+        for (var i = 0; i < classToggles.length; i++) {
+          var cb = classToggles[i];
+          var elements = document.querySelectorAll(".class_" + cb.id);
+          for (var j = 0; j < elements.length; j++) {
+            elements[j].classList.toggle("classification-filtered", !cb.checked);
+          }
+        }
+
+        // Reapply tool filters
+        var toolToggles = document.querySelectorAll(".tool_toggle");
+        for (var i = 0; i < toolToggles.length; i++) {
+          var cb = toolToggles[i];
+          var elements;
+          if (cb.id == "clang-tidy")
+            elements = document.querySelectorAll("[class^=clang-tidy-]");
+          else
+            elements = document.querySelectorAll(".issue:not([class^=clang-tidy-])");
+
+          for (var j = 0; j < elements.length; j++) {
+            elements[j].classList.toggle("tool-filtered", !cb.checked);
+          }
+        }
+
+        // Update file rows
+        updateFileRows();
+      }
+
+      window.addEventListener("pageshow", reapplyFilters);
+      window.addEventListener("load", initExpandables);
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+    <div id="header" class="header">
+      <h1>Cppcheck report - [project name]</h1>
+      <div id="filters">
+
+        <label class="checkBtn"><input type="checkbox" onclick="toggleTool(this)" id="cppcheck" checked>cppcheck</label>
+        <label class="checkBtn disabled"><input type="checkbox" onclick="toggleTool(this)" id="clang-tidy" disabled>clang-tidy</label>
+        | 
+        <label class="severityHeader">File: <input type="search" oninput="filterFile(this.value)"></label>
+        <label class="severityHeader">Filter: <input type="search" oninput="filterText(this.value)"></label>
+      </div>
+
+    </div>
+
+    <div id="menu_index">
+     <p><a href="index.html">Defect summary</a> </p>
+
+       <label><input type="checkbox" class="idToggle" onclick="toggleAll()" checked> Toggle all</label>
+       <table>
+           <tr><th>Show</th><th>#</th><th>Defect ID</th></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="uninitMemberVar" name="uninitMemberVar" checked></td><td>59</td><td>uninitMemberVar</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="constVariablePointer" name="constVariablePointer" checked></td><td>37</td><td>constVariablePointer</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="unusedFunction" name="unusedFunction" checked></td><td>32</td><td>unusedFunction</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="returnByReference" name="returnByReference" checked></td><td>29</td><td>returnByReference</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="useStlAlgorithm" name="useStlAlgorithm" checked></td><td>16</td><td>useStlAlgorithm</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="functionStatic" name="functionStatic" checked></td><td>15</td><td>functionStatic</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="nullPointerRedundantCheck" name="nullPointerRedundantCheck" checked></td><td>14</td><td>nullPointerRedundantCheck</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="constVariableReference" name="constVariableReference" checked></td><td>13</td><td>constVariableReference</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="constParameterReference" name="constParameterReference" checked></td><td>10</td><td>constParameterReference</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="passedByValue" name="passedByValue" checked></td><td>10</td><td>passedByValue</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="noExplicitConstructor" name="noExplicitConstructor" checked></td><td>9</td><td>noExplicitConstructor</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="initializerList" name="initializerList" checked></td><td>8</td><td>initializerList</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="functionConst" name="functionConst" checked></td><td>7</td><td>functionConst</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="funcArgNamesDifferent" name="funcArgNamesDifferent" checked></td><td>6</td><td>funcArgNamesDifferent</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="normalCheckLevelMaxBranches" name="normalCheckLevelMaxBranches" checked></td><td>6</td><td>normalCheckLevelMaxBranches</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="shadowVariable" name="shadowVariable" checked></td><td>6</td><td>shadowVariable</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="constParameterCallback" name="constParameterCallback" checked></td><td>5</td><td>constParameterCallback</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="missingOverride" name="missingOverride" checked></td><td>4</td><td>missingOverride</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="missingMemberCopy" name="missingMemberCopy" checked></td><td>3</td><td>missingMemberCopy</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="variableScope" name="variableScope" checked></td><td>3</td><td>variableScope</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="noOperatorEq" name="noOperatorEq" checked></td><td>2</td><td>noOperatorEq</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="shadowArgument" name="shadowArgument" checked></td><td>2</td><td>shadowArgument</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="unreadVariable" name="unreadVariable" checked></td><td>2</td><td>unreadVariable</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="unsignedLessThanZero" name="unsignedLessThanZero" checked></td><td>2</td><td>unsignedLessThanZero</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="useInitializationList" name="useInitializationList" checked></td><td>2</td><td>useInitializationList</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="checkersReport" name="checkersReport" checked></td><td>1</td><td>checkersReport</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="constParameterPointer" name="constParameterPointer" checked></td><td>1</td><td>constParameterPointer</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="shadowFunction" name="shadowFunction" checked></td><td>1</td><td>shadowFunction</td></tr>
+            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="unusedVariable" name="unusedVariable" checked></td><td>1</td><td>unusedVariable</td></tr>
+           <tr><td></td><td>306</td><td>total</td></tr>
+       </table>
+       <p><a href="stats.html">Statistics</a></p>
+    </div>
+    <div id="content_index">
+
+       <table class="summaryTable">
+       <tr><th>Line</th><th>Id</th><th>CWE</th><th>Severity</th><th>Message</th><th>Timestamp</th></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="41.html"></a></td></tr>
+         <tr class="checkersReport sev_information class_ issue"><td></td><td>checkersReport</td><td></td><td>information</td><td>Active checkers: 182/975 (use --checkers-report=&lt;filename&gt; to see details)</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="36.html">/home/julijana/Desktop/2026_Analysis_cascadia/build_cppcheck/cascadia_autogen/include/ui_mainwindow.h</a></td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="36.html#line-103">103</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;Ui_CascadiaGame::retranslateUi&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="3.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/playerData.h</a></td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="3.html#line-14">14</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;PlayerData::playerId&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="1.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.cpp</a></td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="1.html#line-8">8</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Turn::newTile&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="1.html#line-8">8</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Turn::playerId&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterPointer sev_style class_ issue"><td><a href="1.html#line-9">9</a></td><td>constParameterPointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;newTile&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="missingMemberCopy sev_warning, inconcl. class_ issue"><td><a href="1.html#line-17">17</a></td><td>missingMemberCopy</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning, inconcl.</td><td class="inconclusive">Member variable &apos;Turn::ownsData&apos; is not assigned in the copy constructor. Should it be copied?</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="noOperatorEq sev_warning class_ issue"><td><a href="1.html#line-31">31</a></td><td>noOperatorEq</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Class &apos;Turn&apos; does not have a operator= which is recommended since it has dynamic memory/resource management.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="passedByValue sev_performance class_ issue"><td><a href="1.html#line-127">127</a></td><td>passedByValue</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Function parameter &apos;newPlacedToken&apos; should be passed by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="passedByValue sev_performance class_ issue"><td><a href="1.html#line-132">132</a></td><td>passedByValue</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Function parameter &apos;newNewToken&apos; should be passed by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="0.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/common/turn.h</a></td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="0.html#line-10">10</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Turn::placedTileData&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="0.html#line-10">10</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Turn::placedTokenTileData&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="0.html#line-10">10</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Turn::selectedTileIndex&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="0.html#line-10">10</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Turn::newTile&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="0.html#line-10">10</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Turn::playerId&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="0.html#line-10">10</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Turn::selectedTokenIndex&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="0.html#line-10">10</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Turn::pinecone&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="missingOverride sev_style class_ issue"><td><a href="0.html#line-15">15</a></td><td>missingOverride</td><td></td><td>style</td><td>The destructor &apos;~Turn&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="0.html#line-34">34</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getPlacedToken()&apos; should return member &apos;placedToken&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="0.html#line-35">35</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getNewToken()&apos; should return member &apos;newToken&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="initializerList sev_style, inconcl. class_ issue"><td><a href="0.html#line-44">44</a></td><td>initializerList</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Member variable &apos;Turn::selectedTileIndex&apos; is in the wrong place in the initializer list.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="initializerList sev_style, inconcl. class_ issue"><td><a href="0.html#line-44">44</a></td><td>initializerList</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Member variable &apos;Turn::selectedTileIndex&apos; is in the wrong place in the initializer list.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="initializerList sev_style, inconcl. class_ issue"><td><a href="0.html#line-45">45</a></td><td>initializerList</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Member variable &apos;Turn::newTile&apos; is in the wrong place in the initializer list.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="initializerList sev_style, inconcl. class_ issue"><td><a href="0.html#line-46">46</a></td><td>initializerList</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Member variable &apos;Turn::playerId&apos; is in the wrong place in the initializer list.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="13.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/clientService.cpp</a></td></tr>
+         <tr class="normalCheckLevelMaxBranches sev_information class_ issue"><td><a href="13.html#line-0">0</a></td><td>normalCheckLevelMaxBranches</td><td></td><td>information</td><td>Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionConst sev_style, inconcl. class_ issue"><td><a href="13.html#line-42">42</a></td><td>functionConst</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Either there is a missing &apos;override&apos;, or the member function &apos;ClientService::getUsername&apos; can be const.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="funcArgNamesDifferent sev_style, inconcl. class_ issue"><td><a href="13.html#line-112">112</a></td><td>funcArgNamesDifferent</td><td><a href="https://cwe.mitre.org/data/definitions/628.html">628</a></td><td>style, inconcl.</td><td class="inconclusive">Function &apos;sendAllTokens&apos; argument 1 names different: declaration &apos;newTokens&apos; definition &apos;tokenBag&apos;.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="6.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/clientService.h</a></td></tr>
+         <tr class="noExplicitConstructor sev_style class_ issue"><td><a href="6.html#line-20">20</a></td><td>noExplicitConstructor</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Class &apos;ClientService&apos; has a constructor with 1 argument that is not explicit.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="21.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.cpp</a></td></tr>
+         <tr class="normalCheckLevelMaxBranches sev_information class_ issue"><td><a href="21.html#line-0">0</a></td><td>normalCheckLevelMaxBranches</td><td></td><td>information</td><td>Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="shadowVariable sev_style class_ issue"><td><a href="21.html#line-118">118</a></td><td>shadowVariable</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Local variable &apos;board&apos; shadows outer variable</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="shadowVariable sev_style class_ issue"><td><a href="21.html#line-127">127</a></td><td>shadowVariable</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Local variable &apos;game&apos; shadows outer variable</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="21.html#line-159">159</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;playerName&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="21.html#line-227">227</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;setClientService&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="21.html#line-232">232</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;setServerService&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="21.html#line-237">237</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;getClientService&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="21.html#line-242">242</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;getServerService&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterCallback sev_style class_ issue"><td><a href="21.html#line-252">252</a></td><td>constParameterCallback</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;playerDataList&apos; can be declared as reference to const. However it seems that &apos;onPlayersReceived&apos; is a callback function, if &apos;playerDataList&apos; is declared with const you might also need to cast function pointer(s).</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterCallback sev_style class_ issue"><td><a href="21.html#line-271">271</a></td><td>constParameterCallback</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;allTiles&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;allTiles&apos; is declared with const you might also need to cast function pointer(s).</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterCallback sev_style class_ issue"><td><a href="21.html#line-271">271</a></td><td>constParameterCallback</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;allTokens&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;allTokens&apos; is declared with const you might also need to cast function pointer(s).</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterCallback sev_style class_ issue"><td><a href="21.html#line-272">272</a></td><td>constParameterCallback</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;currentTiles&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;currentTiles&apos; is declared with const you might also need to cast function pointer(s).</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterCallback sev_style class_ issue"><td><a href="21.html#line-273">273</a></td><td>constParameterCallback</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;currentTokensNames&apos; can be declared as reference to const. However it seems that &apos;onGameInitialized&apos; is a callback function, if &apos;currentTokensNames&apos; is declared with const you might also need to cast function pointer(s).</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="funcArgNamesDifferent sev_style, inconcl. class_ issue"><td><a href="21.html#line-324">324</a></td><td>funcArgNamesDifferent</td><td><a href="https://cwe.mitre.org/data/definitions/628.html">628</a></td><td>style, inconcl.</td><td class="inconclusive">Function &apos;onTokenBagReceived&apos; argument 1 names different: declaration &apos;newTokens&apos; definition &apos;tokenBag&apos;.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="11.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/controller.h</a></td></tr>
+         <tr class="noExplicitConstructor sev_style class_ issue"><td><a href="11.html#line-21">21</a></td><td>noExplicitConstructor</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Class &apos;Controller&apos; has a constructor with 1 argument that is not explicit.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="14.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.cpp</a></td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="14.html#line-6">6</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;ServerService::hostSocket&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionConst sev_style, inconcl. class_ issue"><td><a href="14.html#line-31">31</a></td><td>functionConst</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Either there is a missing &apos;override&apos;, or the member function &apos;ServerService::getUsernames&apos; can be const.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterReference sev_style class_ issue"><td><a href="14.html#line-50">50</a></td><td>constParameterReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;playerDataList&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterReference sev_style class_ issue"><td><a href="14.html#line-68">68</a></td><td>constParameterReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;allTiles&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterReference sev_style class_ issue"><td><a href="14.html#line-69">69</a></td><td>constParameterReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;currentTiles&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterReference sev_style class_ issue"><td><a href="14.html#line-71">71</a></td><td>constParameterReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;currentTokens&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="14.html#line-94">94</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;token&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionConst sev_style, inconcl. class_ issue"><td><a href="14.html#line-204">204</a></td><td>functionConst</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Either there is a missing &apos;override&apos;, or the member function &apos;ServerService::getIpAddress&apos; can be const.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="14.html#line-209">209</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;getHostSocket&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="8.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/serverService.h</a></td></tr>
+         <tr class="noExplicitConstructor sev_style class_ issue"><td><a href="8.html#line-21">21</a></td><td>noExplicitConstructor</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Class &apos;ServerService&apos; has a constructor with 1 argument that is not explicit.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="16.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.cpp</a></td></tr>
+         <tr class="functionConst sev_style, inconcl. class_ issue"><td><a href="16.html#line-21">21</a></td><td>functionConst</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Technically the member function &apos;SetupGame::numOfPlayers&apos; can be const.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="16.html#line-21">21</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;numOfPlayers&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionConst sev_style, inconcl. class_ issue"><td><a href="16.html#line-26">26</a></td><td>functionConst</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Technically the member function &apos;SetupGame::playerNames&apos; can be const.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="16.html#line-26">26</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;playerNames&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="16.html#line-31">31</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;SetupGame::tokenNumbers&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="shadowFunction sev_style class_ issue"><td><a href="16.html#line-105">105</a></td><td>shadowFunction</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Local variable &apos;allTokens&apos; shadows outer function</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="16.html#line-123">123</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;SetupGame::shuffleTiles&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="16.html#line-148">148</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;SetupGame::setupCurrentTiles&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionConst sev_style, inconcl. class_ issue"><td><a href="16.html#line-156">156</a></td><td>functionConst</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Technically the member function &apos;SetupGame::setupCurrentTokens&apos; can be const.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="16.html#line-170">170</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;SetupGame::checkIfAllTokensAreSame&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterReference sev_style class_ issue"><td><a href="16.html#line-170">170</a></td><td>constParameterReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;tokens&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="16.html#line-179">179</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::all_of or std::none_of algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="17.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupGame.h</a></td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="17.html#line-15">15</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;playerNames()&apos; should return member &apos;m_playerNames&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="17.html#line-17">17</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;allTiles()&apos; should return member &apos;m_allTiles&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="17.html#line-18">18</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;allTokens()&apos; should return member &apos;m_allTokens&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="17.html#line-19">19</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;currentTiles()&apos; should return member &apos;m_currentTiles&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="17.html#line-20">20</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;currentTokens()&apos; should return member &apos;m_currentTokens&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="15.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupPlayers.cpp</a></td></tr>
+         <tr class="constParameterReference sev_style class_ issue"><td><a href="15.html#line-59">59</a></td><td>constParameterReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;startingTiles&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="10.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/controller/setupPlayers.h</a></td></tr>
+         <tr class="noExplicitConstructor sev_style class_ issue"><td><a href="10.html#line-17">17</a></td><td>noExplicitConstructor</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Class &apos;SetupPlayers&apos; has a constructor with 1 argument that is not explicit.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="10.html#line-25">25</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;playerOrder()&apos; should return member &apos;m_playerOrder&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="34.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.cpp</a></td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::replaceDuplicateButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::usePineconeButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::scoreButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::chatBox&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::messageInput&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::centralScene&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::pineconeText&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::cancelButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::confirmButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::rotateCounterClockwiseButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::rotateClockwiseButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::turnsLeftLabel&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::currentPlayerLabel&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::leftArrowButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::undoButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::rulesButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::rightArrowButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::forceEndTurn&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::freeChoiceButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::replaceTokensButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::pineconeDialog&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="34.html#line-11">11</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Board::m_locked&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="funcArgNamesDifferent sev_style, inconcl. class_ issue"><td><a href="34.html#line-11">11</a></td><td>funcArgNamesDifferent</td><td><a href="https://cwe.mitre.org/data/definitions/628.html">628</a></td><td>style, inconcl.</td><td class="inconclusive">Function &apos;Board&apos; argument 2 names different: declaration &apos;backgroundColor&apos; definition &apos;col&apos;.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="34.html#line-104">104</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;getCentralPositions&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="34.html#line-235">235</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;disableReplaceTokensButton&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="34.html#line-256">256</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;getCurrentPlayerLabel&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="34.html#line-276">276</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;getCentralScene&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="shadowVariable sev_style class_ issue"><td><a href="34.html#line-314">314</a></td><td>shadowVariable</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Local variable &apos;container&apos; shadows outer variable</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="34.html#line-812">812</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;getParentWidget&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="34.html#line-825">825</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;setCurrentHexagons&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="35.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/board.h</a></td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="35.html#line-41">41</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getCentralPositions()&apos; should return member &apos;centralPositions&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="35.html#line-42">42</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getCurrentHexagons()&apos; should return member &apos;currentHexagons&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="35.html#line-57">57</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getCurrentTokens()&apos; should return member &apos;currentTokens&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="initializerList sev_style, inconcl. class_ issue"><td><a href="35.html#line-123">123</a></td><td>initializerList</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Member variable &apos;Board::currentPlayer&apos; is in the wrong place in the initializer list.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="19.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.cpp</a></td></tr>
+         <tr class="normalCheckLevelMaxBranches sev_information class_ issue"><td><a href="19.html#line-0">0</a></td><td>normalCheckLevelMaxBranches</td><td></td><td>information</td><td>Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="passedByValue sev_performance class_ issue"><td><a href="19.html#line-94">94</a></td><td>passedByValue</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Function parameter &apos;placedToken&apos; should be passed by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="passedByValue sev_performance class_ issue"><td><a href="19.html#line-95">95</a></td><td>passedByValue</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Function parameter &apos;animals&apos; should be passed by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="passedByValue sev_performance class_ issue"><td><a href="19.html#line-95">95</a></td><td>passedByValue</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Function parameter &apos;habitats&apos; should be passed by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="variableScope sev_style class_ issue"><td><a href="19.html#line-107">107</a></td><td>variableScope</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The scope of the variable &apos;fileName&apos; can be reduced.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unreadVariable sev_style class_ issue"><td><a href="19.html#line-107">107</a></td><td>unreadVariable</td><td><a href="https://cwe.mitre.org/data/definitions/563.html">563</a></td><td>style</td><td>Variable &apos;fileName&apos; is assigned a value that is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unreadVariable sev_style class_ issue"><td><a href="19.html#line-109">109</a></td><td>unreadVariable</td><td><a href="https://cwe.mitre.org/data/definitions/563.html">563</a></td><td>style</td><td>Variable &apos;fileName&apos; is assigned a value that is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="funcArgNamesDifferent sev_style, inconcl. class_ issue"><td><a href="19.html#line-124">124</a></td><td>funcArgNamesDifferent</td><td><a href="https://cwe.mitre.org/data/definitions/628.html">628</a></td><td>style, inconcl.</td><td class="inconclusive">Function &apos;setTileData&apos; argument 1 names different: declaration &apos;tileData&apos; definition &apos;oTileData&apos;.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="passedByValue sev_performance class_ issue"><td><a href="19.html#line-136">136</a></td><td>passedByValue</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Function parameter &apos;animals&apos; should be passed by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="passedByValue sev_performance class_ issue"><td><a href="19.html#line-136">136</a></td><td>passedByValue</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Function parameter &apos;habitats&apos; should be passed by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="variableScope sev_style class_ issue"><td><a href="19.html#line-143">143</a></td><td>variableScope</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The scope of the variable &apos;yCoord&apos; can be reduced.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="19.html#line-322">322</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;setCurrentPixmap&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="20.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagon.h</a></td></tr>
+         <tr class="initializerList sev_style, inconcl. class_ issue"><td><a href="20.html#line-50">50</a></td><td>initializerList</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Member variable &apos;Hexagon::hexagonSize&apos; is in the wrong place in the initializer list.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="18.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/board/hexagonGrid.cpp</a></td></tr>
+         <tr class="funcArgNamesDifferent sev_style, inconcl. class_ issue"><td><a href="18.html#line-5">5</a></td><td>funcArgNamesDifferent</td><td><a href="https://cwe.mitre.org/data/definitions/628.html">628</a></td><td>style, inconcl.</td><td class="inconclusive">Function &apos;HexagonGrid&apos; argument 3 names different: declaration &apos;hexagonSize&apos; definition &apos;hexSize&apos;.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="27.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.cpp</a></td></tr>
+         <tr class="passedByValue sev_performance class_ issue"><td><a href="27.html#line-13">13</a></td><td>passedByValue</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Function parameter &apos;allPlayers&apos; should be passed by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useInitializationList sev_performance class_ issue"><td><a href="27.html#line-17">17</a></td><td>useInitializationList</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Variable &apos;m_playerOrder&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="27.html#line-107">107</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;t&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="27.html#line-109">109</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::copy algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="27.html#line-184">184</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;lastPlacedHexagon&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="27.html#line-264">264</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::transform algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="27.html#line-268">268</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::transform algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="27.html#line-363">363</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;t&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="27.html#line-365">365</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::copy algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="27.html#line-392">392</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;tileData&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="27.html#line-436">436</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;info&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="27.html#line-455">455</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;info&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="27.html#line-482">482</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;tileData&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="27.html#line-563">563</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;tileData&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="27.html#line-683">683</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;m_currentBoardToken&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="26.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/game.h</a></td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="26.html#line-35">35</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;currentTiles()&apos; should return member &apos;m_currentTiles&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="26.html#line-37">37</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;currentTokens()&apos; should return member &apos;m_currentTokens&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="26.html#line-38">38</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;playerOrder()&apos; should return member &apos;m_playerOrder&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="initializerList sev_style, inconcl. class_ issue"><td><a href="26.html#line-69">69</a></td><td>initializerList</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Member variable &apos;Game::m_board&apos; is in the wrong place in the initializer list.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="23.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.cpp</a></td></tr>
+         <tr class="normalCheckLevelMaxBranches sev_information class_ issue"><td><a href="23.html#line-0">0</a></td><td>normalCheckLevelMaxBranches</td><td></td><td>information</td><td>Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="23.html#line-37">37</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;Scoring::findNeighborsWithToken&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="23.html#line-37">37</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;findNeighborsWithToken&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-46">46</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;neighbourTile&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="variableScope sev_style class_ issue"><td><a href="23.html#line-59">59</a></td><td>variableScope</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The scope of the variable &apos;usedElkTokenIDs&apos; can be reduced.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="23.html#line-65">65</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;vecHex&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-67">67</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;hex&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-69">69</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;tile&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterReference sev_style class_ issue"><td><a href="23.html#line-101">101</a></td><td>constParameterReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;allElkTokens&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="23.html#line-119">119</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;Scoring::processStandaloneElkLine&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="23.html#line-119">119</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;processStandaloneElkLine&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="23.html#line-141">141</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;Scoring::findElkLine&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="23.html#line-165">165</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::copy_if algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="23.html#line-171">171</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;Scoring::calculateBearScore&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="23.html#line-180">180</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;vecHex&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-182">182</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;hex&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-184">184</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;tile&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-199">199</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;neighbourTile&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-215">215</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;neighbourTile&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="23.html#line-244">244</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;Scoring::calculateHawkScore&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="23.html#line-252">252</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;vecHex&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-254">254</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;hex&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-256">256</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;tile&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-264">264</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;neighbourTile&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="23.html#line-286">286</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;Scoring::calculateFoxScore&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="23.html#line-294">294</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;vecHex&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-296">296</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;hex&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-298">298</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;tile&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-306">306</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;neighbourTile&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="23.html#line-336">336</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;vecHex&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-338">338</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;hex&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="23.html#line-340">340</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;tile&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="shadowVariable sev_style class_ issue"><td><a href="23.html#line-347">347</a></td><td>shadowVariable</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Local variable &apos;tile&apos; shadows outer variable</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="23.html#line-361">361</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;Scoring::findSalmonRun&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="23.html#line-386">386</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::copy_if algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="shadowVariable sev_style class_ issue"><td><a href="23.html#line-428">428</a></td><td>shadowVariable</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Local variable &apos;row&apos; shadows outer variable</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="passedByValue sev_performance class_ issue"><td><a href="23.html#line-440">440</a></td><td>passedByValue</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Function parameter &apos;habitat&apos; should be passed by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="23.html#line-461">461</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;Scoring::getNeighbours&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterReference sev_style class_ issue"><td><a href="23.html#line-461">461</a></td><td>constParameterReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;tiles&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="23.html#line-489">489</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;Scoring::habitatSides&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterReference sev_style class_ issue"><td><a href="23.html#line-489">489</a></td><td>constParameterReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;tiles&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionStatic sev_style class_ issue"><td><a href="23.html#line-513">513</a></td><td>functionStatic</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>The member function &apos;Scoring::getAdjacentSide&apos; can be static.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="passedByValue sev_performance class_ issue"><td><a href="23.html#line-513">513</a></td><td>passedByValue</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Function parameter &apos;side&apos; should be passed by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="24.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/engine/scoring.h</a></td></tr>
+         <tr class="noExplicitConstructor sev_style class_ issue"><td><a href="24.html#line-21">21</a></td><td>noExplicitConstructor</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Class &apos;Scoring&apos; has a constructor with 1 argument that is not explicit.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="24.html#line-59">59</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;playerAnimalScore()&apos; should return member &apos;m_playerAnimalScores&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="24.html#line-60">60</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;playerHabitatScores()&apos; should return member &apos;m_playerHabitatScores&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="31.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.cpp</a></td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="31.html#line-10">10</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Player::m_playerId&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="noOperatorEq sev_warning class_ issue"><td><a href="31.html#line-21">21</a></td><td>noOperatorEq</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Class &apos;Player&apos; does not have a operator= which is recommended since it has dynamic memory/resource management.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="31.html#line-29">29</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Player::m_playerId&apos; is not initialized in the copy constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="missingMemberCopy sev_warning, inconcl. class_ issue"><td><a href="31.html#line-29">29</a></td><td>missingMemberCopy</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning, inconcl.</td><td class="inconclusive">Member variable &apos;Player::m_animalPoints&apos; is not assigned in the copy constructor. Should it be copied?</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="missingMemberCopy sev_warning, inconcl. class_ issue"><td><a href="31.html#line-29">29</a></td><td>missingMemberCopy</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning, inconcl.</td><td class="inconclusive">Member variable &apos;Player::m_habitatScores&apos; is not assigned in the copy constructor. Should it be copied?</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="31.html#line-67">67</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;pineconeButtonActivated&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="31.html#line-72">72</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;setPineconeButtonActivated&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="31.html#line-77">77</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;animalPoints&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="31.html#line-82">82</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;habitatScores&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constParameterReference sev_style class_ issue"><td><a href="31.html#line-118">118</a></td><td>constParameterReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Parameter &apos;centralTilesList&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="31.html#line-130">130</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;setHexagonGrid&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="31.html#line-135">135</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;calculateScore&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="functionConst sev_style, inconcl. class_ issue"><td><a href="31.html#line-147">147</a></td><td>functionConst</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Technically the member function &apos;Player::getPlayerId&apos; can be const.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="4.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/player.h</a></td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="4.html#line-13">13</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Player::m_playerId&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="4.html#line-13">13</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Player::m_hexagonGrid&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="4.html#line-13">13</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Player::m_pineconeNumber&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="4.html#line-13">13</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Player::m_pineconeButtonActivated&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="4.html#line-13">13</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Player::m_myTurn&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="noExplicitConstructor sev_style class_ issue"><td><a href="4.html#line-15">15</a></td><td>noExplicitConstructor</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Class &apos;Player&apos; has a constructor with 1 argument that is not explicit.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="4.html#line-21">21</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;playerName()&apos; should return member &apos;m_playerName&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="4.html#line-26">26</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;animalPoints()&apos; should return member &apos;m_animalPoints&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="4.html#line-27">27</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;habitatScores()&apos; should return member &apos;m_habitatScores&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="initializerList sev_style, inconcl. class_ issue"><td><a href="4.html#line-42">42</a></td><td>initializerList</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style, inconcl.</td><td class="inconclusive">Member variable &apos;Player::m_hexagonGrid&apos; is in the wrong place in the initializer list.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="22.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.cpp</a></td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="22.html#line-23">23</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;str&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="22.html#line-50">50</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;rotateClockwise&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="22.html#line-55">55</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;rotateCounterClockwise&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="22.html#line-60">60</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;type&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="shadowArgument sev_style class_ issue"><td><a href="22.html#line-107">107</a></td><td>shadowArgument</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Local variable &apos;variant&apos; shadows outer argument</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="22.html#line-108">108</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::transform algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="shadowArgument sev_style class_ issue"><td><a href="22.html#line-112">112</a></td><td>shadowArgument</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Local variable &apos;variant&apos; shadows outer argument</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="22.html#line-113">113</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::transform algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="12.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tile.h</a></td></tr>
+         <tr class="missingOverride sev_style class_ issue"><td><a href="12.html#line-15">15</a></td><td>missingOverride</td><td></td><td>style</td><td>The destructor &apos;~Tile&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="25.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.cpp</a></td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="25.html#line-5">5</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;TileData::id&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="25.html#line-5">5</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;TileData::isValid&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="25.html#line-5">5</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;TileData::index&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useInitializationList sev_performance class_ issue"><td><a href="25.html#line-8">8</a></td><td>useInitializationList</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>performance</td><td>Variable &apos;placedToken&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="25.html#line-140">140</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::transform algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="25.html#line-150">150</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::transform algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="2.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileData.h</a></td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="2.html#line-12">12</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;TileData::id&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="2.html#line-12">12</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;TileData::row&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="2.html#line-12">12</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;TileData::col&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="2.html#line-12">12</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;TileData::placedTile&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="2.html#line-12">12</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;TileData::isValid&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="2.html#line-12">12</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;TileData::rotation&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="2.html#line-12">12</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;TileData::index&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="missingOverride sev_style class_ issue"><td><a href="2.html#line-14">14</a></td><td>missingOverride</td><td></td><td>style</td><td>The destructor &apos;~TileData&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="2.html#line-26">26</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getPlacedToken()&apos; should return member &apos;placedToken&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="2.html#line-29">29</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getAnimals()&apos; should return member &apos;animals&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="2.html#line-31">31</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getHabitats()&apos; should return member &apos;habitats&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="28.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/tileStorage.cpp</a></td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="28.html#line-54">54</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::copy algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="28.html#line-61">61</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::copy algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="28.html#line-104">104</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::copy algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="28.html#line-111">111</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::copy algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="40.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.cpp</a></td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="40.html#line-51">51</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;drawToken&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="5.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/game/entities/token.h</a></td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="5.html#line-16">16</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Token::index&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="5.html#line-16">16</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Token::radius&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="5.html#line-16">16</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;Token::pixmapItem&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="noExplicitConstructor sev_style class_ issue"><td><a href="5.html#line-17">17</a></td><td>noExplicitConstructor</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Class &apos;Token&apos; has a constructor with 1 argument that is not explicit.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="missingOverride sev_style class_ issue"><td><a href="5.html#line-18">18</a></td><td>missingOverride</td><td></td><td>style</td><td>The destructor &apos;~Token&apos; overrides a destructor in a base class but is not marked with a &apos;override&apos; specifier.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="5.html#line-28">28</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;animal()&apos; should return member &apos;m_animal&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="30.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/client.cpp</a></td></tr>
+         <tr class="funcArgNamesDifferent sev_style, inconcl. class_ issue"><td><a href="30.html#line-28">28</a></td><td>funcArgNamesDifferent</td><td><a href="https://cwe.mitre.org/data/definitions/628.html">628</a></td><td>style, inconcl.</td><td class="inconclusive">Function &apos;sendMessage&apos; argument 1 names different: declaration &apos;message&apos; definition &apos;jsonString&apos;.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="30.html#line-42">42</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;setUsername&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="30.html#line-120">120</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;isConnected&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="29.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/client.h</a></td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="29.html#line-18">18</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getUsername()&apos; should return member &apos;m_username&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="33.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.cpp</a></td></tr>
+         <tr class="unsignedLessThanZero sev_style class_ issue"><td><a href="33.html#line-8">8</a></td><td>unsignedLessThanZero</td><td><a href="https://cwe.mitre.org/data/definitions/570.html">570</a></td><td>style</td><td>Checking if unsigned expression &apos;startPort&apos; is less than zero.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unsignedLessThanZero sev_style class_ issue"><td><a href="33.html#line-13">13</a></td><td>unsignedLessThanZero</td><td><a href="https://cwe.mitre.org/data/definitions/570.html">570</a></td><td>style</td><td>Checking if unsigned expression &apos;endPort&apos; is less than zero.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="useStlAlgorithm sev_style class_ issue"><td><a href="33.html#line-131">131</a></td><td>useStlAlgorithm</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Consider using std::find_if algorithm instead of a raw loop.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="33.html#line-164">164</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;isStarted&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="32.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/network/server.h</a></td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="32.html#line-26">26</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getUsernames()&apos; should return member &apos;usernames&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="32.html#line-27">27</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getPlayers()&apos; should return member &apos;players&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="32.html#line-29">29</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getHostAddress()&apos; should return member &apos;hostAddress&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="39.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/gameGui.cpp</a></td></tr>
+         <tr class="normalCheckLevelMaxBranches sev_information class_ issue"><td><a href="39.html#line-0">0</a></td><td>normalCheckLevelMaxBranches</td><td></td><td>information</td><td>Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-18">18</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-18">18</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;replaceDuplicateButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-23">23</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-23">23</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;cancelButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-27">27</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-27">27</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;confirmButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-32">32</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-32">32</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;rotateCounterClockwiseButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-37">37</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-37">37</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;rotateClockwiseButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-42">42</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-42">42</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;scoreButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-46">46</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-46">46</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;leftArrowButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-51">51</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-51">51</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;undoButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-55">55</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-55">55</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;rulesButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-59">59</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-59">59</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;rightArrowButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-64">64</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-64">64</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;forceEndTurn&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-69">69</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-69">69</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;freeChoiceButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-74">74</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-74">74</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;replaceTokensButton&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="nullPointerRedundantCheck sev_warning class_ issue"><td><a href="39.html#line-79">79</a></td><td>nullPointerRedundantCheck</td><td><a href="https://cwe.mitre.org/data/definitions/476.html">476</a></td><td>warning</td><td class="warning">Either the condition &apos;m_game&apos; is redundant or there is possible null pointer dereference: m_game.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="39.html#line-83">83</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;vecHex&apos; can be declared as reference to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="39.html#line-84">84</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;hex&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="39.html#line-89">89</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;currentHexagon&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariableReference sev_style class_ issue"><td><a href="39.html#line-94">94</a></td><td>constVariableReference</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;currentToken&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="38.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.cpp</a></td></tr>
+         <tr class="normalCheckLevelMaxBranches sev_information class_ issue"><td><a href="38.html#line-0">0</a></td><td>normalCheckLevelMaxBranches</td><td></td><td>information</td><td>Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="38.html#line-7">7</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;LobbyView::clientListWidget&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="38.html#line-7">7</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;LobbyView::port&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="38.html#line-7">7</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;LobbyView::chatBox&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="38.html#line-7">7</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;LobbyView::messageInput&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="38.html#line-7">7</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;LobbyView::sendButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="uninitMemberVar sev_warning class_ issue"><td><a href="38.html#line-7">7</a></td><td>uninitMemberVar</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>warning</td><td class="warning">Member variable &apos;LobbyView::backButton&apos; is not initialized in the constructor.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="constVariablePointer sev_style class_ issue"><td><a href="38.html#line-81">81</a></td><td>constVariablePointer</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Variable &apos;mainWindow&apos; can be declared as pointer to const</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="shadowVariable sev_style class_ issue"><td><a href="38.html#line-377">377</a></td><td>shadowVariable</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Local variable &apos;backButton&apos; shadows outer variable</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="7.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/lobbyView.h</a></td></tr>
+         <tr class="noExplicitConstructor sev_style class_ issue"><td><a href="7.html#line-22">22</a></td><td>noExplicitConstructor</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Class &apos;LobbyView&apos; has a constructor with 1 argument that is not explicit.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="37.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.cpp</a></td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="37.html#line-56">56</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;getUi&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="37.html#line-151">151</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;getSettings&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedFunction sev_style class_ issue"><td><a href="37.html#line-207">207</a></td><td>unusedFunction</td><td><a href="https://cwe.mitre.org/data/definitions/561.html">561</a></td><td>style</td><td>The function &apos;getBoard&apos; is never used.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="unusedVariable sev_style class_ issue"><td><a href="37.html#line-230">230</a></td><td>unusedVariable</td><td><a href="https://cwe.mitre.org/data/definitions/563.html">563</a></td><td>style</td><td>Unused variable: ok</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      <tbody class="fileEntry">
+       <tr><td colspan="6"><a href="9.html">/home/julijana/Desktop/2026_Analysis_cascadia/cascadia++/cascadia/views/mainWindow.h</a></td></tr>
+         <tr class="noExplicitConstructor sev_style class_ issue"><td><a href="9.html#line-37">37</a></td><td>noExplicitConstructor</td><td><a href="https://cwe.mitre.org/data/definitions/398.html">398</a></td><td>style</td><td>Class &apos;MainWindow&apos; has a constructor with 1 argument that is not explicit.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="9.html#line-39">39</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getBackgroundColor()&apos; should return member &apos;backgroundColor&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+         <tr class="returnByReference sev_performance class_ issue"><td><a href="9.html#line-40">40</a></td><td>returnByReference</td><td></td><td>performance</td><td>Function &apos;getButtonStyle()&apos; should return member &apos;buttonStyle&apos; by const reference.</td><td>Sun Sep 13 01:02:25 2026</td></tr>
+      </tbody>
+       </table>
+    </div>
+    <div id="footer" class="footer">
+      <p>
+        Created by Cppcheck 2.19.0 (<a href="https://cppcheck.sourceforge.io">Sourceforge</a>, <a href="irc://irc.libera.chat/#cppcheck">IRC</a>)
+      </p>
+    </div>
+    </div>
+  </body>
+</html>
