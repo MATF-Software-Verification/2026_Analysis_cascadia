@@ -1,0 +1,15 @@
+# Copy to fuzztest.cfg and edit as needed. This file is used by the fuzztest script to configure the fuzzing environment.
+# Clang is required for coverage-guided fuzzing.
+CC=clang
+CXX=clang++
+BUILD_TYPE=Debug
+
+# Parallel compilation jobs; fuzz targets run one after another.
+JOBS=2
+
+# Maximum fuzzing duration per target, in seconds.
+FUZZ_DURATION=60
+
+# Empty means all registered fuzz targets.
+# Example: FUZZ_TARGETS="TileFuzz.SerializationPreservesState GridFuzz.NeighboursAreValid"
+FUZZ_TARGETS=""
