@@ -28,10 +28,6 @@ if(NOT EXISTS "${ORIGINAL_SOURCE}/CMakeLists.txt")
 endif()
 file(COPY "${ORIGINAL_SOURCE}/" DESTINATION "${PROFILE_SOURCE}")
 set(PROFILE_PATCHES instrumentation.patch)
-# QList::assign was introduced in Qt 6.6. Older Qt uses the same iterator range.
-if(Qt6Core_VERSION VERSION_LESS "6.6")
-    list(APPEND PROFILE_PATCHES qt_compat.patch)
-endif()
 foreach(PROFILE_PATCH IN LISTS PROFILE_PATCHES)
     execute_process(
         COMMAND "${PATCH_EXECUTABLE}" --batch --forward -p1

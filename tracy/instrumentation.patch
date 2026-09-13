@@ -1,0 +1,366 @@
+--- a/game/entities/player.cpp
++++ b/game/entities/player.cpp
+@@ -1,3 +1,4 @@
++#include <tracy/Tracy.hpp>
+ #include "player.h"
+ 
+ #include <utility>
+@@ -134,6 +135,7 @@
+ 
+ void Player::calculateScore()
+ {
++    ZoneScopedN("Player::calculateScore");
+     Scoring score(*this);
+     m_animalPoints  = score.playerAnimalScore();
+     m_habitatScores = score.playerHabitatScores();
+--- a/game/engine/scoring.cpp
++++ b/game/engine/scoring.cpp
+@@ -1,3 +1,4 @@
++#include <tracy/Tracy.hpp>
+ #include "scoring.h"
+ 
+ #include <algorithm>
+@@ -15,6 +16,7 @@
+ 
+ auto Scoring::calculatePlayerAnimalScore(Player player) -> std::map<QString, int>
+ {
++    ZoneScopedN("Scoring::calculatePlayerAnimalScore");
+     std::map<QString, int> animalScores;
+     animalScores["elk"]    = 0;
+     animalScores["bear"]   = 0;
+@@ -37,6 +39,7 @@
+ auto Scoring::findNeighborsWithToken(HexagonGrid *grid, const std::pair<int, int> &startTile,
+                                      const QString &token) -> QVector<std::pair<int, int>>
+ {
++    ZoneScopedN("Scoring::findNeighborsWithToken");
+     QVector<std::pair<int, int>> neighborsWithToken;
+     auto                        neighbours = grid->getNeighbours(startTile.first, startTile.second);
+     QVector<QVector<Hexagon *>> playerTiles = grid->getTiles();
+@@ -55,6 +58,7 @@
+ 
+ auto Scoring::calculateElkScore(HexagonGrid *grid) -> int
+ {
++    ZoneScopedN("Scoring::calculateElkScore");
+     std::vector<std::pair<int, int>>                  allElkTokens;
+     std::unordered_set<std::pair<int, int>, PairHash> usedElkTokenIDs;
+     std::vector<std::vector<std::pair<int, int>>>     confirmedElkLines;
+@@ -142,6 +146,7 @@
+                           std::vector<std::pair<int, int>>                  &elkLine,
+                           std::unordered_set<std::pair<int, int>, PairHash> &usedElkTokenIDs)
+ {
++    ZoneScopedN("Scoring::findElkLine");
+     std::vector<std::pair<int, int>> stack = {startToken};
+ 
+     while (!stack.empty())
+@@ -170,6 +175,7 @@
+ 
+ auto Scoring::calculateBearScore(HexagonGrid *grid) -> int
+ {
++    ZoneScopedN("Scoring::calculateBearScore");
+     static const std::unordered_map<int, int> bearScoringValues = {
+         {1, 4}, {2, 11}, {3, 19}, {4, 27}};
+ 
+@@ -243,6 +249,7 @@
+ 
+ auto Scoring::calculateHawkScore(HexagonGrid *grid) -> int
+ {
++    ZoneScopedN("Scoring::calculateHawkScore");
+     static const std::unordered_map<int, int> hawkScoringValues = {
+         {0, 0}, {1, 2}, {2, 5}, {3, 8}, {4, 11}, {5, 14}, {6, 18}, {7, 22}, {8, 26}};
+ 
+@@ -285,6 +292,7 @@
+ 
+ auto Scoring::calculateFoxScore(HexagonGrid *grid) -> int
+ {
++    ZoneScopedN("Scoring::calculateFoxScore");
+     static const std::unordered_map<int, int> foxScoringValues = {
+         {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}};
+ 
+@@ -327,6 +335,7 @@
+ 
+ auto Scoring::calculateSalmonScore(HexagonGrid *grid) -> int
+ {
++    ZoneScopedN("Scoring::calculateSalmonScore");
+     static const std::unordered_map<int, int> salmonScoringValues = {
+         {1, 2}, {2, 4}, {3, 7}, {4, 11}, {5, 15}, {6, 20}, {7, 26}};
+ 
+@@ -361,6 +370,7 @@
+ auto Scoring::findSalmonRun(HexagonGrid *grid, const std::pair<int, int> &startTile)
+     -> std::vector<std::pair<int, int>>
+ {
++    ZoneScopedN("Scoring::findSalmonRun");
+     std::vector<std::pair<int, int>>                  runTiles;
+     std::unordered_set<std::pair<int, int>, PairHash> visited;
+     std::vector<std::pair<int, int>>                  stack = {startTile};
+@@ -403,6 +413,7 @@
+ 
+ auto Scoring::calculatePlayerHabitatsScore(Player player) -> std::map<QString, int>
+ {
++    ZoneScopedN("Scoring::calculatePlayerHabitatsScore");
+     std::map<QString, int> habitatScores;
+     habitatScores["mountain"] = 0;
+     habitatScores["swamp"]    = 0;
+@@ -439,6 +450,7 @@
+ auto Scoring::calculateHabitat(QVector<QVector<Hexagon *>> &tiles, int row, int col,
+                                QString habitat, int score, QVector<QVector<bool>> &visited) -> int
+ {
++    ZoneScopedN("Scoring::calculateHabitat");
+     visited[row][col] = true;
+     score += 1;
+ 
+@@ -461,6 +473,7 @@
+ auto Scoring::getNeighbours(QVector<QVector<Hexagon *>> &tiles, int row,
+                             int col) -> QVector<std::tuple<int, int, QString>>
+ {
++    ZoneScopedN("Scoring::getNeighbours");
+     QVector<std::tuple<int, int, QString>> neighbours;
+ 
+     int colOffsetEvenRow[] = {-1, 0, 1, 0, -1, -1};
+@@ -489,6 +502,7 @@
+ auto Scoring::habitatSides(QVector<QVector<Hexagon *>> &tiles, int row,
+                            int col) -> std::map<QString, QString>
+ {
++    ZoneScopedN("Scoring::habitatSides");
+     std::map<QString, QString> sides;
+     QVector<QString>           sideNames = {"Top-Left",     "Top-Right",   "Right",
+                                             "Bottom-Right", "Bottom-Left", "Left"};
+--- a/game/board/hexagonGrid.cpp
++++ b/game/board/hexagonGrid.cpp
+@@ -1,3 +1,4 @@
++#include <tracy/Tracy.hpp>
+ #include "hexagonGrid.h"
+ 
+ #include <QGraphicsScene>
+@@ -13,6 +14,7 @@
+ HexagonGrid::HexagonGrid(const HexagonGrid &other)
+     : rows(other.rows), cols(other.cols), hexSize(other.hexSize)
+ {
++    ZoneScopedN("HexagonGrid::copy");
+     boardTiles.resize(rows);
+     for (int row = 0; row < rows; ++row)
+     {
+@@ -54,6 +56,7 @@
+ 
+ void HexagonGrid::drawSelectableTiles()
+ {
++    ZoneScopedN("HexagonGrid::drawSelectableTiles");
+     for (int row = 0; row < rows; ++row)
+         for (int col = 0; col < cols; ++col)
+             if (boardTiles[row][col]->getTileData()->getPlacedTile())
+@@ -62,6 +65,7 @@
+ 
+ void HexagonGrid::drawGrid(QGraphicsScene *scene)
+ {
++    ZoneScopedN("HexagonGrid::drawGrid");
+     for (int row = 0; row < rows; ++row)
+         for (int col = 0; col < cols; ++col)
+             boardTiles[row][col]->drawHexagon(row, col, scene);
+@@ -70,6 +74,7 @@
+ 
+ void HexagonGrid::setValidNeighbours(int row, int col)
+ {
++    ZoneScopedN("HexagonGrid::setValidNeighbours");
+     QVector<std::pair<int, int>> neighbours;
+ 
+     int colOffsetEvenRow[] = {-1, -1, 0, 1, -1, 0};
+@@ -102,6 +107,7 @@
+ 
+ auto HexagonGrid::getNeighbours(int row, int col) -> QVector<std::pair<int, int>>
+ {
++    ZoneScopedN("HexagonGrid::getNeighbours");
+     QVector<std::pair<int, int>> neighbours;
+ 
+     int colOffsetEvenRow[] = {-1, -1, 0, 1, -1, 0};
+--- a/game/board/hexagon.cpp
++++ b/game/board/hexagon.cpp
+@@ -1,3 +1,4 @@
++#include <tracy/Tracy.hpp>
+ #include "hexagon.h"
+ 
+ #include <QBrush>
+@@ -136,6 +137,7 @@
+ auto Hexagon::generateImage(QVector<QString> animals, QVector<QString> habitats, int rotation,
+                             QString placedToken) -> QPixmap
+ {
++    ZoneScopedN("Hexagon::generateImage");
+     int tileSize = 100;
+     int width    = 88;
+     int height   = 100;
+@@ -301,6 +303,7 @@
+ 
+ void Hexagon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+ {
++    ZoneScopedN("Hexagon::paint");
+     painter->setPen(pen());
+     painter->setBrush(brush());
+     painter->drawPolygon(polygon());
+--- a/game/entities/tileStorage.cpp
++++ b/game/entities/tileStorage.cpp
+@@ -1,3 +1,4 @@
++#include <tracy/Tracy.hpp>
+ #include "tileStorage.h"
+ 
+ #include <QDebug>
+@@ -24,6 +25,7 @@
+ 
+ void TileStorage::parseAllTilesFromJson(const QString &jsonFilePath)
+ {
++    ZoneScopedN("TileStorage::parseAllTilesFromJson");
+     QFile file(jsonFilePath);
+ 
+     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+@@ -70,6 +72,7 @@
+ 
+ void TileStorage::parseStartingTilesFromJson(const QString &jsonFilePath)
+ {
++    ZoneScopedN("TileStorage::parseStartingTilesFromJson");
+     QFile file(jsonFilePath);
+ 
+     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+--- a/game/entities/tile.cpp
++++ b/game/entities/tile.cpp
+@@ -1,3 +1,4 @@
++#include <tracy/Tracy.hpp>
+ #include "tile.h"
+ 
+ #include <numeric>
+@@ -74,6 +75,7 @@
+ 
+ auto Tile::toVariant() const -> QVariant
+ {
++    ZoneScopedN("Tile::toVariant");
+     QVariantMap map;
+     map.insert("m_tileNumber", m_tileNumber);
+ 
+@@ -98,6 +100,7 @@
+ 
+ void Tile::fromVariant(const QVariant &variant)
+ {
++    ZoneScopedN("Tile::fromVariant");
+     QVariantMap map = variant.toMap();
+ 
+     m_tileNumber = map.value("m_tileNumber").toInt();
+--- a/game/entities/tileData.cpp
++++ b/game/entities/tileData.cpp
+@@ -1,3 +1,4 @@
++#include <tracy/Tracy.hpp>
+ #include "tileData.h"
+ 
+ TileData::TileData() = default;
+@@ -93,6 +94,7 @@
+ 
+ auto TileData::toVariant() const -> QVariant
+ {
++    ZoneScopedN("TileData::toVariant");
+     QVariantMap map;
+     map.insert("id", id);
+     map.insert("row", row);
+@@ -121,6 +123,7 @@
+ 
+ void TileData::fromVariant(const QVariant &variant)
+ {
++    ZoneScopedN("TileData::fromVariant");
+     QVariantMap map = variant.toMap();
+     id          = map.value("id").toInt();
+     row         = map.value("row").toInt();
+--- a/game/engine/game.cpp
++++ b/game/engine/game.cpp
+@@ -1,3 +1,4 @@
++#include <tracy/Tracy.hpp>
+ #include "game.h"
+ 
+ #include <QDebug>
+@@ -43,6 +44,7 @@
+ 
+ void Game::processTurnStart()
+ {
++    ZoneScopedN("Game::processTurnStart");
+     m_confirmButtonClicked                    = false;
+     m_currentPlayerUsedPineconeChooseAny      = false;
+     m_currentPlayerUsedPineconeClearAllTokens = false;
+@@ -171,6 +173,7 @@
+ 
+ void Game::processTurnEnd()
+ {
++    ZoneScopedN("Game::processTurnEnd");
+     m_turn->setPlayerId(m_currentPlayer->playerId());
+ 
+     removeSelectedBorders();
+@@ -251,6 +254,7 @@
+ 
+ void Game::calculateAndShowResults()
+ {
++    ZoneScopedN("Game::calculateAndShowResults");
+     QVector<QPair<Player *, QVector<int>>> results;
+     for (auto &player : m_playerOrder)
+     {
+@@ -406,6 +410,7 @@
+ 
+ void Game::onConfirmButtonClicked()
+ {
++    ZoneScopedN("Game::onConfirmButtonClicked");
+     removeSelectedBorders();
+     m_lastPlacedTile       = nullptr;
+     m_confirmButtonClicked = true;
+@@ -431,6 +436,7 @@
+ 
+ void Game::onRotateCounterClockwiseButtonClicked()
+ {
++    ZoneScopedN("Game::onRotateCounterClockwiseButtonClicked");
+     if (m_lastPlacedHexagon != nullptr && m_lastPlacedTile != nullptr)
+     {
+         TileData *info = m_lastPlacedHexagon->getTileData();
+@@ -450,6 +456,7 @@
+ 
+ void Game::onRotateClockwiseButtonClicked()
+ {
++    ZoneScopedN("Game::onRotateClockwiseButtonClicked");
+     if (m_lastPlacedHexagon != nullptr && m_lastPlacedTile != nullptr)
+     {
+         TileData *info = m_lastPlacedHexagon->getTileData();
+@@ -560,6 +567,7 @@
+ 
+ void Game::onHexagonClicked(Hexagon *hexagon)
+ {
++    ZoneScopedN("Game::onHexagonClicked");
+     TileData *tileData = hexagon->getTileData();
+     int       row      = tileData->getRow();
+     int       col      = tileData->getCol();
+--- a/controller/controller.cpp
++++ b/controller/controller.cpp
+@@ -1,3 +1,4 @@
++#include <tracy/Tracy.hpp>
+ #include "controller.h"
+ 
+ #include "playerData.h"
+@@ -105,6 +106,7 @@
+ 
+ void Controller::startSinglePlayerGame()
+ {
++    ZoneScopedN("Controller::startSinglePlayerGame");
+     m_username = mainWindow->showDialogForUsername();
+     if (m_username.isEmpty())
+     {
+--- a/views/gameGui.cpp
++++ b/views/gameGui.cpp
+@@ -1,3 +1,4 @@
++#include <tracy/Tracy.hpp>
+ #include "gameGui.h"
+ 
+ #include <QDebug>
+@@ -97,6 +98,7 @@
+ 
+ void GameGui::drawTiles()
+ {
++    ZoneScopedN("GameGui::drawTiles");
+     QVector<Tile>      tiles    = m_game->currentTiles();
+     QVector<Hexagon *> hexagons = m_game->board()->getCurrentHexagons();
+     for (int i = 0; i < tiles.size(); i++)
+@@ -106,6 +108,7 @@
+ 
+ void GameGui::drawTokens()
+ {
++    ZoneScopedN("GameGui::drawTokens");
+     QVector<QString> animals = m_game->currentTokens();
+     QVector<Token *> tokens  = m_game->board()->getCurrentTokens();
+     for (int i = 0; i < animals.size(); i++)
