@@ -15,3 +15,10 @@ unit_tests/reports/*
 valgrind/memcheck/reports/run*
 valgrind/memcheck/reports/game*
 !valgrind/memcheck/reports/unit_tests/*
+*.profraw
+*.profdata
+mull/reports/*
+!mull/reports/used_run/
+mull/reports/used_run/*
+!mull/reports/used_run/*_mull.log
+!mull/reports/used_run/*.json

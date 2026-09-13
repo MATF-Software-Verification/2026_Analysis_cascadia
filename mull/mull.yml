@@ -1,0 +1,14 @@
+mutators:
+  - cxx_all
+
+# Mutate selected production logic only
+includePaths:
+  - '.*/cascadia/game/entities/(tileData|tile|tileStorage)\.cpp$'
+  - '.*/cascadia/common/playerData\.cpp$'
+  - '.*/cascadia/game/board/hexagonGrid\.cpp$'
+  - '.*/cascadia/game/engine/scoring\.cpp$'
+
+# Limit load
+parallelization:
+  workers: 2
+  executionWorkers: 2

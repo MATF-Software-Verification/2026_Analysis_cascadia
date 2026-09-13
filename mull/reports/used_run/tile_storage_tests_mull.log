@@ -1,0 +1,61 @@
+[info] Using config /home/julijana/Desktop/2026_Analysis_cascadia/mull/mull.yml
+[warning] Could not find dynamic library: libQt6Test.so.6
+[warning] Could not find dynamic library: libQt6Core.so.6
+[warning] Could not find dynamic library: libstdc++.so.6
+[warning] Could not find dynamic library: libm.so.6
+[warning] Could not find dynamic library: libgcc_s.so.1
+[warning] Could not find dynamic library: libc.so.6
+[info] Warm up run (threads: 1)
+
+       [################################] 1/1. Finished in 8ms
+[info] Applying coverage filter (threads: 2)
+
+       [#-------------------------------] 1/22. 0ms
+       [##------------------------------] 2/22. 0ms
+       [####----------------------------] 3/22. 0ms
+       [#####---------------------------] 4/22. 0ms
+       [#######-------------------------] 5/22. 0ms
+       [########------------------------] 6/22. 0ms
+       [##########----------------------] 7/22. 0ms
+       [###########---------------------] 8/22. 0ms
+       [#############-------------------] 9/22. 0ms
+       [##############------------------] 10/22. 0ms
+       [################----------------] 11/22. 0ms
+       [#################---------------] 12/22. 0ms
+       [##################--------------] 13/22. 0ms
+       [####################------------] 14/22. 0ms
+       [#####################-----------] 15/22. 0ms
+       [#######################---------] 16/22. 0ms
+       [########################--------] 17/22. 0ms
+       [##########################------] 18/22. 0ms
+       [###########################-----] 19/22. 0ms
+       [#############################---] 20/22. 0ms
+       [##############################--] 21/22. 0ms
+       [################################] 22/22. 0ms
+       [################################] 22/22. Finished in 0ms
+[info] Applying file path filter (threads: 2)
+
+       [####----------------------------] 1/7. 0ms
+       [#########-----------------------] 2/7. 0ms
+       [#############-------------------] 3/7. 0ms
+       [##################--------------] 4/7. 0ms
+       [######################----------] 5/7. 0ms
+       [###########################-----] 6/7. 0ms
+       [################################] 7/7. 0ms
+       [################################] 7/7. Finished in 0ms
+[info] Baseline run (threads: 1)
+
+       [################################] 1/1. Finished in 12ms
+[info] Running mutants (threads: 2)
+
+       [####----------------------------] 1/7. 10ms
+       [#########-----------------------] 2/7. 12ms
+       [#############-------------------] 3/7. 131ms
+       [##################--------------] 4/7. 135ms
+       [######################----------] 5/7. 139ms
+       [###########################-----] 6/7. 148ms
+       [################################] 7/7. 154ms
+       [################################] 7/7. Finished in 154ms
+[info] IDE Report saved into /home/julijana/Desktop/2026_Analysis_cascadia/mull/reports/run_20260913_234804/tile_storage_tests.txt
+[info] Mutation Testing Elements reporter: generated report to /home/julijana/Desktop/2026_Analysis_cascadia/mull/reports/run_20260913_234804/tile_storage_tests.json
+[info] Total execution time: 184ms
