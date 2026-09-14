@@ -40,7 +40,7 @@ export QT_QPA_PLATFORM=offscreen
 export ASAN_OPTIONS="${ASAN_OPTIONS:-detect_leaks=1}"
 
 cmake -S "$FUZZ_DIR" -B "$BUILD_DIR" \
-    -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
+    -DCMAKE_BUILD_TYPE="${BUILD_TYPE:-RelWithDebInfo}" \
     -DCMAKE_CXX_COMPILER="${CXX:-clang++}" \
     -DCMAKE_C_COMPILER="${CC:-clang}" \
     -DFUZZTEST_FUZZING_MODE=ON

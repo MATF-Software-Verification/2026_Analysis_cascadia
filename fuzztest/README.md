@@ -68,7 +68,7 @@ ili `BUILD_TYPE=Debug`. Podrazumevani kompajleri su `clang` i `clang++`.
 | `ScoringFuzz.HabitatConnectionDependsOnRotation` | Dve susedne pločice i svih šest rotacija; spajanje staništa zavisi od dodirnih stranica. |
 
 
-## Rezultati i ponavljanje nalaza
+## Ponavljanje nalaza
 
 Rezultati se čuvaju u `fuzztest/reports/run_<datum_vreme>/`.
 
@@ -86,3 +86,27 @@ FUZZTEST_REPLAY="/puna/putanja/do/sacuvanog_ulaza" \
 ./build_fuzz/fuzz_cascadia --gtest_filter=TileFuzz.SerializationPreservesState
 ```
 
+## Rezultati 
+
+Za postavku konfiguracije `FUZZ_DURATION=60` **nađen je samo jedan problem**.
+
+**Pri serijalizaciji i ponovnom učitavanju pločice gubi se rotacija.** 
+
+| Podatak            | Vrednost                                                              |
+| ------------------ | --------------------------------------------------------------------- |
+| Test               | `TileFuzz.SerializationPreservesState`                                |
+| Ulaz               | ID `2`, rotacija `120`, životinje `elk, fox`, staništa `forest, lake` |
+| Očekivana rotacija | `120°`                                                                |
+| Dobijena rotacija  | `0°`                                                                  |
+
+**Uzrok se potvržuje u kodu:**
+
+* `Tile::toVariant()` upisuje vrednost `m_rotation`.
+* `Tile::fromVariant()` učitava broj pločice, staništa i životinje, ali **ne učitava rotaciju**.
+* Novi objekat `Tile restored` počinje sa rotacijom `0`, koja zato ostaje nepromenjena.
+
+`fuzz_cascadia.cc:75` označava mesto gde je test primetio problem; uzrok je u implementaciji `Tile::fromVariant()`.
+
+**`SIGABRT` na kraju je posledica prekida koji FuzzTest pokreće nakon neuspešne provere.** 
+
+Ovaj nalaz potvrđuje **istu grešku koju su ranije otkrili jedinični testovi rotacije**. 
