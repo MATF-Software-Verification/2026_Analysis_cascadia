@@ -269,10 +269,640 @@ Skripta za izdvajanje zadržava cele zapise koji pominju prepoznate izvorne fajl
 
 Memcheck posmatra samo izvršene putanje. Ove dve sesije ne obuhvataju završetak cele partije, više uzastopnih partija, sve korisničke akcije niti mrežnu igru. Rezultati jediničnih testova zato ne zamenjuju proveru celog toka stvaranja, upotrebe i oslobađanja objekata u aplikaciji.
 
+## 5. Cppcheck analiza
+
+Za statičku analizu izvornog koda aplikacije Cascadia korišćen je alat
+Cppcheck. Analiza je sprovedena na osnovu
+`compile_commands.json` datoteke, a rezultati su sačuvani u XML formatu i
+zatim pretvoreni u HTML izveštaj pomoću alata `cppcheck-htmlreport`.
+
+### 5.1. Preduslovi
+
+Na Ubuntu/Debian sistemu potrebno je dodatno instalirati `cppcheck` alat:
+
+```bash
+sudo apt install cppcheck
+```
+
+### 5.2. Pokretanje analize
+
+Pre pokretanja analize potrebno je kopirati konfiguracionu datoteku:
+
+```bash
+cp cppcheck.cfg.example cppcheck.cfg
+```
+
+Analiza je pokrenuta sledećim opcijama:
+
+```bash
+cppcheck \
+    -j "$JOBS" \
+    --cppcheck-build-dir="$BUILD_DIR/cppcheck_cache" \
+    --project="$BUILD_DIR/compile_commands.json" \
+    --file-filter="$SOURCE_DIR/*" \
+    --enable=all \
+    --inconclusive \
+    --library=qt \
+    --suppress=missingIncludeSystem \
+    --language=c++ \
+    --std=c++20 \
+    --platform=unix64 \
+    --xml \
+    --xml-version=2 \
+    2>"$XML_FILE"
+```
+
+Skripta `cppcheck.sh` pre analize automatski konfiguriše projekat i generiše
+`compile_commands.json` pomoću CMake-a:
+
+```bash
+cmake -S ../cascadia++/cascadia -B ../build_cppcheck \
+    -DCMAKE_BUILD_TYPE=Debug \
+    -DCMAKE_CXX_STANDARD=20 \
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+```
+
+To je JSON datoteka koju CMake generiše kada je uključena
+opcija `CMAKE_EXPORT_COMPILE_COMMANDS=ON`.
+ Cppcheck koristi te zapise da analizira izvorni kod u istom kontekstu u kojem
+se projekat kompajlira. Na taj način pravilno koristi include putanje, makroe,
+Qt zaglavlja i opcije kompajlera. 
+
+Opcija `--enable=all` uključuje sve dostupne kategorije provera, izuzev
+`unusedFunction`, koja nije dostupna kada se analiza izvršava uz opciju `-j`.
+Opcija `--inconclusive` uključuje i nalaze za koje Cppcheck nema potpunu
+sigurnost. Opcija `--suppress=missingIncludeSystem` koristi se za potiskivanje
+upozorenja koja nastaju zbog nedostupnih sistemskih zaglavlja i mogu predstavljati
+lažno pozitivne rezultate.
+
+### 5.3. Rezultati
+
+Rezultati jednog konkretnog pokretanja dostupni su u direktorijumu
+[`reports/`](cppcheck/reports), u HTML i XML formatu. Sažetak nalaza prikazan je u
+tabeli ne računajući `inconcl`:
+
+| Kategorija | Broj nalaza | Udeo u ukupnom broju |
+|:--|--:|--:|
+| `style` | 159 | 56,6% |
+| `warning` | 75 | 26,7% |
+| `performance` | 41 | 14,6% |
+| `information` | 6 | 2,1% |
+| `error` | 0 | 0,0% |
+| **Ukupno** | **281** | **100,0%** |
+
+![Statistika Cppcheck nalaza](images/statistics_cppcheck.png)
+
+*Slika 1: Raspodela nalaza prema kategorijama.*
+
+Vrste defekata prema učestalosti prikazane su na sledećoj slici:
+
+![Vrste defekata prema učestalosti](images/defect_types_cppcheck.png)
+
+*Slika 2: Raspodela defekata prema tipu.*
+
+### 5.4. Analiza rezultata
+
+**U analiziranom pokretanju nije prijavljen nijedan nalaz kategorije `error`. Dostavljena tabela sadrži 78 upozorenja kategorije `warning`, od kojih su tri označena kao `inconclusive`.**
+
+
+| Vrsta upozorenja | Broj | Jednostavno značenje |
+| --- | ---: | --- |
+| `uninitMemberVar` | 59 | Konstruktor ne postavlja početnu vrednost nekog polja. |
+| `missingMemberCopy` | 3 | Konstruktor kopije izostavlja neko polje; potrebno je proveriti da li je to namerno. Sva tri nalaza su `inconclusive`. |
+| `noOperatorEq` | 2 | Klasa upravlja resursima, ali nema sopstveni operator dodele koji uređuje njihovo kopiranje. |
+| `nullPointerRedundantCheck` | 14 | Pokazivač se koristi pre provere da li je `nullptr`, pa je provera zakasnela ili suvišna. |
+| **Ukupno** | **78** |  |
+
+| Klasa | Neinicijalizovana polja | Izostavljeno kopiranje | Operator dodele | Provera pokazivača | Ukupno |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `PlayerData` | 1 | 0 | 0 | 0 | 1 |
+| `Turn` | 9 | 1 | 1 | 0 | 11 |
+| `ServerService` | 1 | 0 | 0 | 0 | 1 |
+| `Board` | 22 | 0 | 0 | 0 | 22 |
+| `Player` | 7 | 2 | 1 | 0 | 10 |
+| `TileData` | 10 | 0 | 0 | 0 | 10 |
+| `Token` | 3 | 0 | 0 | 0 | 3 |
+| `GameGui` | 0 | 0 | 0 | 14 | 14 |
+| `LobbyView` | 6 | 0 | 0 | 0 | 6 |
+| **Ukupno** | **59** | **3** | **2** | **14** | **78** |
+
+
+#### Neinicijalizovana polja — `uninitMemberVar` (59)
+
+Primer je defaultni konstruktor `Player()`. Posebno je interesantan pokazivač `m_hexagonGrid`, koji konstruktor ne postavlja, a destruktor koristi u izrazu `delete m_hexagonGrid`. Zato pravljenje lokalnog objekta tim konstruktorom i njegovo uništavanje bez prethodnog postavljanja pokazivača nije bezbedno.
+
+Ipak, u pozivima u `Controller` koriste se konstruktori sa parametrima, koji prave mrežu. Identifikator izostavljen u konstruktoru sa imenom igrača naknadno postavlja `SetupPlayers`. Nije potvrđeno da se problem podrazumevanog konstruktora ispoljava tokom normalne partije.
+
+Drugačiji primer je konstruktor `Turn` sa parametrima: prima `newTile` i `playerId`, ali ih ne upisuje u odgovarajuća polja. To je konkretan propust u čuvanju prosleđenih podataka.
+
+
+#### Izostavljeno kopiranje polja — `missingMemberCopy` (3)
+
+Kod `Turn` se `ownsData` ne preuzima iz originala, već ostaje `false`. To može biti namerno: kopija pozajmljuje podatke i ne oslobađa ih. Slepo kopiranje vrednosti `true`, uz kopiranje istih pokazivača, omogućilo bi da dva objekta oslobađaju iste podatke. Pozajmljena kopija pritom sme da se koristi samo dok podaci postoje. 
+
+Sva tri nalaza su označena kao `inconclusive`. Potrebno je razjasniti namenu kopije i vlasništvo.
+
+#### Nedostajući operator dodele — `noOperatorEq` (2)
+
+`Player` oslobađa svoj grid u destruktoru i ima konstruktor kopije koji pravi novi grid, ali nema sopstveni operator dodele. Zato `Player b(a)` i `b = a` nemaju isto ponašanje: automatska dodela kopira adresu mreže. Prethodni grid odredišta može ostati neoslobođena, a oba objekta mogu pokušati da oslobode istu grid.
+
+#### Provera pokazivača posle upotrebe — `nullPointerRedundantCheck` (14)
+
+U `GameGui::setupUi()` pokazivač `m_game` koristi se za pristup tabli, pa se tek zatim proverava kroz `if (... && m_game)`. Takva provera ne štiti prethodnu upotrebu.
+
+Ako klasa zahteva postojeći objekat igre, provera je suvišna. Ako prihvata `nullptr`, provera mora prethoditi prvoj upotrebi, uključujući konstruktor koji odmah poziva metode za crtanje. U kodu `Controller` prvo pravi `Game`, pa ga prosleđuje `GameGui`.
+
+### 5.5. Performanse
+
+Cppcheck je prijavio **41 upozorenje** kategorije `performance`:
+
+| Vrsta prijave           |   Broj | Značenje                                                                       |
+| ----------------------- | -----: | ------------------------------------------------------------------------------ |
+| `returnByReference`     |     29 | Predlaže vraćanje podataka kroz konstantnu referencu radi izbegavanja kopija.  |
+| `passedByValue`         |     10 | Predlaže prosleđivanje parametara kroz konstantnu referencu.                   |
+| `useInitializationList` |      2 | Predlaže direktnu inicijalizaciju polja umesto naknadne dodele u konstruktoru. |
+| **Ukupno**              | **41** |                                                                                |
+
+Najvažnije prijave odnose se na kopiranje mapa rezultata u klasama `Player` i `Scoring`, kao i prosleđivanje stringova i kolekcija po vrednosti. 
+
+**Ovo su predlozi optimizacije, a ne potvrđeni problemi brzine izvršavanja.** Stvarni uticaj treba proveriti merenjem.
+
+## 6. Mull — mutaciono testiranje
+
+Mull pravi male izmene u kodu (mutante), pokreće testove i proverava da li ih testovi otkrivaju.
+Na primer, zameni `==` sa `!=` ili `+` sa `-`. Ako testovi prijave grešku, mutant je otkriven.
+Ako prođu, mutant je preživeo i treba pregledati šta izmena znači.
+
+### 6.1. Pokretanje
+
+Potrebni su Clang 18, LLVM 18, Mull za LLVM 18, CMake i Qt 6 razvojni paketi.
+Za Ubuntu instalacija prema Mull dokumentaciji je:
+
+```bash
+sudo apt update
+sudo apt install -y curl ca-certificates gnupg cmake build-essential qt6-base-dev clang-18 llvm-18 libclang-rt-18-dev
+curl -1sLf 'https://dl.cloudsmith.io/public/mull-project/mull-stable/setup.deb.sh' -o /tmp/mull-setup.deb.sh
+sudo -E bash /tmp/mull-setup.deb.sh
+sudo apt update
+sudo apt install -y mull-18
+```
+
+Pokreni analizu iz korena projekta:
+
+```bash
+bash mull/mull.sh
+```
+
+### 6.2. Šta testiramo
+
+Podrazumevano koristimo četiri cela skupa postojećih Qt Test testova:
+
+| Izvršni fajl | Šta proverava |
+|---|---|
+| `cascadia_unit_tests` | Stanje i serijalizaciju klase TileData. |
+| `player_data_tests` | Podatke igrača i njihovu serijalizaciju. |
+| `tile_storage_tests` | Učitavanje pločica iz JSON-a i neispravne ulaze. |
+| `hexagon_grid_tests` | Dimenzije mreže, susede i izbor dozvoljenih polja. |
+
+Mull menja samo produkcione fajlove dozvoljene u `mull.yml`.
+
+Važne opcije skripte koju koristimo:
+
+| Opcija | Zašto je koristimo |
+|---|---|
+| `-O0 -g` | Olakšava povezivanje mutacija sa izvornim kodom. |
+| `-fpass-plugin=...` | Uključuje Mull plugin pri kompajliranju. |
+| `-grecord-command-line` | Čuva informacije o naredbi kompajliranja potrebne Mull-u. |
+| `-fprofile-instr-generate -fcoverage-mapping` | Dodaje LLVM pokrivenost; Mull može da izostavi mutante na nepokrivenim linijama. |
+| `--allow-surviving` | Omogućava završetak analize i kada postoje preživeli mutanti. Oni se i dalje prijavljuju. |
+| `--timeout 3000` | Ograničava jedno izvršavanje testa, uključujući slučaj kada mutacija napravi beskonačnu petlju. |
+| `cxx_all` | Uključuje standardni skup C/C++ mutacionih operatora, kao u regex primeru. |
+
+Postojeći CMake ima `ENABLE_COVERAGE` namenjen GCC/gcov pokrivenosti. Zato je ovde isključen, dok LLVM pokrivenost uključujemo navedenim Clang zastavicama.
+`--clean-first` ponovo gradi izabrane ciljeve da bi se uvažile i izmene `mull.yml`.
+Za kompajliranje i izvršavanje mutanata koristimo po dva paralelna posla radi manjeg opterećenja računara.
+
+### 6.3. Rezultati
+
+**Najviše pažnje treba posvetiti `PlayerData`, gde je preživelo 9 od 15 mutanata.** Rezultati pokazuju koliko su izabrani testovi osetljivi na razmatrane izmene koda.
+
+| Skup testova | Ukupno mutanata | Killed | Survived | Timeout | Mull mutation score |
+|---|---:|---:|---:|---:|---:|
+| `cascadia_unit_tests` | 19 | 12 | 7 | 0 | 63% |
+| `player_data_tests` | 15 | 6 | 9 | 0 | 40% |
+| `tile_storage_tests` | 7 | 5 | 0 | 2 | 71% |
+| `hexagon_grid_tests` | 81 | 31 | 13 | 37 | 38% |
+
+Polje mutationScore odgovara udelu Killed u ukupnom broju razmatranih mutanata, prikazanom kao ceo procenat. Timeout-i nisu uračunati kao Killed.
+
+
+### 6.4. Zaključci po skupu
+
+- **TileData:** 12 od 19 mutanata ima status Killed, a 7 je preživelo. Pregled pojedinačnih izmena je potreban pre zaključka da svaki preživeli mutant predstavlja nedostatak testova.
+- **PlayerData:** 6 od 15 mutanata ima status Killed, a 9 je preživelo. Osam preživelih potiče iz `tileData.cpp`, a samo jedan iz `playerData.cpp`; rezultat zato opisuje skup testova sa zavisnostima, a ne isključivo klasu PlayerData.
+- **TileStorage:** potvrđeno je da nema preživelih mutanata, ali samo 5 od 7 ima status Killed. Preostala dva su Timeout, pa se ne može tvrditi da su testovi svojim proverama otkrili svih sedam mutacija.
+- **HexagonGrid:** 31 od 81 mutanta ima status Killed. Veliki broj timeout-a (37) zahteva oprez pri oceni testova. Među 13 preživelih postoje i izmene koje ne menjaju ponašanje, kao i izmena vizuelnog prikaza koju testovi ne proveravaju.
+
+### 6.5. Primer 1: preživeli mutant u player_data_tests
+
+**Lokacija:** `game/entities/tileData.cpp:156`, funkcija `TileData::setIndex`.
+
+**Operator:** `cxx_assign_const`.
+
+```cpp
+// Original
+index = newIndex;
+
+// Mutant
+index = 42;
+```
+
+Status u `player_data_tests.json` je **Survived**. Pomoćna funkcija `makeTile` poziva `setIndex(0)`, ali provere u ovom skupu usmerene su na podatke igrača i serijalizovane podatke pločica. Funkcija `compareTile` ne proverava indeks.
+
+Isti mutant u `cascadia_unit_tests.json` ima status **Killed**. U testu `settersAndGettersPreserveValues` postavlja se indeks 4 i proverava `QCOMPARE(tile.getIndex(), 4)`.
+
+**Zaključak:** mutant nije otkriven u jednom skupu, ali jeste u drugom. Ovo nije dokaz da projekat u celini nema test za `setIndex`, niti razlog da se automatski dodaje ista provera u svaki skup testova.
+
+### 6.6. Primer 2: preživela promena izgleda dozvoljenog polja
+
+**Lokacija:** `game/board/hexagonGrid.cpp:97`, funkcija `HexagonGrid::setValidNeighbours`.
+
+**Operator:** `cxx_remove_void_call`.
+
+Mull uklanja poziv:
+
+```cpp
+hex->setBrush(QBrush(QColor(219, 224, 157)));
+```
+
+Status je **Survived**. Poziv `tile->setIsValid(true)` ostaje, pa polje zadržava oznaku da je dozvoljeno, ali izostaje postavljanje njegove boje.
+
+Postojeći test `selectableNeighbours` proverava logičko stanje polja preko `getPlacedTile()` i `getIsValid()`, a ne boju četkice.
+
+**Zaključak:** ovaj mutant ukazuje na deo vizuelnog ponašanja koji dati testovi ne proveravaju. Moguća dopuna je provera `brush().color()` za dozvoljeno polje nakon poziva `setValidNeighbours`, ako je boja deo zahtevanog ponašanja.
+
+### 6.7. Primer 3: otkrivena pogrešna rotacija pri učitavanju
+
+**Lokacija:** `game/entities/tileStorage.cpp:64`, funkcija za učitavanje običnih pločica.
+
+**Operator:** `cxx_init_const`.
+
+```cpp
+// Original
+int rotation = tileObj.value("rotation").toInt();
+
+// Mutant
+int rotation = 42;
+```
+
+Status je **Killed**. Mutant zanemaruje rotaciju zadatu u JSON-u i uvek koristi 42.
+
+U postojećem testu `loadsAllTiles` ulaz sadrži rotacije 120, 300 i 0, a proveravaju se iste vrednosti u učitanim pločicama. Takva provera može da otkrije ovu promenu. JSON izveštaj ne navodi koji je pojedinačni test prijavio neuspeh, pa se taj podatak ne tvrdi na osnovu samog statusa.
+
+**Zaključak:** testovi proveravaju konkretnu vrednost učitanog atributa, što omogućava otkrivanje pogrešne inicijalizacije rotacije.
+
+### 6.8. Dodatni primer: ekvivalentan mutant
+
+**Lokacija:** `game/board/hexagonGrid.cpp:81` (isto važi i za odgovarajući izbor na liniji 113).
+
+**Operator:** `cxx_eq_to_ne`; status **Survived**.
+
+```cpp
+// Original
+const int *rowOffset = (row % 2 == 0) ? rowOffsetEvenRow : rowOffsetOddRow;
+
+// Mutant
+const int *rowOffset = (row % 2 != 0) ? rowOffsetEvenRow : rowOffsetOddRow;
+```
+
+Oba niza rednih pomeraja imaju isti sadržaj:
+
+```cpp
+{0, -1, -1, 0, 1, 1}
+```
+
+Promena uslova bira drugi niz sa istim elementima, pa ne menja izračunate susede. To je ekvivalentna izmena u ovom kodu, a ne nedostatak testova. Ovo objašnjenje se odnosi na `rowOffset`; nizovi `colOffset` imaju različit sadržaj.
+
+### 6.9. Ograničenja tumačenja
+
+Rezultati važe za izabrane test izvršne fajlove, mutacione operatore, putanje i filter pokrivenosti. Brojeve iz različitih skupova ne treba sabirati u jedinstven mutation score projekta: isti mutant može biti prisutan u više izveštaja, a kao u primeru `setIndex`, može imati i različit ishod.
+
+Preživljavanje izmene nije samo po sebi dokaz greške u testu. Posebno treba razlikovati neprovereno ponašanje, ekvivalentne izmene i mutante koje otkriva drugi skup testova. Za timeout-e je potrebna dodatna provera pre pripisivanja konkretnog uzroka.
+
+## 7. Fuzz testiranje - Google FuzzTest
+
+Proširen skup sadrži **15 fuzz testova za 7 klasa**. Svaki test predstavlja
+svojstvo koje FuzzTest proverava nad mnogim generisanim ulazima.
+
+### 7.1. Postavljanje i pokretanje
+
+Potrebni su Clang i AddressSanitizer runtime:
+
+```bash
+sudo apt update
+sudo apt install clang libclang-rt-dev qt6-base-dev
+```
+
+Iz korena repozitorijuma:
+
+```bash
+bash fuzztest/fuzzer.sh
+```
+
+Prva kompilacija preuzima FuzzTest i njegove zavisnosti i zahteva internet.
+Konfiguraciju pravimo ovako:
+
+```bash
+cp fuzztest/fuzztest.cfg.example fuzztest/fuzztest.cfg
+```
+
+### 7.2. Konfiguracija
+
+```bash
+JOBS=2
+FUZZ_DURATION=60
+FUZZ_TARGETS=""
+```
+
+`JOBS` je broj paralelnih poslova **kompilacije**. Testovi se izvršavaju redom.
+`FUZZ_DURATION` je trajanje fuzzinga **po testu**, u sekundama. Prazan
+`FUZZ_TARGETS` bira svih 15 testova: oko 15 minuta planiranog fuzzinga, uz
+kompilaciju. Test koji nađe problem završava ranije.
+
+Za konkretan podskup potrebno je upisati puna imena razdvojena razmacima:
+
+```bash
+FUZZ_TARGETS="TileFuzz.RotationsUndoEachOther ScoringFuzz.FoxCountsDistinctAnimals"
+```
+
+Po potrebi se u isti `.cfg` mogu dodati `CC=clang-18`, `CXX=clang++-18`
+ili `BUILD_TYPE=Debug`. Podrazumevani kompajleri su `clang` i `clang++`.
+
+### 7.3. Šta se testira
+
+| Fuzz test | Generisani ulazi i očekivano svojstvo |
+|---|---|
+| `TileFuzz.SerializationPreservesState` | ID, dozvoljena rotacija i liste životinja/staništa; serijalizacija čuva sva ta polja. |
+| `TileFuzz.RotationsUndoEachOther` | Početni ugao i do 40 smerova rotacije; obrnuti niz i šest punih koraka vraćaju početno stanje. |
+| `TileDataFuzz.TileDataPreservesState` | ID, koordinate, ugao i liste; očuvanje serijalizovanih podataka polja. |
+| `TurnFuzz.TurnPreservesState` | Igrač, indeks, šišarke i ugao; očuvanje poteza i nezavisnost deserializovanih podataka. |
+| `TileStorageFuzz.LoadsGeneratedJson` | Ispravan JSON sa 0-12 pločica, oba formata; provera broja i sadržaja učitanih pločica. |
+| `GridFuzz.NeighboursAreValid` | Dimenzije 0-8; susedi su tačni prema geometriji šestougaone mreže, jedinstveni, uzajamni i u granicama. |
+| `GridFuzz.SelectableCellsMatchEmptyNeighbours` | Do 20 postavljenih polja u mreži 8×8; dostupna su upravo prazna susedna polja, i pri ponovnom pozivu. |
+| `PlayerFuzz.CopyHasIndependentGrid` | Polje mreže, ID pločice i šišarke; menjanje i uništavanje kopije ne menja original. |
+| `ScoringFuzz.BearGroupsFollowScoringTable` | Razdvojene grupe od 1-3 medveda; boduju se samo parovi, prema očekivanoj tabeli. |
+| `ScoringFuzz.HawkGroupsCountOnlyIsolatedBirds` | Do devet razdvojenih grupa od 1-2 jastreba; boduju se izolovani, uz ograničenje za osam. |
+| `ScoringFuzz.FoxCountsDistinctAnimals` | Do šest suseda jedne lisice; računaju se različite vrste, bez dupliranja iste vrste. |
+| `ScoringFuzz.ElkStraightLinesFollowTable` | Prave horizontalne linije od 0-4 jelena na različitim mestima; očekivano 0, 2, 5, 9 ili 13 bodova. |
+| `ScoringFuzz.SeparateSalmonRunsAddScores` | Do tri razdvojena niza od 1-8 lososa; sabiranje rezultata uz ograničenje po nizu. |
+| `ScoringFuzz.LargestHabitatRegionWins` | Odvojene oblasti različitih veličina i svih pet staništa; računa se najveća oblast. |
+| `ScoringFuzz.HabitatConnectionDependsOnRotation` | Dve susedne pločice i svih šest rotacija; spajanje staništa zavisi od dodirnih stranica. |
+
+
+### 7.4. Ponavljanje nalaza
+
+Rezultati se čuvaju u `fuzztest/reports/run_<datum_vreme>/`.
+
+Skripta posle pada jednog testa nastavlja sa ostalima. Na kraju vraća `1` ako
+je bilo neuspeha. Kod `0` označava da u toj sesiji nije prijavljen problem;
+nenulti kod traži pregled loga. Uzrok može biti narušeno svojstvo, ASan prijava,
+prekoračenje ograničenja ili neuspešno pokretanje. Broj neuspešnih testova nije
+broj različitih defekata.
+
+Primer ponavljanja sačuvanog ulaza, uz odgovarajuće ime testa i apsolutnu putanju:
+
+```bash
+QT_QPA_PLATFORM=offscreen \
+FUZZTEST_REPLAY="/puna/putanja/do/sacuvanog_ulaza" \
+./build_fuzz/fuzz_cascadia --gtest_filter=TileFuzz.SerializationPreservesState
+```
+
+### 7.5. Rezultati
+
+Za postavku konfiguracije `FUZZ_DURATION=60` **nađen je samo jedan problem**.
+
+**Pri serijalizaciji i ponovnom učitavanju pločice gubi se rotacija.** 
+
+| Podatak            | Vrednost                                                              |
+| ------------------ | --------------------------------------------------------------------- |
+| Test               | `TileFuzz.SerializationPreservesState`                                |
+| Ulaz               | ID `2`, rotacija `120`, životinje `elk, fox`, staništa `forest, lake` |
+| Očekivana rotacija | `120°`                                                                |
+| Dobijena rotacija  | `0°`                                                                  |
+
+**Uzrok se potvržuje u kodu:**
+
+* `Tile::toVariant()` upisuje vrednost `m_rotation`.
+* `Tile::fromVariant()` učitava broj pločice, staništa i životinje, ali **ne učitava rotaciju**.
+* Novi objekat `Tile restored` počinje sa rotacijom `0`, koja zato ostaje nepromenjena.
+
+`fuzz_cascadia.cc:75` označava mesto gde je test primetio problem; uzrok je u implementaciji `Tile::fromVariant()`.
+
+**`SIGABRT` na kraju je posledica prekida koji FuzzTest pokreće nakon neuspešne provere.** 
+
+Ovaj nalaz potvrđuje **istu grešku koju su ranije otkrili jedinični testovi rotacije**.
+
+## 8. Profilisanje pomoću alata Tracy
+
+Tracy koristimo da izmerimo koliko traju pojedine operacije u igri Cascadia++.
+Na primer, možemo da uporedimo vreme bodovanja životinja, vreme bodovanja staništa
+i vreme kopiranja mreže igrača.
+
+U funkcije koje pratimo dodate su **zone**. Zona beleži početak i kraj jednog
+izvršavanja funkcije. U Tracy te zone vidimo kao blokove na vremenskoj
+liniji, a u statistici kao broj poziva i njihova trajanja.
+
+### 8.1. Priprema
+
+Za Ubuntu instaliraj potrebne pakete:
+
+```bash
+sudo apt update
+sudo apt install build-essential cmake git patch pkg-config \
+    qt6-base-dev qt6-multimedia-dev libglfw3-dev libfreetype6-dev libdbus-1-dev \
+    gstreamer1.0-plugins-base gstreamer1.0-plugins-good libwayland-dev wayland-protocols
+```
+
+Tracy se preuzima automatski pri prvom pokretanju. Prvo kompajliranje zato traje
+duže i zahteva internet. Skripta koristi dve paralelne kompilacije (`--parallel 2`).
+Koristi se **Tracy 0.11.1**.
+
+### 8.2. Pokretanje scenarija
+
+Skripta redom:
+
+1. Pravi posebnu kopiju izvora u `tracy/build/source` i u nju dodaje Tracy zone.
+2. Kompajlira scenario i alat `tracy-capture`, koji prima podatke o izvršavanju.
+3. Pokreće snimač, zatim scenario i čeka da se snimanje završi.
+4. Čuva snimak i logove u novom direktorijumu unutar `tracy/reports`.
+
+Izvorni fajlovi u podmodulu ostaju neizmenjeni. Za profilisanje se koristi
+`RelWithDebInfo`.
+Konfiguracija ne uključuje coverage ni sanitizere.
+
+
+| Zona u snimku | Operacije |
+|---|---|
+| `Early board - 3 tiles` | 200 obračuna rezultata na tabli sa 3 početne pločice, bez tokena. |
+| `Middle board - 12 tiles` | 200 obračuna na tabli sa 12 pločica i 9 tokena. |
+| `Late board - 22 tiles` | 200 obračuna na tabli sa 22 pločice i 19 tokena. |
+| `Selectable neighbours - 22 tiles` | 200 prolazaka koji označavaju slobodna susedna polja. |
+| `JSON loading - 50 repetitions` | 50 učitavanja običnih i početnih pločica, svaki put u nove objekte. |
+| `Tile serialization - 200 passes` | 200 prolazaka kroz 85 običnih pločica: pretvaranje u `QVariant` i učitavanje u novi objekat. |
+
+Sve tri table koriste **isti grid 30 × 30**, kakvu pravi klasa `Player`.
+Menja se broj postavljenih pločica, a ne dimenzija grida.
+Raspored je unapred zadat i povezan. Podaci se uzimaju iz originalnog
+`resources/storage.json`: prvi skup početnih pločica i prvih 19 običnih pločica.
+Na obične pločice postavlja se po jedna životinja koju ta pločica dozvoljava.
+Veće table proširuju manje istim redosledom.
+
+Ovo su ručno formirana stanja za poređenje, a ne snimak nasumično odigrane partije.
+Ona omogućavaju da svako pokretanje koristi iste podatke. Učitavanje JSON-a meri
+obradu ugrađenog Qt resursa, pa iz njega ne izvodimo zaključke o brzini diska.
+
+Pre svake grupe od 200 obračuna izvršava se još 5 obračuna za zagrevanje.
+Priprema tabli i zagrevanje imaju zasebne zone i **ne uključuju se u poređenje**.
+U log se ispisuje kontrolni zbir obrađenih rezultata. On pomaže da proverimo da su
+dva pokretanja obradila iste podatke; nije dokaz ispravnosti bodovanja ili serijalizacije.
+
+### 8.3. Snimanje same igre
+
+```bash
+bash tracy/tracy.sh game
+```
+
+Otvoriće se instrumentirana igra. Za jedan pregledan snimak:
+
+1. Pokreni igru za jednog igrača.
+2. Postavi nekoliko pločica i tokena, uz bar jednu rotaciju pločice.
+3. Otvori prikaz rezultata da se izvrši bodovanje.
+4. Zatvori igru i sačekaj poruku skripte da je snimak sačuvan.
+
+Ručno igranje može da pokaže kada se
+javlja sporija operacija, dok je automatski scenario pogodniji za ponavljanje
+istog opterećenja. Automatski scenario ne simulira sve korisničke akcije igre.
+
+**Ovo neće biti deo analize, ostavljeno je samo kao mogućnost.**
+
+### 8.4. Rezultati
+
+| Fajl | Sadržaj |
+|---|---|
+| `capture.tracy` | Snimak koji se otvara u Tracy pregledniku. |
+| `program.log` | Poruke scenarija ili igre; kod scenarija i kontrolni zbir. |
+| `capture.log` | Poruke snimača i eventualni problemi pri povezivanju. |
+
+Svako pokretanje pravi novi direktorijum. 
+
+### 8.5. Otvaranje snimka u Tracyju
+
+Posle prvog uspešnog pokretanja jednom kompajliraj preglednik iz već preuzete
+Tracy verzije:
+
+```bash
+cmake -S tracy/build/_deps/tracy-src/profiler -B tracy/build/viewer \
+    -DCMAKE_BUILD_TYPE=Release -DLEGACY=ON -DNO_PARALLEL_STL=ON
+cmake --build tracy/build/viewer --parallel 2
+```
+
+`LEGACY=ON` bira X11 prikaz, a `NO_PARALLEL_STL=ON` uklanja potrebu za dodatnom
+TBB bibliotekom. Ove opcije se odnose na Tracy alate.
+
+Zatim pokreni pregledač i kroz **Open** izabrati `capture.tracy`:
+
+```bash
+./tracy/build/viewer/tracy-profiler
+```
+
+### 8.6. Merenje i tumačenje
+
+Patch ukupno dodaje 37 zona u 10 izvornih fajlova. Neke, poput funkcija klase
+`Game`, pojavljuju se tek kada pokreneš igru i izvršiš odgovarajuće akcije.
+
+- **Broj poziva** govori koliko puta je funkcija izvršena u izabranom intervalu.
+- **Ukupno vreme (total)** je zbir trajanja njenih poziva.
+- **Prosečno vreme** je ukupno vreme podeljeno brojem poziva.
+- **Maksimalno vreme** pokazuje najduži zabeleženi poziv.
+- **Self time** izuzima vreme u ugnježdenim instrumentiranim zonama.
+
+Vremena roditeljske i unutrašnjih zona se preklapaju. Zato ih ne sabiramo kao
+nezavisne troškove.
+Tracy zone mere proteklo vreme, koje može da obuhvati i čekanje ili prekid rada
+niti. Najduži poziv zato nije sam po sebi dokaz sporog algoritma.
+
+![Early fuzz](images/3_fuzz.png)
+
+![Middle fuzz](images/12_fuzz.png)
+
+![Late fuzz](images/22_fuzz.png)
+
+
+Prikazujemo vreme zone bez vremena ugnježdenih Tracy zona (self only). Zato približno 492 µs kod Player::calculateScore nije ukupno trajanje jednog obračuna.
+
+Sa slika dobijamo sledeća ukupna self vremena za po 200 obračuna:
+
+Zona	 | 3 pločice	| 12 pločica	| 22 pločice
+|---|---|---|---|
+HexagonGrid::copy	|  104,47 ms	| 	105,24 ms		| 105,18 ms
+Player::calculateScore | 	98,37 ms		| 98,46 ms		| 98,91 ms
+Scoring::habitatSides	| 1,70 ms	| 	27,06 ms		| 53,61 ms
+Scoring::calculateHabitat	| 	1,11 ms	| 	21,36 ms		| 41,18 ms
+
+Kopiranje predstavlja veliki, gotovo stalan trošak. U svakom scenariju imamo 600 kopiranja za 200 obračuna, odnosno tri kopiranja po obračunu.
+Ona nastaju:
+- pri inicijalizaciji člana Scoring::m_player;
+- pri prosleđivanju igrača po vrednosti u calculatePlayerAnimalScore;
+- pri prosleđivanju igrača po vrednosti u calculatePlayerHabitatsScore.
+
+Kopiranje igrača pokreće duboko kopiranje celog grida. U sva tri scenarija grid ima 30 × 30 polja, pa se kopira svih 900 polja bez obzira na broj postavljenih pločica. To objašnjava približno jednako vreme kopiranja. 
+
+Obrada staništa postaje znatno skuplja, trošak raste prvenstveno zato što se funkcija poziva mnogo više puta.
+U kodu se obilazak staništa pokreće ponovo za svaku postavljenu pločicu, sa novom evidencijom posećenih polja. To omogućava ponovljeni obilazak iste povezane grupe i objašnjava zabeleženi rast.
+
+
+![Early fuzz1](images/3_fuzz.png)
+
+![Middle fuzz1](images/12_fuzz.png)
+
+![Late fuzz1](images/22_fuzz.png)
+
+**Sada upoređujemo i potvrđujemo naša oučavanja: prosečno trajanje raste sa 1,11 ms na 1,65 ms, odnosno približno 49,5% između početne i završne table.**
+
+Uključeno je **With children**, pa vreme `Player::calculateScore` obuhvata i operacije koje se izvršavaju unutar njega.
+
+| Scenario   | Broj obračuna | Ukupno vreme bodovanja | Prosečno po obračunu |
+| ---------- | ------------: | ---------------------: | -------------------: |
+| 3 pločice  |           200 |              221,19 ms |              1,11 ms |
+| 12 pločica |           200 |              277,54 ms |              1,39 ms |
+| 22 pločice |           200 |              330,63 ms |              1,65 ms |
+
+**Kopiranje mreže ima veliki, gotovo stalan trošak.**
+
+`HexagonGrid::copy` traje ukupno **104,47–105,24 ms** u svakom scenariju. Zabeleženo je po **600 poziva**, odnosno tri kopiranja po obračunu.
+To odgovara približno **0,52 ms kopiranja po obračunu**. 
+
+Potencijalna optimizacija je smanjenje nepotrebnih kopiranja igrača i mreže, uz proveru gde je bezbedno koristiti reference.
+
+**Najveći deo povećanja vremena dolazi iz obračuna staništa.**
+
+Za `Scoring::calculatePlayerHabitatsScore`, uključujući njegove unutrašnje pozive, imamo:
+
+| Scenario   | Ukupno vreme obračuna staništa |
+| ---------- | -----------------------------: |
+| 3 pločice  |                        5,42 ms |
+| 12 pločica |                       58,13 ms |
+| 22 pločice |                      108,81 ms |
+
+Između prve i poslednje table ukupno bodovanje raste za **109,44 ms**, a obrada staništa za **103,39 ms**. Dakle, ona objašnjava najveći deo zabeleženog povećanja.
+
+Ovo je u skladu sa prethodnim nalazom iz koda: obilazak staništa pokreće se iznova za svaku postavljenu pločicu, pa se iste povezane grupe mogu obilaziti više puta.
+
 ## Zaključak
 
-Dosadašnja analiza pokazuje da jedinični testovi, merenje pokrivenosti i Memcheck daju različite informacije o kvalitetu aplikacije. Jedinični testovi su izdvojili četiri funkcionalna problema: gubitak podatka u konstruktoru poteza, neobnavljanje rotacije pri deserializaciji i dva nepravilna obračuna poena. Visoka pokrivenost izvršenih linija ne poništava ove neuspešne provere niti dokazuje ispravnost svih ishoda grananja.
+Analiza projekta *Cascadia* pokazala je da različite tehnike verifikacije daju različite, ali međusobno dopunjujuće informacije o kvalitetu softvera. 
 
-U 12 testnih programa analiziranih Memcheck-om nije prijavljena izgubljena memorija u kategorijama definitely, indirectly i possibly lost, ali su zabeležene tri prijave neispravnog čitanja tokom inicijalizacije Qt/IBus komponenti. Interaktivna sesija sa delom partije omogućila je proveru dodatnih putanja i, uz pregled koda, otkrila propust u oslobađanju objekata Game, Board i Player. Time se pokazuje značaj provere celog toka upotrebe objekata, pored njihovog izdvojenog testiranja.
+Jedinični testovi proveravaju konkretno očekivano ponašanje programa, dok pokrivenost pokazuje koji delovi koda su njima obuhvaćeni. Mull dodatno procenjuje kvalitet testova proveravajući da li oni zaista mogu da otkriju promene u programu.
+Cppcheck pronalazi potencijalne probleme direktno u izvornom kodu bez izvršavanja programa, dok Valgrind proverava probleme vezane za upravljanje memorijom tokom izvršavanja. FuzzTest automatski generiše veliki broj različitih ulaza i na taj način može da otkrije greške koje klasični testovi ne obuhvate. Tracy se, za razliku od ostalih alata, fokusira na performanse i omogućava pronalaženje delova programa koji troše najviše vremena.
 
-Prijavljena curenja u putanjama multimedije i obrade tastature dokumentovana su, ali njihov tačan uzrok nije pripisan kodu igre bez dodatnih dokaza. Predložene ispravke potrebno je proveriti ponovnim izvršavanjem istih testova i sesija. Zaključci ne predstavljaju dokaz ispravnosti cele aplikacije.
+Zajedno, ove tehnike daju znatno potpuniju procenu projekta nego bilo koja od njih pojedinačno, a rezultati pokazuju i da visoka pokrivenost koda sama po sebi nije dovoljna garancija ispravnosti.

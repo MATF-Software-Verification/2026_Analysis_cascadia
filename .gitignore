@@ -22,3 +22,6 @@ mull/reports/*
 mull/reports/used_run/*
 !mull/reports/used_run/*_mull.log
 !mull/reports/used_run/*.json
+fuzztest/reports/**
+!fuzztest/reports/run*/
+!fuzztest/reports/run*/output.log
